@@ -1,5 +1,5 @@
 <script>
-	import UserIcon from '$lib/components/UserIcon.svelte';
+	import User from '$lib/components/User.svelte';
 
 	/**
 	 * @type {import('src/types/organization/card').ThanksCard}
@@ -9,14 +9,18 @@
 	/** @type {import('src/types/organization/member').OrganizationMember[]} */
 	export let members;
 
-	$: to = members.find((m) => m.id === card.to);
-	$: from = members.find((m) => m.id === card.from);
+	$: to = members.find((m) => m.id === card.to) || { name: '' };
+	$: from = members.find((m) => m.id === card.from) || { name: '' };
 </script>
 
 <div class="card">
-	<div>to: <UserIcon src={to?.picture} />{to?.name}</div>
+	<div class="from-to">
+		<User user={from} />
+		->
+		<User user={to} />
+	</div>
 	<div class="message">{card.message}</div>
-	<div>from: <UserIcon src={from?.picture} /> {from?.name}</div>
+	<div />
 	<div class="time">{card.createdAt}</div>
 </div>
 
@@ -25,6 +29,11 @@
 		margin: 1rem;
 		padding: 1rem;
 		border: 1px solid #333;
+	}
+
+	.from-to {
+		display: flex;
+		align-items: center;
 	}
 
 	.message {
