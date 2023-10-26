@@ -2,19 +2,15 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { postCard } from '$lib/stores/card';
-	import UserIcon from '$lib/components/UserIcon.svelte';
+	import User from '$lib/components/User.svelte';
 	export let data;
 
 	const members = data.organization.members || [];
 
-	/**
-	 * @type {string}
-	 */
+	/** @type {string} */
 	let to = '';
 
-	/**
-	 * @type {string}
-	 */
+	/** @type {string} */
 	let message = '';
 
 	const sendMessage = async () => {
@@ -48,10 +44,7 @@
 	{#each members as member}
 		<label class="member" class:selected={to === member.id}>
 			<input type="radio" bind:group={to} value={member.id} class="radio" />
-			<span class="icon">
-				<UserIcon src={member.picture} />
-			</span>
-			{member.name}
+			<User user={member} />
 		</label>
 	{/each}
 </div>
@@ -68,8 +61,6 @@
 	}
 
 	.member {
-		display: flex;
-		align-items: center;
 		border: 1px solid #ddd;
 		border-radius: 0.4rem;
 		padding: 0.5rem;
@@ -84,12 +75,8 @@
 		display: none;
 	}
 
-	.icon {
-		display: flex;
-		margin-right: 0.5rem;
-	}
-
 	textarea {
+		max-width: 90%;
 		width: 30rem;
 		height: 5rem;
 	}
