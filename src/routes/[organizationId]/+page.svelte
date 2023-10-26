@@ -1,7 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import UserIcon from '$lib/components/UserIcon.svelte';
+	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
 
 	export let data;
@@ -41,7 +41,7 @@
 <div class="ranking">
 	<ol>
 		{#each sendRanking() as data}
-			<li><UserIcon src={data.picture} />{data.name} : {data.count}枚</li>
+			<li class="list"><User user={data} /> : {data.count}枚</li>
 		{/each}
 	</ol>
 </div>
@@ -54,6 +54,16 @@
 </div>
 
 <style>
+	ol {
+		padding: 0;
+	}
+
+	.list {
+		margin: 0.5rem;
+		display: flex;
+		align-items: center;
+	}
+
 	.cards {
 		display: flex;
 		flex-wrap: wrap;
