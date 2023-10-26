@@ -1,22 +1,34 @@
 import { getFirestore } from 'firebase-admin/firestore';
 
-export const load = async ({ locals }) => {
-	const user = fetchUser(locals.id);
+/**
+ * @typedef {Object} CurrentUser
+ * @property {string} uid
+ * @property {string} [email]
+ * @property {string} [picture]
+ * @property {string[]} [organizations]
+ */
 
-	return {
-		user,
-		id: locals.id,
-		email: locals.email
-	};
+export const load = async ({ locals }) => {
+	/** @type {CurrentUser | undefined} */
+	let currentUser = undefined;
+
+	if (locals.currentUser) {
+		const user = await fetchUser(locals.currentUser.uid);
+		currentUser = {
+			...locals.currentUser,
+			...user,
+		};
+	}
+
+	return { currentUser };
 };
 
 /**
  * ユーザー情報を取得する
  * @param {string} uid
  *
- * @typedef  {{
- *   organizations: string[]
- * }} User
+ * @typedef {Object} User
+ * @property  {string[]} organizations
  */
 const fetchUser = async (uid) => {
 	const db = getFirestore();

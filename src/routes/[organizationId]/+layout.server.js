@@ -1,12 +1,21 @@
+import { redirect } from '@sveltejs/kit';
 import { getFirestore } from 'firebase-admin/firestore';
 
 export const load = async ({ locals, params }) => {
-	const organization = await fetchOrganization(params.organization);
-	const members = await fetchOrganizationMembers(params.organization);
+	const currentUser = /** @type  {import('src/routes/+page.server.js').CurrentUser} */ (
+		locals.currentUser
+	);
+
+	const organization = await fetchOrganization(params.organizationId);
+	const members = await fetchOrganizationMembers(params.organizationId);
+
+	if (!organization) {
+		throw redirect(303, '/');
+	}
 
 	return {
-		user: locals,
-		organization: { ...organization, members }
+		currentUser,
+		organization: { ...organization, members },
 	};
 };
 
@@ -31,15 +40,20 @@ const fetchOrganization = async (organizationId) => {
 /**
  * 組織のメンバー情報を取得する
  * @param {string} organizationId
- *
- * @typedef  {{
- *   id: string
- *   name: string
- * }} OrganizationMember
  */
 const fetchOrganizationMembers = async (organizationId) => {
 	const db = getFirestore();
 	const collectionRef = db.collection(`organizations/${organizationId}/members/`);
-	const snapshot = await collectionRef.get();
-	return /** @type {OrganizationMember[]} */ (snapshot.docs.map((s) => s.data()));
+	const query = collectionRef.orderBy('createdAt', 'desc');
+	const snapshot = await query.get();
+	return /** @type {import('src/types/organization/member').OrganizationMember[]} */ (
+		snapshot.docs.map((s) => {
+			const data = s.data();
+
+			return {
+				...data,
+				createdAt: data.createdAt.toDate(),
+			};
+		})
+	);
 };

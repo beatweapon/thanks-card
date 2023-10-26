@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 import { auth, db } from 'src/lib/firebase_client';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -49,9 +49,7 @@ export const fetchOrganizations = async (uid) => {
  * @param {string} organization
  */
 export const registerUser = async (uid, organization) => {
-	console.log(uid, organization);
-	const docRef = await setDoc(doc(db, 'users', uid), { organizations: [organization] }).catch((e) =>
-		console.error(e)
-	);
-	console.log(docRef);
+	const docRef = await setDoc(doc(db, 'users', uid), {
+		organizations: arrayUnion(organization),
+	}).catch((e) => console.error(e));
 };

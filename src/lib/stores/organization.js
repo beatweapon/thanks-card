@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from 'src/lib/firebase_client';
 
 /**
@@ -22,7 +22,6 @@ export const fetchOrganization = async (organizationId) => {
 	const docSnap = await getDoc(docRef);
 
 	if (docSnap.exists()) {
-		console.log(docSnap.data());
 		organization.set(/** @type {Organization} */ (docSnap.data()));
 	}
 };
@@ -48,10 +47,7 @@ export const fetchOrganizationUser = async (organization, uid) => {
 	const docRef = doc(db, `organizations/${organization}/members`, uid);
 	const docSnap = await getDoc(docRef);
 
-	console.log(`organizations/${organization}/members`, uid);
-
 	if (docSnap.exists()) {
-		console.log(docSnap.data());
 		organizationUser.set(/** @type {OrganizationUser} */ (docSnap.data()));
 	}
 };
@@ -62,7 +58,10 @@ export const fetchOrganizationUser = async (organization, uid) => {
  * @param {OrganizationUser} user
  */
 export const registerMember = async (organization, user) => {
-	await setDoc(doc(db, `organizations/${organization}/members`, user.id), user);
+	await setDoc(doc(db, `organizations/${organization}/members`, user.id), {
+		...user,
+		createdAt: Timestamp.now(),
+	});
 
 	organizationUser.set(/** @type {OrganizationUser} */ (user));
 };
