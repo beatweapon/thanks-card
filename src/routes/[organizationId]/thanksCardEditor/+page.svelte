@@ -44,11 +44,13 @@
 </pre> -->
 
 <h3>誰に送る？</h3>
-<div>
+<div class="members">
 	{#each members as member}
-		<label>
-			<input type="radio" bind:group={to} value={member.id} />
-			<UserIcon src={member.picture} />
+		<label class="member" class:selected={to === member.id}>
+			<input type="radio" bind:group={to} value={member.id} class="radio" />
+			<span class="icon">
+				<UserIcon src={member.picture} />
+			</span>
 			{member.name}
 		</label>
 	{/each}
@@ -60,6 +62,33 @@
 <button on:click={sendMessage} disabled={!to || !message}>カードを贈る</button>
 
 <style>
+	.members {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.member {
+		display: flex;
+		align-items: center;
+		border: 1px solid #ddd;
+		border-radius: 0.4rem;
+		padding: 0.5rem;
+		margin: 0.5rem;
+	}
+
+	.member.selected {
+		border: 1px solid #f00;
+	}
+
+	.radio {
+		display: none;
+	}
+
+	.icon {
+		display: flex;
+		margin-right: 0.5rem;
+	}
+
 	textarea {
 		width: 30rem;
 		height: 5rem;
