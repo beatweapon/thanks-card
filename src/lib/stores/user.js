@@ -49,7 +49,9 @@ export const fetchOrganizations = async (uid) => {
  * @param {string} organization
  */
 export const registerUser = async (uid, organization) => {
-	const docRef = await setDoc(doc(db, 'users', uid), {
-		organizations: arrayUnion(organization),
-	}).catch((e) => console.error(e));
+	const docRef = await setDoc(
+		doc(db, 'users', uid),
+		{ organizations: arrayUnion(organization) },
+		{ merge: true }
+	).catch((e) => console.error(e));
 };
