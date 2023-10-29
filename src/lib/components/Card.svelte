@@ -38,7 +38,7 @@
 
 	.message {
 		margin: 1rem 0;
-		white-space: pre;
+		white-space: pre-wrap;
 	}
 
 	.time {

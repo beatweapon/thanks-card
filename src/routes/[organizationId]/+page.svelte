@@ -67,5 +67,6 @@
 	.cards {
 		display: flex;
 		flex-wrap: wrap;
+		max-width: 90%;
 	}
 </style>
