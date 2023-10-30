@@ -55,3 +55,16 @@ export const registerUser = async (uid, organization) => {
 		{ merge: true }
 	).catch((e) => console.error(e));
 };
+
+/**
+ *
+ * @param {string} uid
+ * @param {string} token
+ */
+export const registerDeviceToken = async (uid, token) => {
+	const docRef = await setDoc(
+		doc(db, 'users', uid),
+		{ deviceTokens: arrayUnion(token) },
+		{ merge: true }
+	).catch((e) => console.error(e));
+};
