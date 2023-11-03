@@ -76,6 +76,7 @@
 	}
 
 	textarea {
+		font-size: 1rem;
 		max-width: 90%;
 		width: 30rem;
 		height: 5rem;
