@@ -1,6 +1,8 @@
 <script>
+	import { PUBLIC_VAPID_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import { getMessaging, getToken } from 'firebase/messaging';
+	import { app } from '$lib/firebase_client';
 	import { registerDeviceToken } from '$lib/stores/user';
 
 	/** @type {string} */
@@ -14,6 +16,8 @@
 
 		if (permissionStatus === 'granted') {
 			await getDeviceToken();
+		} else {
+			await requestNotificationPermission();
 		}
 	});
 
@@ -34,10 +38,9 @@
 	};
 
 	const getDeviceToken = async () => {
-		const messaging = getMessaging();
+		const messaging = getMessaging(app);
 		const currentToken = await getToken(messaging, {
-			vapidKey:
-				'BHp19ApMntQnFoyouziQ35mBZtYNdAuX2EnveC0NV28GC0geiesXsXqTmnfQM8cNjAsleaww9y2hIAvaJmLkhrI',
+			vapidKey: PUBLIC_VAPID_KEY,
 		}).catch((err) => {
 			console.log('An error occurred while retrieving token. ', err);
 		});
