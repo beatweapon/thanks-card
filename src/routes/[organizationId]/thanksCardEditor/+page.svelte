@@ -1,7 +1,7 @@
 <script>
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { postCard } from '$lib/stores/card';
 	import User from '$lib/components/User.svelte';
 	export let data;
 
@@ -14,11 +14,15 @@
 	let message = '';
 
 	const sendMessage = async () => {
-		await postCard({
-			organizationId: $page.params.organizationId,
-			from: data.currentUser.uid,
-			to,
-			message,
+		await fetch(`${base}/api/organizations/${$page.params.organizationId}/card`, {
+			method: 'POST',
+			body: JSON.stringify({
+				from: data.currentUser.uid,
+				to,
+				message,
+				senderIcon: data.currentUser.picture,
+			}),
+			headers: { 'content-type': 'application/json' },
 		});
 
 		goto(removeLastPathFromURL($page.url.toString()));
