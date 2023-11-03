@@ -1,10 +1,13 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { cards, watchCardCollection } from '$lib/stores/card.js';
 	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
 
 	export let data;
+
+	watchCardCollection($page.params.organizationId);
 
 	$: sendRanking = () => {
 		/**
@@ -13,7 +16,7 @@
 		 */
 		const counts = {};
 
-		data.cards.forEach((c) => {
+		$cards.forEach((c) => {
 			if (counts[c.from]) {
 				counts[c.from]++;
 			} else {
@@ -48,7 +51,7 @@
 
 <h2>Thanks Cards</h2>
 <div class="cards">
-	{#each data.cards as card}
+	{#each $cards as card}
 		<Card {card} bind:members={data.organization.members} />
 	{/each}
 </div>
