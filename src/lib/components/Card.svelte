@@ -9,8 +9,10 @@
 	/** @type {import('src/types/organization/member').OrganizationMember[]} */
 	export let members;
 
-	$: to = members.find((m) => m.id === card.to) || { name: '' };
-	$: from = members.find((m) => m.id === card.from) || { name: '' };
+	const to = members.find((m) => m.id === card.to) || { name: '' };
+	const from = members.find((m) => m.id === card.from) || { name: '' };
+
+	const createdAt = card.createdAt.toDate().toLocaleString('ja-JP');
 </script>
 
 <div class="card">
@@ -21,7 +23,7 @@
 	</div>
 	<div class="message">{card.message}</div>
 	<div />
-	<div class="time">{card.createdAt}</div>
+	<div class="time">{createdAt}</div>
 </div>
 
 <style>

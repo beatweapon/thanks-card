@@ -2,5 +2,5 @@ export interface ThanksCard {
 	from: string;
 	to: string;
 	message: string;
-	createdAt: Date;
+	createdAt: import('firebase/firestore').Timestamp;
 }
