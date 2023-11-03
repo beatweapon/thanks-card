@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
+	import NotificationPermission from 'src/lib/components/NotificationPermission.svelte';
 	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
 
@@ -55,6 +56,10 @@
 		<Card {card} bind:members={data.organization.members} />
 	{/each}
 </div>
+
+{#if data.currentUser?.uid}
+	<NotificationPermission uid={data.currentUser.uid} />
+{/if}
 
 <style>
 	ol {
