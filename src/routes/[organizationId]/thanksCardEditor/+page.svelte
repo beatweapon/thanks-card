@@ -13,7 +13,15 @@
 	/** @type {string} */
 	let message = '';
 
+	/** @type {boolean} */
+	let processing = false;
+
+	/** @type {boolean} */
+	$: disabled = !to || !message || processing;
+
 	const sendMessage = async () => {
+		processing = true;
+
 		await fetch(`${base}/api/organizations/${$page.params.organizationId}/card`, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -23,6 +31,8 @@
 				senderIcon: data.currentUser.picture,
 			}),
 			headers: { 'content-type': 'application/json' },
+		}).finally(() => {
+			processing = false;
 		});
 
 		goto(removeLastPathFromURL($page.url.toString()));
@@ -56,7 +66,7 @@
 <h3>メッセージ</h3>
 <textarea bind:value={message} placeholder="感謝のメッセージをどうぞ！" />
 
-<button on:click={sendMessage} disabled={!to || !message}>カードを贈る</button>
+<button on:click={sendMessage} {disabled}>カードを贈る</button>
 
 <style>
 	.members {
