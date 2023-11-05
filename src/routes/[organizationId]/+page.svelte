@@ -30,6 +30,7 @@
 			.map(([id, count]) => {
 				const member = data.organization.members?.find((m) => m.id === id);
 				return {
+					id: member?.id || '',
 					name: member?.name || '優しい誰か',
 					picture: member?.picture,
 					count,
@@ -37,6 +38,42 @@
 			})
 			.sort((a, b) => b.count - a.count);
 	};
+
+	const filterOption = { from: '', to: '' };
+
+	/**
+	 * カスタムイベントを処理する関数
+	 *
+	 * @param {string} uid - カスタムイベントオブジェクト
+	 * @returns {void}
+	 */
+	const setFilterOptionFrom = (uid) => {
+		filterOption.to = '';
+		filterOption.from = filterOption.from !== uid ? uid : '';
+	};
+
+	/**
+	 * カスタムイベントを処理する関数
+	 *
+	 * @param {string} uid - カスタムイベントオブジェクト
+	 * @returns {void}
+	 */
+	const setFilterOptionTo = (uid) => {
+		filterOption.from = '';
+		filterOption.to = filterOption.to !== uid ? uid : '';
+	};
+
+	$: filteredCards = $cards.filter((c) => {
+		if (filterOption.from && c.from !== filterOption.from) {
+			return false;
+		}
+
+		if (filterOption.to && c.to !== filterOption.to) {
+			return false;
+		}
+
+		return true;
+	});
 </script>
 
 <h2>Welcome to TopPage</h2>
@@ -46,16 +83,24 @@
 <div class="ranking">
 	<ol>
 		{#each sendRanking() as data}
-			<li class="list"><User user={data} /> : {data.count}枚</li>
+			<li class="list">
+				<User user={data} on:click={() => setFilterOptionFrom(data.id)} /> : {data.count}枚
+			</li>
 		{/each}
 	</ol>
 </div>
 
 <h2>Thanks Cards</h2>
+
 <ul class="cards">
-	{#each $cards as card (card.id)}
+	{#each filteredCards as card (card.id)}
 		<li animate:flip={{ duration: 500 }}>
-			<Card {card} bind:members={data.organization.members} />
+			<Card
+				{card}
+				bind:members={data.organization.members}
+				on:clickFrom={() => setFilterOptionFrom(card.from)}
+				on:clickTo={() => setFilterOptionTo(card.to)}
+			/>
 		</li>
 	{/each}
 </ul>

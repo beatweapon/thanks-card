@@ -5,12 +5,12 @@
 	export let user;
 </script>
 
-<span class="user">
+<button class="user" on:click>
 	<span class="icon">
 		<UserIcon src={user.picture} />
 	</span>
 	{user.name}
-</span>
+</button>
 
 <style>
 	.user {

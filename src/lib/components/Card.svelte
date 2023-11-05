@@ -1,5 +1,6 @@
 <script>
 	import User from '$lib/components/User.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	/**
 	 * @type {import('src/types/organization/card').ThanksCard}
@@ -13,13 +14,24 @@
 	const from = members.find((m) => m.id === card.from) || { name: '' };
 
 	const createdAt = card.createdAt.toDate().toLocaleString('ja-JP');
+
+	// イベントディスパッチャーを作成
+	const dispatch = createEventDispatcher();
+
+	const onClickFrom = () => {
+		dispatch('clickFrom');
+	};
+
+	const onClickTo = () => {
+		dispatch('clickTo');
+	};
 </script>
 
 <div class="card">
 	<div class="from-to">
-		<User user={from} />
+		<User user={from} on:click={onClickFrom} />
 		->
-		<User user={to} />
+		<User user={to} on:click={onClickTo} />
 	</div>
 	<div class="message">{card.message}</div>
 	<div />
