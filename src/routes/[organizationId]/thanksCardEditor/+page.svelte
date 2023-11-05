@@ -35,6 +35,10 @@
 			processing = false;
 		});
 
+		goToOrganizationPage();
+	};
+
+	const goToOrganizationPage = () => {
 		goto(removeLastPathFromURL($page.url.toString()));
 	};
 
@@ -52,6 +56,7 @@
 <pre>
   {JSON.stringify(data, null, 2)}
 </pre> -->
+<button on:click={() => goToOrganizationPage()}>戻る</button>
 
 <h3>誰に送る？</h3>
 <div class="members">
