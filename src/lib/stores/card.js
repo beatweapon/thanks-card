@@ -36,6 +36,7 @@ export const watchCardCollection = (organizationId) => {
 				const newCard = /** @type {import('src/types/organization/card').ThanksCard} */ (
 					change.doc.data()
 				);
+				newCard.id = change.doc.id;
 				cards.update((arr) => [newCard, ...arr]);
 				console.log('New city: ', change.doc.data());
 			}

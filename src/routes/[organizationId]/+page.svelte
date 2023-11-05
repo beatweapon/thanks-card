@@ -1,6 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
 	import NotificationPermission from 'src/lib/components/NotificationPermission.svelte';
 	import User from '$lib/components/User.svelte';
@@ -51,11 +52,13 @@
 </div>
 
 <h2>Thanks Cards</h2>
-<div class="cards">
-	{#each $cards as card}
-		<Card {card} bind:members={data.organization.members} />
+<ul class="cards">
+	{#each $cards as card (card.id)}
+		<li animate:flip={{ duration: 500 }}>
+			<Card {card} bind:members={data.organization.members} />
+		</li>
 	{/each}
-</div>
+</ul>
 
 {#if data.currentUser?.uid}
 	<NotificationPermission uid={data.currentUser.uid} />
@@ -76,5 +79,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		max-width: 90%;
+
+		list-style: none;
+		padding: 0;
 	}
 </style>
