@@ -1,6 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { send, receive } from '$lib/animations/transition.js';
 	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
 	import NotificationPermission from 'src/lib/components/NotificationPermission.svelte';
@@ -94,7 +95,12 @@
 
 <ul class="cards">
 	{#each filteredCards as card (card.id)}
-		<li animate:flip={{ duration: 500 }}>
+		<li
+			class="card_wrap"
+			in:receive={{ key: card.id }}
+			out:send={{ key: card.id }}
+			animate:flip={{ duration: 200 }}
+		>
 			<Card
 				{card}
 				bind:members={data.organization.members}
@@ -127,5 +133,10 @@
 
 		list-style: none;
 		padding: 0;
+	}
+
+	.card_wrap {
+		max-width: 100%;
+		width: 400px;
 	}
 </style>
