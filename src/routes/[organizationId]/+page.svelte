@@ -7,6 +7,7 @@
 	import NotificationPermission from 'src/lib/components/NotificationPermission.svelte';
 	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
+	import Qr from '$lib/components/Qr.svelte';
 
 	export let data;
 
@@ -110,6 +111,9 @@
 		</li>
 	{/each}
 </ul>
+
+<h2>この画面のQRコード</h2>
+<Qr url={window.location.href} />
 
 {#if data.currentUser?.uid}
 	<NotificationPermission uid={data.currentUser.uid} />
