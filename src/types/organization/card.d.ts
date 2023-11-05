@@ -1,4 +1,5 @@
 export interface ThanksCard {
+	id: string;
 	from: string;
 	to: string;
 	message: string;
