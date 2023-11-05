@@ -38,13 +38,13 @@ export const watchCardCollection = (organizationId) => {
 				);
 				newCard.id = change.doc.id;
 				cards.update((arr) => [newCard, ...arr]);
-				console.log('New city: ', change.doc.data());
-			}
-			if (change.type === 'modified') {
-				console.log('Modified city: ', change.doc.data());
 			}
 			if (change.type === 'removed') {
-				console.log('Removed city: ', change.doc.data());
+				cards.update((arr) => {
+					const index = arr.findIndex((a) => a.id === change.doc.id);
+					const newArray = [...arr.slice(0, index), ...arr.slice(index + 1)];
+					return newArray;
+				});
 			}
 		});
 	});
