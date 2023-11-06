@@ -4,7 +4,8 @@
 	import { send, receive } from '$lib/animations/transition.js';
 	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
-	import NotificationPermission from 'src/lib/components/NotificationPermission.svelte';
+	import PlainButton from '$lib/components/PlainButton.svelte';
+	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
 	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import Qr from '$lib/components/Qr.svelte';
@@ -85,8 +86,12 @@
 <div class="ranking">
 	<ol>
 		{#each sendRanking() as data}
-			<li class="list">
-				<User user={data} on:click={() => setFilterOptionFrom(data.id)} /> : {data.count}枚
+			<li class="list_item">
+				<PlainButton on:click={() => setFilterOptionFrom(data.id)}>
+					<span class="list_item_inner">
+						<User user={data} /> : {data.count}枚
+					</span>
+				</PlainButton>
 			</li>
 		{/each}
 	</ol>
@@ -124,8 +129,12 @@
 		padding: 0;
 	}
 
-	.list {
+	.list_item {
+		display: block;
 		margin: 0.5rem;
+	}
+
+	.list_item_inner {
 		display: flex;
 		align-items: center;
 	}

@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import PlainButton from '$lib/components/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
 	export let data;
 
@@ -61,10 +62,11 @@
 <h3>誰に送る？</h3>
 <div class="members">
 	{#each members as member}
-		<label class="member" class:selected={to === member.id}>
-			<input type="radio" bind:group={to} value={member.id} class="radio" />
-			<User user={member} />
-		</label>
+		<PlainButton on:click={() => (to = member.id)}>
+			<div class="member" class:selected={to === member.id}>
+				<User user={member} />
+			</div>
+		</PlainButton>
 	{/each}
 </div>
 
@@ -88,10 +90,6 @@
 
 	.member.selected {
 		border: 1px solid #f00;
-	}
-
-	.radio {
-		display: none;
 	}
 
 	textarea {

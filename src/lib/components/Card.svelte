@@ -1,4 +1,5 @@
 <script>
+	import PlainButton from '$lib/components/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
 	import { createEventDispatcher } from 'svelte';
 
@@ -29,9 +30,13 @@
 
 <div class="card">
 	<div class="from-to">
-		<User user={from} on:click={onClickFrom} />
+		<PlainButton on:click={onClickFrom}>
+			<User user={from} />
+		</PlainButton>
 		->
-		<User user={to} on:click={onClickTo} />
+		<PlainButton on:click={onClickTo}>
+			<User user={to} />
+		</PlainButton>
 	</div>
 	<div class="message">{card.message}</div>
 	<div />
