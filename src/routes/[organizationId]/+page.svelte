@@ -118,7 +118,7 @@
 </ul>
 
 <h2>この画面のQRコード</h2>
-<Qr url={window.location.href} />
+<Qr url={$page.url.href} />
 
 {#if data.currentUser?.uid}
 	<NotificationPermission uid={data.currentUser.uid} />
