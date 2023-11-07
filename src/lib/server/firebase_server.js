@@ -15,11 +15,9 @@ export const sendMessageToDevice = (registrationToken, title, body, icon) => {
 		.messaging()
 		.send({
 			token: registrationToken,
-			notification: {
+			data: {
 				title,
 				body,
-			},
-			data: {
 				icon,
 			},
 		})
