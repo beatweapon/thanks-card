@@ -19,7 +19,7 @@ export const POST = async ({ request, params }) => {
 
 	const user = await fetchUser(to);
 
-	if (user) {
+	if (user?.deviceTokens) {
 		user.deviceTokens.forEach(async (token) => {
 			await sendMessageToDevice(token, '新しいカードが届きました', message, senderIcon);
 		});
