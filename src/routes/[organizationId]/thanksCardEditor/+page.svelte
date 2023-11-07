@@ -23,12 +23,16 @@
 	const sendMessage = async () => {
 		processing = true;
 
+		const senderId = data.currentUser.uid;
+		const sender = members.find((m) => m.id === senderId);
+
 		await fetch(`${base}/api/organizations/${$page.params.organizationId}/card`, {
 			method: 'POST',
 			body: JSON.stringify({
-				from: data.currentUser.uid,
+				from: senderId,
 				to,
 				message,
+				senderName: sender?.name,
 				senderIcon: data.currentUser.picture,
 			}),
 			headers: { 'content-type': 'application/json' },

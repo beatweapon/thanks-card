@@ -7,7 +7,7 @@ export const POST = async ({ request, params }) => {
 	const db = getFirestore();
 
 	const { organizationId } = params;
-	const { from, to, message, senderIcon } = await request.json();
+	const { from, to, message, senderName, senderIcon } = await request.json();
 
 	const collectionRef = db.collection(`organizations/${organizationId}/cards`);
 	const docRef = await collectionRef.add({
@@ -21,7 +21,7 @@ export const POST = async ({ request, params }) => {
 
 	if (user?.deviceTokens) {
 		user.deviceTokens.forEach(async (token) => {
-			await sendMessageToDevice(token, '新しいカードが届きました', message, senderIcon);
+			await sendMessageToDevice(token, `${senderName}からカードが届きました`, message, senderIcon);
 		});
 	}
 
