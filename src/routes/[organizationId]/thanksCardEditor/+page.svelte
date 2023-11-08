@@ -66,8 +66,6 @@
 	 * @param {KeyboardEvent} event
 	 */
 	const handleKeyDown = (event) => {
-		event.preventDefault();
-
 		if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
 			sendMessage();
 		}
