@@ -2,7 +2,7 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import PlainButton from '$lib/components/PlainButton.svelte';
+	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
 	export let data;
 

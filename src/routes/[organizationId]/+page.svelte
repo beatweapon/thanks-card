@@ -4,7 +4,7 @@
 	import { send, receive } from '$lib/animations/transition.js';
 	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
-	import PlainButton from '$lib/components/PlainButton.svelte';
+	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
 	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
