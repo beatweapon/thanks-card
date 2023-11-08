@@ -39,7 +39,8 @@
 					count,
 				};
 			})
-			.sort((a, b) => b.count - a.count);
+			.sort((a, b) => b.count - a.count)
+			.slice(0, 3);
 	};
 
 	const filterOption = { from: '', to: '' };
