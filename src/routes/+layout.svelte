@@ -1,4 +1,5 @@
 <script>
+	import './global.css';
 	import auth from '$lib/auth';
 	export let data;
 
