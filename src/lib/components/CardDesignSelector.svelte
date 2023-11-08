@@ -1,0 +1,67 @@
+<script>
+	import { onMount, createEventDispatcher } from 'svelte';
+	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+
+	/** @type {string} */
+	export let selectedDesignId = '0';
+
+	const designIds = ['0', '1', '2'];
+
+	/**
+	 * 動的に読み込まれたコンポーネントを保持する変数
+	 * @type {import('svelte').ComponentType[]}
+	 */
+	let dynamicComponents = [];
+
+	onMount(() => {
+		designIds.forEach(async (designId) => {
+			const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
+			dynamicComponents = [...dynamicComponents, module.default];
+		});
+	});
+
+	const dispatch = createEventDispatcher();
+
+	const onClick = (designId) => {
+		dispatch('click', { designId });
+	};
+</script>
+
+<div class="cards">
+	{#each dynamicComponents as component, index}
+		<PlainButton on:click={() => onClick(designIds[index])}>
+			<div class="card_wrapper" class:selected={selectedDesignId === designIds[index]}>
+				<svelte:component this={component}>
+					<div class="card_inner">感謝のメッセージ</div>
+				</svelte:component>
+			</div>
+		</PlainButton>
+	{/each}
+</div>
+
+<style>
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 20rem);
+		gap: 1rem;
+	}
+
+	.card_wrapper {
+		--shadow: -0.5rem -0.5rem 1rem hsl(0 0% 100% / 0.75), 0.5rem 0.5rem 1rem hsl(0 0% 50% / 0.5);
+		box-shadow: var(--shadow);
+		outline: none;
+		transition: all 0.1s;
+	}
+
+	.card_wrapper.selected {
+		scale: 1.1;
+	}
+
+	.card_inner {
+		width: 20rem;
+		height: 10rem;
+		display: grid;
+		justify-content: center;
+		align-items: center;
+	}
+</style>

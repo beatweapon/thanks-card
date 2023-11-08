@@ -10,5 +10,6 @@
 		background: none;
 		font: inherit;
 		cursor: pointer;
+		color: inherit;
 	}
 </style>

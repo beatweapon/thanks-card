@@ -1,5 +1,6 @@
 export interface ThanksCard {
 	id: string;
+	designId: string;
 	from: string;
 	to: string;
 	message: string;

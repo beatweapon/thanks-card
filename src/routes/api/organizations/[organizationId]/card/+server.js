@@ -7,12 +7,13 @@ export const POST = async ({ request, params }) => {
 	const db = getFirestore();
 
 	const { organizationId } = params;
-	const { from, to, message, senderName, senderIcon } = await request.json();
+	const { from, to, message, designId, senderName, senderIcon } = await request.json();
 
 	const collectionRef = db.collection(`organizations/${organizationId}/cards`);
 	const docRef = await collectionRef.add({
 		from,
 		to,
+		designId,
 		message,
 		createdAt: admin.firestore.Timestamp.fromDate(new Date()),
 	});

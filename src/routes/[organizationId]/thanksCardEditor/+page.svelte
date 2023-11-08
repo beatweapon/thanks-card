@@ -4,9 +4,13 @@
 	import { page } from '$app/stores';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
+	import CardDesignSelector from '$lib/components/CardDesignSelector.svelte';
 	export let data;
 
 	const members = data.organization.members || [];
+
+	/** @type {string} */
+	let designId = '';
 
 	/** @type {string} */
 	let to = '';
@@ -33,6 +37,7 @@
 			body: JSON.stringify({
 				from: senderId,
 				to,
+				designId,
 				message,
 				senderName: sender?.name,
 				senderIcon: data.currentUser.picture,
@@ -86,6 +91,14 @@
 		</PlainButton>
 	{/each}
 </div>
+
+<h3>カードデザイン</h3>
+<CardDesignSelector
+	selectedDesignId={designId}
+	on:click={(e) => {
+		designId = e.detail.designId;
+	}}
+/>
 
 <h3>メッセージ</h3>
 <textarea

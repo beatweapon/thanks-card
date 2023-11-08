@@ -1,7 +1,7 @@
 <script>
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { onMount, createEventDispatcher } from 'svelte';
 
 	/**
 	 * @type {import('src/types/organization/card').ThanksCard}
@@ -26,27 +26,44 @@
 	const onClickTo = () => {
 		dispatch('clickTo');
 	};
+
+	/**
+	 * 動的に読み込まれたコンポーネントを保持する変数
+	 * @type {import('svelte').ComponentType | null}
+	 */
+	let dynamicComponent;
+
+	onMount(async () => {
+		const designId = card.designId || '0';
+		const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
+		dynamicComponent = module.default;
+	});
 </script>
 
-<div class="card">
-	<div class="from-to">
-		<PlainButton on:click={onClickFrom}>
-			<User user={from} />
-		</PlainButton>
-		->
-		<PlainButton on:click={onClickTo}>
-			<User user={to} />
-		</PlainButton>
+{#if dynamicComponent}
+	<div class="card">
+		<svelte:component this={dynamicComponent}>
+			<div class="card_inner">
+				<div class="from-to">
+					<PlainButton on:click={onClickFrom}>
+						<User user={from} />
+					</PlainButton>
+					->
+					<PlainButton on:click={onClickTo}>
+						<User user={to} />
+					</PlainButton>
+				</div>
+				<div class="message">{card.message}</div>
+				<div />
+				<div class="time">{createdAt}</div>
+			</div>
+		</svelte:component>
 	</div>
-	<div class="message">{card.message}</div>
-	<div />
-	<div class="time">{createdAt}</div>
-</div>
+{/if}
 
 <style>
 	.card {
 		margin: 1rem;
-		padding: 1rem;
 
 		--shadow: -0.5rem -0.5rem 1rem hsl(0 0% 100% / 0.75), 0.5rem 0.5rem 1rem hsl(0 0% 50% / 0.5);
 		box-shadow: var(--shadow);
@@ -57,6 +74,10 @@
 		&:focus-visible {
 			scale: 1.1;
 		}
+	}
+
+	.card_inner {
+		padding: 1rem;
 	}
 
 	.from-to {
@@ -70,6 +91,7 @@
 	}
 
 	.time {
+		text-align: end;
 		font-size: 0.7rem;
 	}
 </style>
