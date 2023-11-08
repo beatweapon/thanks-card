@@ -21,6 +21,8 @@
 	$: disabled = !to || !message || processing;
 
 	const sendMessage = async () => {
+		if (disabled) return;
+
 		processing = true;
 
 		const senderId = data.currentUser.uid;
@@ -54,6 +56,17 @@
 		// 正規表現でURLから最後のスラッシュとその後の文字列を削除
 		return url.replace(/\/[^/]+$/, '');
 	};
+
+	/**
+	 * @param {KeyboardEvent} event
+	 */
+	const handleKeyDown = (event) => {
+		event.preventDefault();
+
+		if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+			sendMessage();
+		}
+	};
 </script>
 
 <h2>Card Editor</h2>
@@ -75,7 +88,11 @@
 </div>
 
 <h3>メッセージ</h3>
-<textarea bind:value={message} placeholder="感謝のメッセージをどうぞ！" />
+<textarea
+	bind:value={message}
+	on:keydown={handleKeyDown}
+	placeholder="感謝のメッセージをどうぞ！"
+/>
 
 <button on:click={sendMessage} {disabled}>カードを贈る</button>
 
