@@ -47,7 +47,16 @@
 	.card {
 		margin: 1rem;
 		padding: 1rem;
-		border: 1px solid #333;
+
+		--shadow: -0.5rem -0.5rem 1rem hsl(0 0% 100% / 0.75), 0.5rem 0.5rem 1rem hsl(0 0% 50% / 0.5);
+		box-shadow: var(--shadow);
+		outline: none;
+		transition: all 0.1s;
+
+		&:hover,
+		&:focus-visible {
+			scale: 1.1;
+		}
 	}
 
 	.from-to {
