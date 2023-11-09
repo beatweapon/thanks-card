@@ -210,7 +210,8 @@
 	}
 
 	.card_wrap.deleting {
-		opacity: 0;
+		/* カードの表示非表示のアニメーションとぶつかるため削除の見た目を優先 */
+		opacity: 0 !important;
 		transition: all 5s;
 	}
 </style>
