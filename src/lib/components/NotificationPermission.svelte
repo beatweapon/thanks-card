@@ -16,8 +16,6 @@
 
 		if (permissionStatus === 'granted') {
 			await getDeviceToken();
-		} else {
-			await requestNotificationPermission();
 		}
 	});
 
