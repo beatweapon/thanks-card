@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { send, receive } from '$lib/animations/transition.js';
@@ -78,6 +79,43 @@
 
 		return true;
 	});
+
+	/** @type {Object<string, NodeJS.Timeout>} */
+	let cardDeletingSlot = {};
+
+	/**
+	 * カード削除処理をスロットに追加する
+	 * @param {string} cardId
+	 */
+	const addCardDeletingSlot = (cardId) => {
+		const timer = setTimeout(() => {
+			deleteCard(cardId);
+		}, 5000);
+
+		cardDeletingSlot[cardId] = timer;
+	};
+
+	/**
+	 * カード削除をキャンセルする
+	 * @param {string} cardId
+	 */
+	const removeCardDeletingSlot = (cardId) => {
+		clearTimeout(cardDeletingSlot[cardId]);
+
+		delete cardDeletingSlot[cardId];
+		cardDeletingSlot = cardDeletingSlot;
+	};
+
+	/**
+	 * カード削除処理
+	 * @param {string} cardId
+	 */
+	const deleteCard = async (cardId) => {
+		await fetch(`${base}/api/organizations/${$page.params.organizationId}/cards/${cardId}`, {
+			method: 'DELETE',
+			headers: { 'content-type': 'application/json' },
+		});
+	};
 </script>
 
 <h2>Welcome to TopPage</h2>
@@ -104,6 +142,7 @@
 	{#each filteredCards as card (card.id)}
 		<li
 			class="card_wrap"
+			class:deleting={cardDeletingSlot[card.id] !== undefined}
 			in:receive={{ key: card.id }}
 			out:send={{ key: card.id }}
 			animate:flip={{ duration: 200 }}
@@ -114,6 +153,21 @@
 				on:clickFrom={() => setFilterOptionFrom(card.from)}
 				on:clickTo={() => setFilterOptionTo(card.to)}
 			/>
+			{#if card.from === data.currentUser.uid}
+				{#if !cardDeletingSlot[card.id]}
+					<button
+						on:click={() => {
+							addCardDeletingSlot(card.id);
+						}}>削除</button
+					>
+				{:else if cardDeletingSlot[card.id]}
+					<button
+						on:click={() => {
+							removeCardDeletingSlot(card.id);
+						}}>やっぱりやめる</button
+					>
+				{/if}
+			{/if}
 		</li>
 	{/each}
 </ul>
@@ -152,5 +206,11 @@
 	.card_wrap {
 		max-width: 100%;
 		width: 400px;
+		opacity: 1;
+	}
+
+	.card_wrap.deleting {
+		opacity: 0;
+		transition: all 5s;
 	}
 </style>
