@@ -35,14 +35,7 @@
 	 */
 	let dynamicComponent;
 
-	onMount(async () => {
-		const designId = card.designId || '0';
-		const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
-		dynamicComponent = module.default;
-	});
-
 	$: {
-		console.log(card.designId);
 		replaceComponent(card.designId);
 	}
 
