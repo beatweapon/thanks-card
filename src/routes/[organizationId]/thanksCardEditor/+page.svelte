@@ -5,6 +5,7 @@
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
 	import CardDesignSelector from '$lib/components/CardDesignSelector.svelte';
+	import Card from '$lib/components/Card.svelte';
 	export let data;
 
 	const members = data.organization.members || [];
@@ -23,6 +24,15 @@
 
 	/** @type {boolean} */
 	$: disabled = !to || !message || processing;
+
+	$: card = {
+		id: 'new',
+		designId,
+		from: data.currentUser.uid,
+		to,
+		message,
+		createdAt: undefined,
+	};
 
 	const sendMessage = async () => {
 		if (disabled) return;
@@ -105,6 +115,11 @@
 	placeholder="感謝のメッセージをどうぞ！"
 />
 
+<h3>プレビュー</h3>
+<div class="preview">
+	<Card {card} {members} />
+</div>
+
 <button on:click={sendMessage} {disabled}>カードを贈る</button>
 
 <style>
@@ -129,5 +144,9 @@
 		max-width: 90%;
 		width: 30rem;
 		height: 5rem;
+	}
+
+	.preview {
+		width: 400px;
 	}
 </style>

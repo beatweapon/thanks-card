@@ -11,10 +11,12 @@
 	/** @type {import('src/types/organization/member').OrganizationMember[]} */
 	export let members;
 
-	const to = members.find((m) => m.id === card.to) || { name: '' };
+	$: to = members.find((m) => m.id === card.to) || { name: '素敵な誰か' };
 	const from = members.find((m) => m.id === card.from) || { name: '' };
 
-	const createdAt = card.createdAt.toDate().toLocaleString('ja-JP');
+	const createdAt = card.createdAt
+		? card.createdAt.toDate().toLocaleString('ja-JP')
+		: new Date().toLocaleString('ja-JP');
 
 	// イベントディスパッチャーを作成
 	const dispatch = createEventDispatcher();
@@ -38,6 +40,20 @@
 		const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
 		dynamicComponent = module.default;
 	});
+
+	$: {
+		console.log(card.designId);
+		replaceComponent(card.designId);
+	}
+
+	/**
+	 *
+	 * @param {string} designId
+	 */
+	const replaceComponent = async (designId) => {
+		const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
+		dynamicComponent = module.default;
+	};
 </script>
 
 {#if dynamicComponent}
