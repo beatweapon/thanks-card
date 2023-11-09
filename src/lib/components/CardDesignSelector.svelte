@@ -22,6 +22,9 @@
 
 	const dispatch = createEventDispatcher();
 
+	/**
+	 * @param {string} designId
+	 */
 	const onClick = (designId) => {
 		dispatch('click', { designId });
 	};
