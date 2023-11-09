@@ -51,7 +51,7 @@
 	 * @param {string} designId
 	 */
 	const replaceComponent = async (designId) => {
-		const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
+		const module = await import(`$lib/components/cardBackgrounds/${designId || '0'}.svelte`);
 		dynamicComponent = module.default;
 	};
 </script>
