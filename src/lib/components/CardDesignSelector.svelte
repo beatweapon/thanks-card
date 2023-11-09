@@ -9,14 +9,18 @@
 
 	/**
 	 * 動的に読み込まれたコンポーネントを保持する変数
-	 * @type {import('svelte').ComponentType[]}
+	 * @type {Array<{
+	 *  designId: string,
+	 * 	component: import('svelte').ComponentType,
+	 * }>}
 	 */
-	let dynamicComponents = [];
+	let designs = [];
 
 	onMount(() => {
 		designIds.forEach(async (designId) => {
 			const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
-			dynamicComponents = [...dynamicComponents, module.default];
+			const component = module.default;
+			designs = [...designs, { designId, component }];
 		});
 	});
 
@@ -31,10 +35,10 @@
 </script>
 
 <div class="cards">
-	{#each dynamicComponents as component, index}
-		<PlainButton on:click={() => onClick(designIds[index])}>
-			<div class="card_wrapper" class:selected={selectedDesignId === designIds[index]}>
-				<svelte:component this={component}>
+	{#each designs as design}
+		<PlainButton on:click={() => onClick(design.designId)}>
+			<div class="card_wrapper" class:selected={selectedDesignId === design.designId}>
+				<svelte:component this={design.component}>
 					<div class="card_inner">感謝のメッセージ</div>
 				</svelte:component>
 			</div>
