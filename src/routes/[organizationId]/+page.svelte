@@ -10,39 +10,11 @@
 	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import Qr from '$lib/components/Qr.svelte';
+	import SendRangking from 'src/lib/components/views/[organizationId]/SendRangking.svelte';
 
 	export let data;
 
 	watchCardCollection($page.params.organizationId);
-
-	$: sendRanking = () => {
-		/**
-		 * カウントを格納するオブジェクト
-		 * @type {Object.<string, number>}
-		 */
-		const counts = {};
-
-		$cards.forEach((c) => {
-			if (counts[c.from]) {
-				counts[c.from]++;
-			} else {
-				counts[c.from] = 1;
-			}
-		});
-
-		return Object.entries(counts)
-			.map(([id, count]) => {
-				const member = data.organization.members?.find((m) => m.id === id);
-				return {
-					id: member?.id || '',
-					name: member?.name || '優しい誰か',
-					picture: member?.picture,
-					count,
-				};
-			})
-			.sort((a, b) => b.count - a.count)
-			.slice(0, 3);
-	};
 
 	const filterOption = { from: '', to: '' };
 
@@ -122,19 +94,11 @@
 <button on:click={() => goto(`${$page.url}/thanksCardEditor`)}>カードを送る</button>
 
 <h2>Send Ranking</h2>
-<div class="ranking">
-	<ol>
-		{#each sendRanking() as data}
-			<li class="list_item">
-				<PlainButton on:click={() => setFilterOptionFrom(data.id)}>
-					<span class="list_item_inner">
-						<User user={data} /> : {data.count}枚
-					</span>
-				</PlainButton>
-			</li>
-		{/each}
-	</ol>
-</div>
+<SendRangking
+	cards={$cards}
+	members={data.organization.members}
+	on:clickUser={(e) => setFilterOptionFrom(e.detail.uid)}
+/>
 
 <h2>Thanks Cards</h2>
 
@@ -149,7 +113,7 @@
 		>
 			<Card
 				{card}
-				bind:members={data.organization.members}
+				members={data.organization.members}
 				on:clickFrom={() => setFilterOptionFrom(card.from)}
 				on:clickTo={() => setFilterOptionTo(card.to)}
 			/>
@@ -180,20 +144,6 @@
 {/if}
 
 <style>
-	ol {
-		padding: 0;
-	}
-
-	.list_item {
-		display: block;
-		margin: 0.5rem;
-	}
-
-	.list_item_inner {
-		display: flex;
-		align-items: center;
-	}
-
 	.cards {
 		display: flex;
 		flex-wrap: wrap;
