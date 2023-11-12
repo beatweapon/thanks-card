@@ -4,7 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	/**
-	 * @type {import('src/types/organization/card').ThanksCard}
+	 * @type {import('src/types/organization/card').ThanksCardPreview}
 	 */
 	export let card;
 
