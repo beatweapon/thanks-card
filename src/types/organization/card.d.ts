@@ -4,5 +4,15 @@ export interface ThanksCard {
 	from: string;
 	to: string;
 	message: string;
+	reactions?: Reaction[];
+	createdAt: import('firebase/firestore').Timestamp;
+}
+
+export interface ThanksCardPreview extends ThanksCard {
 	createdAt?: import('firebase/firestore').Timestamp;
+}
+
+interface Reaction {
+	id: string;
+	from: string;
 }
