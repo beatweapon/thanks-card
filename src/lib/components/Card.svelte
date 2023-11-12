@@ -1,7 +1,7 @@
 <script>
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	/**
 	 * @type {import('src/types/organization/card').ThanksCard}
