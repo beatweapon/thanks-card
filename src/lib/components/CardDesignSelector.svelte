@@ -5,7 +5,7 @@
 	/** @type {string} */
 	export let selectedDesignId = '0';
 
-	const designIds = ['0', '1', '2', '3'];
+	const designIds = ['0', '1', '2', '3', '4'];
 
 	/**
 	 * 動的に読み込まれたコンポーネントを保持する変数
