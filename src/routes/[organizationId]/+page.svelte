@@ -148,9 +148,6 @@
 		display: flex;
 		flex-wrap: wrap;
 		max-width: 90%;
-
-		list-style: none;
-		padding: 0;
 	}
 
 	.card_wrap {

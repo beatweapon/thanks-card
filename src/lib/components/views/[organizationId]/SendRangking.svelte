@@ -64,10 +64,6 @@
 </div>
 
 <style>
-	ol {
-		padding: 0;
-	}
-
 	.list_item {
 		display: block;
 		margin: 0.5rem;
