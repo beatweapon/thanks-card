@@ -13,6 +13,6 @@ export interface ThanksCardPreview extends ThanksCard {
 }
 
 interface Reaction {
-	id: string;
+	emoji: string;
 	from: string;
 }
