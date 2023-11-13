@@ -32,7 +32,7 @@
 					<PlainButton
 						on:click={() => {
 							toggleReactionUI();
-							dispatch('clickEmoji', { cardId: card.id, emoji });
+							dispatch('clickEmoji', { card: card, emoji });
 						}}>{emoji}</PlainButton
 					>
 				</li>

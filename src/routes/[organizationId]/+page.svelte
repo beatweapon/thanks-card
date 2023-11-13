@@ -90,18 +90,24 @@
 
 	/**
 	 * リアクション追加処理
-	 * @param {string} cardId
+	 * @param {import('src/types/organization/card').ThanksCard} card
 	 * @param {string} emoji
 	 */
-	const addReaction = async (cardId, emoji) => {
+	const addReaction = async (card, emoji) => {
+		const senderId = data.currentUser.uid;
+		const sender = data.organization.members.find((m) => m.id === senderId);
+
 		await fetch(
-			`${base}/api/organizations/${$page.params.organizationId}/cards/${cardId}/reactions`,
+			`${base}/api/organizations/${$page.params.organizationId}/cards/${card.id}/reactions`,
 			{
 				method: 'PUT',
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify({
-					uid: data.currentUser.uid,
+					uid: senderId,
 					emoji,
+					senderName: sender?.name,
+					senderIcon: data.currentUser.picture,
+					cardSenderId: card.from,
 				}),
 			}
 		);
@@ -139,7 +145,7 @@
 					{#if card.to === data.currentUser.uid}
 						<ReactionEditor
 							{card}
-							on:clickEmoji={(e) => addReaction(e.detail.cardId, e.detail.emoji)}
+							on:clickEmoji={(e) => addReaction(e.detail.card, e.detail.emoji)}
 						/>
 					{:else if card.reactions}
 						<span class="reaction">{card.reactions[0].emoji}</span>

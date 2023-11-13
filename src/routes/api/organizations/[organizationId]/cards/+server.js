@@ -1,7 +1,6 @@
 import admin from 'firebase-admin';
 import { getFirestore } from 'firebase-admin/firestore';
-import { sendMessageToDevice } from '$lib/server/firebase_server';
-import { fetchUser } from '$lib/server/user';
+import { sendNotificationToUser } from '$lib/server/notification';
 
 export const POST = async ({ request, params }) => {
 	const db = getFirestore();
@@ -18,13 +17,7 @@ export const POST = async ({ request, params }) => {
 		createdAt: admin.firestore.Timestamp.fromDate(new Date()),
 	});
 
-	const user = await fetchUser(to);
-
-	if (user?.deviceTokens) {
-		user.deviceTokens.forEach(async (token) => {
-			await sendMessageToDevice(token, `${senderName}からカードが届きました`, message, senderIcon);
-		});
-	}
+	await sendNotificationToUser(to, `${senderName}からカードが届きました`, message, senderIcon);
 
 	return new Response();
 };
