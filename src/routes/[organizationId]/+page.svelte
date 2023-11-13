@@ -5,12 +5,11 @@
 	import { send, receive } from '$lib/animations/transition.js';
 	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
-	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
-	import User from '$lib/components/User.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import Qr from '$lib/components/Qr.svelte';
 	import SendRangking from 'src/lib/components/views/[organizationId]/SendRangking.svelte';
+	import ReactionEditor from 'src/lib/components/views/[organizationId]/ReactionEditor.svelte';
 
 	export let data;
 
@@ -88,6 +87,25 @@
 			headers: { 'content-type': 'application/json' },
 		});
 	};
+
+	/**
+	 * リアクション追加処理
+	 * @param {string} cardId
+	 * @param {string} emoji
+	 */
+	const addReaction = async (cardId, emoji) => {
+		await fetch(
+			`${base}/api/organizations/${$page.params.organizationId}/cards/${cardId}/reactions`,
+			{
+				method: 'PUT',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({
+					uid: data.currentUser.uid,
+					emoji,
+				}),
+			}
+		);
+	};
 </script>
 
 <h2>Welcome to TopPage</h2>
@@ -116,7 +134,18 @@
 				members={data.organization.members}
 				on:clickFrom={() => setFilterOptionFrom(card.from)}
 				on:clickTo={() => setFilterOptionTo(card.to)}
-			/>
+			>
+				<div class="reaction_area">
+					{#if card.to === data.currentUser.uid}
+						<ReactionEditor
+							{card}
+							on:clickEmoji={(e) => addReaction(e.detail.cardId, e.detail.emoji)}
+						/>
+					{:else if card.reactions}
+						<span class="reaction">{card.reactions[0].emoji}</span>
+					{/if}
+				</div>
+			</Card>
 			{#if card.from === data.currentUser.uid}
 				{#if !cardDeletingSlot[card.id]}
 					<button
@@ -160,5 +189,15 @@
 		/* カードの表示非表示のアニメーションとぶつかるため削除の見た目を優先 */
 		opacity: 0 !important;
 		transition: all 5s;
+	}
+
+	.reaction_area {
+		display: flex;
+		justify-content: end;
+		position: relative;
+	}
+
+	.reaction {
+		-webkit-text-fill-color: initial;
 	}
 </style>

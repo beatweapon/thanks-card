@@ -39,6 +39,17 @@ export const watchCardCollection = (organizationId) => {
 				newCard.id = change.doc.id;
 				cards.update((arr) => [newCard, ...arr]);
 			}
+			if (change.type === 'modified') {
+				cards.update((arr) => {
+					const index = arr.findIndex((a) => a.id === change.doc.id);
+					const newCard = /** @type {import('src/types/organization/card').ThanksCard} */ (
+						change.doc.data()
+					);
+
+					arr[index].reactions = newCard.reactions;
+					return arr;
+				});
+			}
 			if (change.type === 'removed') {
 				cards.update((arr) => {
 					const index = arr.findIndex((a) => a.id === change.doc.id);

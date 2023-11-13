@@ -65,6 +65,7 @@
 				<div class="message">{card.message}</div>
 				<div />
 				<div class="time">{createdAt}</div>
+				<slot />
 			</div>
 		</svelte:component>
 	</div>
