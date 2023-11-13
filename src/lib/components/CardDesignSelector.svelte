@@ -39,7 +39,7 @@
 		<PlainButton on:click={() => onClick(design.designId)}>
 			<div class="card_wrapper" class:selected={selectedDesignId === design.designId}>
 				<svelte:component this={design.component}>
-					<div class="card_inner">感謝のメッセージ</div>
+					<div class="card_inner">Thanks!</div>
 				</svelte:component>
 			</div>
 		</PlainButton>
@@ -49,7 +49,7 @@
 <style>
 	.cards {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, 20rem);
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 		gap: 1rem;
 	}
 
@@ -65,10 +65,22 @@
 	}
 
 	.card_inner {
-		width: 20rem;
 		height: 10rem;
 		display: grid;
 		justify-content: center;
 		align-items: center;
+	}
+
+	@media (max-width: 430px) {
+		.cards {
+			grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+		}
+
+		.card_inner {
+			height: 2rem;
+			display: grid;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 </style>
