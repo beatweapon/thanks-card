@@ -5,6 +5,7 @@
 	import { send, receive } from '$lib/animations/transition.js';
 	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
+	import { members, watchMemberCollection } from '$lib/stores/members.js';
 	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import Qr from '$lib/components/Qr.svelte';
@@ -14,6 +15,7 @@
 	export let data;
 
 	watchCardCollection($page.params.organizationId);
+	watchMemberCollection($page.params.organizationId);
 
 	const filterOption = { from: '', to: '' };
 
@@ -95,7 +97,7 @@
 	 */
 	const addReaction = async (card, emoji) => {
 		const senderId = data.currentUser.uid;
-		const sender = data.organization.members.find((m) => m.id === senderId);
+		const sender = $members.find((m) => m.id === senderId);
 
 		await fetch(
 			`${base}/api/organizations/${$page.params.organizationId}/cards/${card.id}/reactions`,
@@ -120,7 +122,7 @@
 <h2>Send Ranking</h2>
 <SendRangking
 	cards={$cards}
-	members={data.organization.members}
+	members={$members}
 	on:clickUser={(e) => setFilterOptionFrom(e.detail.uid)}
 />
 
@@ -137,7 +139,7 @@
 		>
 			<Card
 				{card}
-				members={data.organization.members}
+				members={$members}
 				on:clickFrom={() => setFilterOptionFrom(card.from)}
 				on:clickTo={() => setFilterOptionTo(card.to)}
 			>

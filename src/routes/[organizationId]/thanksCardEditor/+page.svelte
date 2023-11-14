@@ -2,13 +2,14 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { members, watchMemberCollection } from '$lib/stores/members.js';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
 	import CardDesignSelector from '$lib/components/CardDesignSelector.svelte';
 	import Card from '$lib/components/Card.svelte';
 	export let data;
 
-	const members = data.organization.members || [];
+	watchMemberCollection($page.params.organizationId);
 
 	/** @type {string} */
 	let designId = '';
@@ -40,7 +41,7 @@
 		processing = true;
 
 		const senderId = data.currentUser.uid;
-		const sender = members.find((m) => m.id === senderId);
+		const sender = $members.find((m) => m.id === senderId);
 
 		await fetch(`${base}/api/organizations/${$page.params.organizationId}/cards`, {
 			method: 'POST',
@@ -91,7 +92,7 @@
 
 <h3>誰に送る？</h3>
 <div class="members">
-	{#each members as member}
+	{#each $members as member}
 		<PlainButton on:click={() => (to = member.id)}>
 			<div class="member" class:selected={to === member.id}>
 				<User user={member} />
@@ -117,7 +118,7 @@
 
 <h3>プレビュー</h3>
 <div class="preview">
-	<Card {card} {members} />
+	<Card {card} members={$members} />
 </div>
 
 <button class="send_button" on:click={sendMessage} {disabled}>カードを贈る</button>

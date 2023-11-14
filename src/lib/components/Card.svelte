@@ -12,7 +12,7 @@
 	export let members;
 
 	$: to = members.find((m) => m.id === card.to) || { name: '素敵な誰か' };
-	const from = members.find((m) => m.id === card.from) || { name: '' };
+	$: from = members.find((m) => m.id === card.from) || { name: '' };
 
 	const createdAt = card.createdAt
 		? card.createdAt.toDate().toLocaleString('ja-JP')
