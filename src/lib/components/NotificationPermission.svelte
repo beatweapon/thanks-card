@@ -32,7 +32,9 @@
 			console.error('通知の許可をリクエストできませんでした:', error);
 		}
 
-		await getDeviceToken();
+		if (permissionStatus === 'granted') {
+			await getDeviceToken();
+		}
 	};
 
 	const getDeviceToken = async () => {
