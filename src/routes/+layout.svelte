@@ -27,7 +27,7 @@
 	</div>
 {:else if data.currentUser}
 	<slot />
-	<button on:click={signOut}> Logout </button>
+	<!-- <button on:click={signOut}> Logout </button> -->
 {:else}
 	<div class="center">
 		<button on:click={signIn}> Login using Google </button>
