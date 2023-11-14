@@ -1,6 +1,6 @@
 <script>
 	/** @type {string} */
-	export let src = '';
+	export let src = '/images/default.jpg';
 </script>
 
 <img {src} alt="user-icon" class="user-icon" />
