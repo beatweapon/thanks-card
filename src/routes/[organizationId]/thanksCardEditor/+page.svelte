@@ -120,7 +120,7 @@
 	<Card {card} {members} />
 </div>
 
-<button on:click={sendMessage} {disabled}>カードを贈る</button>
+<button class="send_button" on:click={sendMessage} {disabled}>カードを贈る</button>
 
 <style>
 	.members {
@@ -148,5 +148,9 @@
 
 	.preview {
 		width: 400px;
+	}
+
+	.send_button {
+		margin-bottom: 2rem;
 	}
 </style>
