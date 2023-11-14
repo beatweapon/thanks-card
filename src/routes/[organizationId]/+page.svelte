@@ -180,14 +180,12 @@
 
 <style>
 	.cards {
-		display: flex;
-		flex-wrap: wrap;
-		max-width: 90%;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+		gap: 1rem;
 	}
 
 	.card_wrap {
-		max-width: 100%;
-		width: 400px;
 		opacity: 1;
 	}
 
