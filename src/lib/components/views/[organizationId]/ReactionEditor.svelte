@@ -43,8 +43,6 @@
 
 <style>
 	.reaction_editor {
-		font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols,
-			emojione mozilla, twemoji mozilla, segoe ui symbol;
 		-webkit-text-fill-color: initial;
 	}
 
