@@ -1,9 +1,9 @@
 <script>
-	/** @type {string} */
-	export let src = '/images/default.jpg';
+	/** @type {string | undefined} */
+	export let src;
 </script>
 
-<img {src} alt="user-icon" class="user-icon" />
+<img src={src || '/images/default.jpg'} alt="user-icon" class="user-icon" />
 
 <style>
 	.user-icon {
