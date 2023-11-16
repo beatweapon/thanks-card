@@ -118,7 +118,7 @@
 
 <h2>Welcome to TopPage</h2>
 <button on:click={() => goto(`${$page.url}/thanksCardEditor`)}>カードを送る</button>
-
+<a href={`${$page.url}/profile`}>名前を変更する</a>
 <h2>Send Ranking</h2>
 <SendRangking
 	cards={$cards}
