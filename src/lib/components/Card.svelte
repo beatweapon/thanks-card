@@ -79,11 +79,6 @@
 		box-shadow: var(--shadow);
 		outline: none;
 		transition: all 0.1s;
-
-		&:hover,
-		&:focus-visible {
-			scale: 1.1;
-		}
 	}
 
 	.card_inner {
