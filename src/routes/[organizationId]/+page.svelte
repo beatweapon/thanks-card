@@ -171,6 +171,13 @@
 			{/if}
 		</li>
 	{/each}
+	{#if filteredCards.length < 5}
+		<li />
+		<li />
+		<li />
+		<li />
+		<li />
+	{/if}
 </ul>
 
 <h2>この画面のQRコード</h2>
