@@ -6,6 +6,7 @@
 	import Header from 'src/lib/components/Header.svelte';
 	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+	import Loading from 'src/lib/components/Loading.svelte';
 
 	export let data;
 	const members = data.organization?.members || [];
@@ -24,7 +25,7 @@
 	};
 
 	// 通知の許可ステータスを追跡するための変数
-	let permissionStatus = 'default';
+	let permissionStatus = '';
 
 	onMount(async () => {
 		permissionStatus = Notification.permission;
@@ -43,6 +44,10 @@
 			</label>
 			<button on:click={join}>参加する</button>
 		</div>
+	</div>
+{:else if permissionStatus === ''}
+	<div class="center">
+		<Loading />
 	</div>
 {:else if permissionStatus === 'default'}
 	<div class="center">
