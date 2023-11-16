@@ -1,3 +1,4 @@
+import { redirect } from '@sveltejs/kit';
 import { fetchUser } from '$lib/server/user';
 
 /**
@@ -18,6 +19,10 @@ export const load = async ({ locals }) => {
 			...locals.currentUser,
 			...user,
 		};
+	}
+
+	if (currentUser?.organizations?.length === 1) {
+		throw redirect(302, `/${currentUser.organizations[0]}`);
 	}
 
 	return { currentUser };
