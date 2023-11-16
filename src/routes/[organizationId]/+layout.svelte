@@ -67,6 +67,7 @@
 	}
 
 	.center {
+		margin: 1rem;
 		height: calc(100dvh - 40px);
 		display: grid;
 		justify-content: center;
