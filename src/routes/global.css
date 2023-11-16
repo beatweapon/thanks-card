@@ -1,7 +1,6 @@
 html {
 	font-size: 16px;
-	font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols,
-		emojione mozilla, twemoji mozilla, segoe ui symbol, sans-serif;
+	font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
