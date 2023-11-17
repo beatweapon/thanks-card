@@ -2,15 +2,12 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { send, receive } from '$lib/animations/transition.js';
-	import { flip } from 'svelte/animate';
 	import { cards, watchCardCollection } from '$lib/stores/card.js';
 	import { members, watchMemberCollection } from '$lib/stores/members.js';
 	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
-	import Card from '$lib/components/Card.svelte';
 	import Qr from '$lib/components/Qr.svelte';
 	import SendRangking from 'src/lib/components/views/[organizationId]/SendRangking.svelte';
-	import ReactionEditor from 'src/lib/components/views/[organizationId]/ReactionEditor.svelte';
+	import CardList from 'src/lib/components/views/[organizationId]/CardList.svelte';
 
 	export let data;
 
@@ -127,58 +124,17 @@
 />
 
 <h2>Thanks Cards</h2>
-
-<ul class="cards">
-	{#each filteredCards as card (card.id)}
-		<li
-			class="card_wrap"
-			class:deleting={cardDeletingSlot[card.id] !== undefined}
-			in:receive={{ key: card.id }}
-			out:send={{ key: card.id }}
-			animate:flip={{ duration: 200 }}
-		>
-			<Card
-				{card}
-				members={$members}
-				on:clickFrom={() => setFilterOptionFrom(card.from)}
-				on:clickTo={() => setFilterOptionTo(card.to)}
-			>
-				<div class="reaction_area">
-					{#if card.to === data.currentUser.uid}
-						<ReactionEditor
-							{card}
-							on:clickEmoji={(e) => addReaction(e.detail.card, e.detail.emoji)}
-						/>
-					{:else if card.reactions}
-						<span class="reaction">{card.reactions[0].emoji}</span>
-					{/if}
-				</div>
-			</Card>
-			{#if card.from === data.currentUser.uid}
-				{#if !cardDeletingSlot[card.id]}
-					<button
-						on:click={() => {
-							addCardDeletingSlot(card.id);
-						}}>削除</button
-					>
-				{:else if cardDeletingSlot[card.id]}
-					<button
-						on:click={() => {
-							removeCardDeletingSlot(card.id);
-						}}>やっぱりやめる</button
-					>
-				{/if}
-			{/if}
-		</li>
-	{/each}
-	{#if filteredCards.length < 5}
-		<li />
-		<li />
-		<li />
-		<li />
-		<li />
-	{/if}
-</ul>
+<CardList
+	currentUser={data.currentUser}
+	cards={filteredCards}
+	members={$members}
+	{cardDeletingSlot}
+	on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
+	on:clickTo={(e) => setFilterOptionTo(e.detail)}
+	on:addReaction={(e) => addReaction(e.detail.card, e.detail.emoji)}
+	on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
+	on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
+/>
 
 <h2>この画面のQRコード</h2>
 <Qr url={$page.url.href} />
@@ -186,31 +142,3 @@
 {#if data.currentUser?.uid}
 	<NotificationPermission uid={data.currentUser.uid} />
 {/if}
-
-<style>
-	.cards {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-		gap: 1rem;
-	}
-
-	.card_wrap {
-		opacity: 1;
-	}
-
-	.card_wrap.deleting {
-		/* カードの表示非表示のアニメーションとぶつかるため削除の見た目を優先 */
-		opacity: 0 !important;
-		transition: all 5s;
-	}
-
-	.reaction_area {
-		display: flex;
-		justify-content: end;
-		position: relative;
-	}
-
-	.reaction {
-		-webkit-text-fill-color: initial;
-	}
-</style>
