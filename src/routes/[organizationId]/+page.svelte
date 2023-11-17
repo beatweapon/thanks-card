@@ -2,16 +2,20 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { cards, watchCardCollection } from '$lib/stores/card.js';
 	import { members, watchMemberCollection } from '$lib/stores/members.js';
 	import NotificationPermission from '$lib/components/NotificationPermission.svelte';
 	import Qr from '$lib/components/Qr.svelte';
-	import SendRangking from 'src/lib/components/views/[organizationId]/SendRangking.svelte';
-	import CardList from 'src/lib/components/views/[organizationId]/CardList.svelte';
+	import In7DaysCards from 'src/lib/components/views/[organizationId]/In7DaysCards.svelte';
+	import AllCards from 'src/lib/components/views/[organizationId]/AllCards.svelte';
 
 	export let data;
 
-	watchCardCollection($page.params.organizationId);
+	let isShowAllCardList = false;
+
+	const toggleShowCardList = () => {
+		isShowAllCardList = !isShowAllCardList;
+	};
+
 	watchMemberCollection($page.params.organizationId);
 
 	const filterOption = { from: '', to: '' };
@@ -25,6 +29,8 @@
 	const setFilterOptionFrom = (uid) => {
 		filterOption.to = '';
 		filterOption.from = filterOption.from !== uid ? uid : '';
+
+		cardFilter = (card) => !filterOption.from || card.from === filterOption.from;
 	};
 
 	/**
@@ -36,20 +42,15 @@
 	const setFilterOptionTo = (uid) => {
 		filterOption.from = '';
 		filterOption.to = filterOption.to !== uid ? uid : '';
+
+		cardFilter = (card) => !filterOption.to || card.to === filterOption.to;
 	};
 
-	$: filteredCards = $cards.filter((c) => {
-		if (filterOption.from && c.from !== filterOption.from) {
-			return false;
-		}
-
-		if (filterOption.to && c.to !== filterOption.to) {
-			return false;
-		}
-
-		return true;
-	});
-
+	/**
+	 *
+	 * @param {import('src/types/organization/card').ThanksCard} card
+	 */
+	let cardFilter = (card) => true;
 	/** @type {Object<string, NodeJS.Timeout>} */
 	let cardDeletingSlot = {};
 
@@ -116,25 +117,44 @@
 <h2>Welcome to TopPage</h2>
 <button on:click={() => goto(`${$page.url}/thanksCardEditor`)}>カードを送る</button>
 <a href={`${$page.url}/profile`}>名前を変更する</a>
-<h2>Send Ranking</h2>
-<SendRangking
-	cards={$cards}
-	members={$members}
-	on:clickUser={(e) => setFilterOptionFrom(e.detail.uid)}
-/>
 
-<h2>Thanks Cards</h2>
-<CardList
-	currentUser={data.currentUser}
-	cards={filteredCards}
-	members={$members}
-	{cardDeletingSlot}
-	on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
-	on:clickTo={(e) => setFilterOptionTo(e.detail)}
-	on:addReaction={(e) => addReaction(e.detail.card, e.detail.emoji)}
-	on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
-	on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
-/>
+<button on:click={toggleShowCardList}>
+	{#if isShowAllCardList}
+		直近7日
+	{:else}
+		全て
+	{/if}
+</button>
+
+{#if isShowAllCardList}
+	<AllCards
+		organizationId={$page.params.organizationId}
+		currentUser={data.currentUser}
+		members={$members}
+		{cardFilter}
+		{cardDeletingSlot}
+		on:clickUser={(e) => setFilterOptionFrom(e.detail.uid)}
+		on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
+		on:clickTo={(e) => setFilterOptionTo(e.detail)}
+		on:addReaction={(e) => addReaction(e.detail.card, e.detail.emoji)}
+		on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
+		on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
+	/>
+{:else}
+	<In7DaysCards
+		organizationId={$page.params.organizationId}
+		currentUser={data.currentUser}
+		members={$members}
+		{cardFilter}
+		{cardDeletingSlot}
+		on:clickUser={(e) => setFilterOptionFrom(e.detail.uid)}
+		on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
+		on:clickTo={(e) => setFilterOptionTo(e.detail)}
+		on:addReaction={(e) => addReaction(e.detail.card, e.detail.emoji)}
+		on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
+		on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
+	/>
+{/if}
 
 <h2>この画面のQRコード</h2>
 <Qr url={$page.url.href} />

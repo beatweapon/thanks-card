@@ -21,7 +21,11 @@
 </script>
 
 <ul class="cards">
-	{#each cards as card (card.id)}
+	{#each cards.sort((a, b) => {
+		if (a.createdAt.toDate() < b.createdAt.toDate()) return 1;
+		if (a.createdAt.toDate() > b.createdAt.toDate()) return -1;
+		return 0;
+	}) as card (card.id)}
 		<li
 			class="card_wrap"
 			class:deleting={cardDeletingSlot[card.id] !== undefined}
