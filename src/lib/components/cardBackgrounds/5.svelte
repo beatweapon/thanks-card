@@ -44,6 +44,7 @@
 	}
 
 	.card_contents {
-		/* padding: 1rem; */
+		position: relative;
+		z-index: +1;
 	}
 </style>
