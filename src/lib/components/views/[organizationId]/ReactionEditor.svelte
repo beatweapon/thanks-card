@@ -6,7 +6,7 @@
 	/** @type {import('src/types/organization/card').ThanksCard} */
 	export let card;
 
-	const emojis = ['👍', '✌', '🙌', '⭐', '❤️', '😊', '😳', '🥳'];
+	const emojis = ['👍', '✌', '🙌', '⭐', '❤️', '😊', '😳', '🥳', '🍺', '🔥', '🍄'];
 
 	let isOpenReactionUI = false;
 
