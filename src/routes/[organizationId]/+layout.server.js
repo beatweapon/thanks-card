@@ -1,16 +1,28 @@
-import { redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { getFirestore } from 'firebase-admin/firestore';
 
-export const load = async ({ locals, params }) => {
+export const load = async ({ locals, params, url }) => {
 	const currentUser = /** @type  {import('src/routes/+page.server.js').CurrentUser} */ (
 		locals.currentUser
 	);
 
 	const organization = await fetchOrganization(params.organizationId);
-	const members = await fetchOrganizationMembers(params.organizationId);
 
 	if (!organization) {
-		throw redirect(303, '/');
+		throw error(404, {
+			message: 'Not found',
+		});
+	}
+
+	const members = await fetchOrganizationMembers(params.organizationId);
+
+	// 参加ページ以外はメンバー以外見れないようにする
+	if (url.pathname !== `/${params.organizationId}/join`) {
+		if (!members.some((m) => m.id === currentUser.uid)) {
+			throw error(401, {
+				message: 'Not authorized',
+			});
+		}
 	}
 
 	return {
