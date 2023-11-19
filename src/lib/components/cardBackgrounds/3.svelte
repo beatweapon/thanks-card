@@ -21,7 +21,6 @@
 <style>
 	.card_back {
 		position: relative;
-		background-color: white;
 	}
 
 	.text {

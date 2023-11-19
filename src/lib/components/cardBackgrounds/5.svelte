@@ -17,8 +17,12 @@
 
 <style>
 	.card_back {
+		color: revert;
 		position: relative;
-		background-color: azure;
+		font-weight: bold;
+		color: white;
+
+		background: #222;
 	}
 
 	.grid {
@@ -36,11 +40,15 @@
 	.border_box:nth-child(3) {
 		border-top: solid 0.2rem green;
 		border-right: solid 0.2rem green;
+		border-image-slice: 1;
+		border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
 	}
 
 	.border_box:nth-child(7) {
 		border-bottom: solid 0.2rem green;
 		border-left: solid 0.2rem green;
+		border-image-slice: 1;
+		border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
 	}
 
 	.card_contents {
