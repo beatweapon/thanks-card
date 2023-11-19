@@ -35,8 +35,8 @@
 
 <style>
 	.center {
-		margin: 1rem;
-		height: calc(100dvh - 40px);
+		margin: 0 1rem;
+		height: calc(100dvh - 2rem);
 		display: grid;
 		justify-content: center;
 		align-items: center;
