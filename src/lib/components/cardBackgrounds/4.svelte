@@ -55,6 +55,7 @@
 
 	.circles li {
 		position: absolute;
+		top: -2rem;
 		list-style: none;
 		animation: fall 15s linear infinite, spin 1s linear infinite;
 		animation-name: fall, spin;
