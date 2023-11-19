@@ -9,8 +9,9 @@
 	const signIn = async () => {
 		isProcessing = true;
 
-		await auth.signIn().finally(() => {
+		await auth.signIn().catch((e) => {
 			isProcessing = false;
+			throw e;
 		});
 		location.reload();
 	};
