@@ -1,6 +1,7 @@
 <script>
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+	import * as backgrounds from '$lib/components/cardBackgrounds';
 
 	/** @type {string} */
 	export let selectedDesignId = '0';
@@ -8,7 +9,6 @@
 	const designIds = ['0', '1', '2', '3', '4', '5'];
 
 	/**
-	 * 動的に読み込まれたコンポーネントを保持する変数
 	 * @type {Array<{
 	 *  designId: string,
 	 * 	component: import('svelte').ComponentType,
@@ -16,12 +16,14 @@
 	 */
 	let designs = [];
 
-	onMount(() => {
-		designIds.forEach(async (designId) => {
-			const module = await import(`$lib/components/cardBackgrounds/${designId}.svelte`);
-			const component = module.default;
-			designs = [...designs, { designId, component }];
-		});
+	designIds.forEach((designId) => {
+		const componentName = /** @type {keyof import("src/lib/components/cardBackgrounds/index")} */ (
+			`card_${designId}`
+		);
+
+		const data = { designId, component: backgrounds[componentName] };
+
+		designs = [...designs, data];
 	});
 
 	const dispatch = createEventDispatcher();

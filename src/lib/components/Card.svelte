@@ -2,6 +2,7 @@
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import User from '$lib/components/User.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import * as designs from '$lib/components/cardBackgrounds';
 
 	/**
 	 * @type {import('src/types/organization/card').ThanksCardPreview}
@@ -29,24 +30,15 @@
 		dispatch('clickTo');
 	};
 
+	const componentName = /** @type {keyof import("src/lib/components/cardBackgrounds/index")} */ (
+		`card_${card.designId}`
+	);
+
 	/**
 	 * 動的に読み込まれたコンポーネントを保持する変数
 	 * @type {import('svelte').ComponentType | null}
 	 */
-	let dynamicComponent;
-
-	$: {
-		replaceComponent(card.designId);
-	}
-
-	/**
-	 *
-	 * @param {string} designId
-	 */
-	const replaceComponent = async (designId) => {
-		const module = await import(`$lib/components/cardBackgrounds/${designId || '0'}.svelte`);
-		dynamicComponent = module.default;
-	};
+	const dynamicComponent = designs[componentName];
 </script>
 
 {#if dynamicComponent}
