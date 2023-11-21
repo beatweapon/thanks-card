@@ -43,7 +43,7 @@
 		const senderId = data.currentUser.uid;
 		const sender = $members.find((m) => m.id === senderId);
 
-		await fetch(`${base}/api/organizations/${$page.params.organizationId}/cards`, {
+		fetch(`${base}/api/organizations/${$page.params.organizationId}/cards`, {
 			method: 'POST',
 			body: JSON.stringify({
 				from: senderId,
