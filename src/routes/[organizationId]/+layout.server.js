@@ -16,15 +16,6 @@ export const load = async ({ locals, params, url }) => {
 
 	const members = await fetchOrganizationMembers(params.organizationId);
 
-	// 参加ページ以外はメンバー以外見れないようにする
-	if (url.pathname !== `/${params.organizationId}/join`) {
-		if (!members.some((m) => m.id === currentUser.uid)) {
-			throw error(401, {
-				message: 'Not authorized',
-			});
-		}
-	}
-
 	return {
 		currentUser,
 		organization: { ...organization, members },
