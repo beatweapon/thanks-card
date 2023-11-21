@@ -142,8 +142,6 @@
 {:else}
 	<h2>Welcome to TopPage</h2>
 	<button on:click={() => goto(`${$page.url}/thanksCardEditor`)}>カードを送る</button>
-	<a href={`${$page.url}/profile`}>名前を変更する</a>
-	<a href={`${$page.url}/invitation`}>招待URLを発行する</a>
 
 	<button on:click={toggleShowCardList}>
 		{#if isShowAllCardList}
