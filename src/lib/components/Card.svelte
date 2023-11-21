@@ -30,15 +30,19 @@
 		dispatch('clickTo');
 	};
 
-	const componentName = /** @type {keyof import("src/lib/components/cardBackgrounds/index")} */ (
-		`card_${card.designId}`
-	);
+	$: componentName = () => {
+		const designId = card.designId || 0;
+		return `card_${designId}`;
+	};
 
 	/**
 	 * 動的に読み込まれたコンポーネントを保持する変数
 	 * @type {import('svelte').ComponentType | null}
 	 */
-	const dynamicComponent = designs[componentName];
+	$: dynamicComponent =
+		designs[
+			/** @type {keyof import("src/lib/components/cardBackgrounds/index")} */ (componentName())
+		];
 </script>
 
 {#if dynamicComponent}
