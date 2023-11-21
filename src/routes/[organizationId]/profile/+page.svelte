@@ -58,7 +58,7 @@
 <style>
 	.center {
 		height: calc(100dvh - 40px);
-		margin: 1rem;
+		margin: 0 1rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
