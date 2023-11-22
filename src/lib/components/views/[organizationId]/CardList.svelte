@@ -17,6 +17,9 @@
 	/** @type {Object<string, NodeJS.Timeout>} */
 	export let cardDeletingSlot = {};
 
+	/** @type {boolean} */
+	export let showsMenu = false;
+
 	const dispatch = createEventDispatcher();
 </script>
 
@@ -51,7 +54,7 @@
 					{/if}
 				</div>
 			</Card>
-			{#if card.from === currentUser.uid}
+			{#if showsMenu && card.from === currentUser.uid}
 				{#if !cardDeletingSlot[card.id]}
 					<button
 						on:click={() => {

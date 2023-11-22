@@ -136,6 +136,7 @@
 	cards={filteredCards}
 	members={$members}
 	{cardDeletingSlot}
+	showsMenu={true}
 	on:clickUser={(e) => setFilterOptionFrom(e.detail.uid)}
 	on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
 	on:clickTo={(e) => setFilterOptionTo(e.detail)}

@@ -58,40 +58,6 @@
 	let cardDeletingSlot = {};
 
 	/**
-	 * カード削除処理をスロットに追加する
-	 * @param {string} cardId
-	 */
-	const addCardDeletingSlot = (cardId) => {
-		const timer = setTimeout(() => {
-			deleteCard(cardId);
-		}, 5000);
-
-		cardDeletingSlot[cardId] = timer;
-	};
-
-	/**
-	 * カード削除をキャンセルする
-	 * @param {string} cardId
-	 */
-	const removeCardDeletingSlot = (cardId) => {
-		clearTimeout(cardDeletingSlot[cardId]);
-
-		delete cardDeletingSlot[cardId];
-		cardDeletingSlot = cardDeletingSlot;
-	};
-
-	/**
-	 * カード削除処理
-	 * @param {string} cardId
-	 */
-	const deleteCard = async (cardId) => {
-		await fetch(`${base}/api/organizations/${$page.params.organizationId}/cards/${cardId}`, {
-			method: 'DELETE',
-			headers: { 'content-type': 'application/json' },
-		});
-	};
-
-	/**
 	 * リアクション追加処理
 	 * @param {import('src/types/organization/card').ThanksCard} card
 	 * @param {string} emoji
@@ -162,8 +128,6 @@
 			on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
 			on:clickTo={(e) => setFilterOptionTo(e.detail)}
 			on:addReaction={(e) => addReaction(e.detail.card, e.detail.emoji)}
-			on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
-			on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
 		/>
 	{:else}
 		<In7DaysCards
@@ -176,8 +140,6 @@
 			on:clickFrom={(e) => setFilterOptionFrom(e.detail)}
 			on:clickTo={(e) => setFilterOptionTo(e.detail)}
 			on:addReaction={(e) => addReaction(e.detail.card, e.detail.emoji)}
-			on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
-			on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
 		/>
 	{/if}
 
