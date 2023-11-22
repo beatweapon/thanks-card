@@ -32,9 +32,9 @@
 
 <style>
 	.side_menu {
-		position: relative;
+		position: fixed;
 		right: -18rem;
-		z-index: +1;
+		z-index: +100;
 		height: calc(100dvh - 2rem);
 		width: 18rem;
 		max-width: 80dvw;

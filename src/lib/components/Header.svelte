@@ -25,12 +25,15 @@
 	</div>
 </header>
 
-<div class="side_menu_area">
-	<SideMenu isOpen={isOpenSideMenu} on:close={closeMenu} />
-</div>
+<div class="header_space" />
+
+<SideMenu isOpen={isOpenSideMenu} on:close={closeMenu} />
 
 <style>
 	.header {
+		position: fixed;
+		z-index: +101;
+		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -50,10 +53,7 @@
 		color: white;
 	}
 
-	.side_menu_area {
-		position: absolute;
-		right: 0;
-		z-index: +100;
-		overflow: hidden;
+	.header_space {
+		height: 2rem;
 	}
 </style>
