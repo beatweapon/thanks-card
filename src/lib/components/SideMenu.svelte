@@ -16,6 +16,9 @@
 <nav class="side_menu" class:open={isOpen}>
 	<ul>
 		<li class="menu_item">
+			<a on:click={close} href={`/${organizationId}`}>トップページ</a>
+		</li>
+		<li class="menu_item">
 			<a on:click={close} href={`/${organizationId}/myCards`}>自分のカードを見る</a>
 		</li>
 		<li class="menu_item">
