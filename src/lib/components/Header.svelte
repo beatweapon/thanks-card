@@ -10,6 +10,10 @@
 	const toggleSideMenu = () => {
 		isOpenSideMenu = !isOpenSideMenu;
 	};
+
+	const closeMenu = () => {
+		isOpenSideMenu = false;
+	};
 </script>
 
 <header class="header">
@@ -22,7 +26,7 @@
 </header>
 
 <div class="side_menu_area">
-	<SideMenu isOpen={isOpenSideMenu} />
+	<SideMenu isOpen={isOpenSideMenu} on:close={closeMenu} />
 </div>
 
 <style>

@@ -1,21 +1,28 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { page } from '$app/stores';
 
 	export let isOpen = false;
 
 	const organizationId = $page.params.organizationId;
+
+	const dispatch = createEventDispatcher();
+
+	const close = () => {
+		dispatch('close');
+	};
 </script>
 
 <nav class="side_menu" class:open={isOpen}>
 	<ul>
 		<li class="menu_item">
-			<a href={`/${organizationId}/myCards`}>自分のカードを見る</a>
+			<a on:click={close} href={`/${organizationId}/myCards`}>自分のカードを見る</a>
 		</li>
 		<li class="menu_item">
-			<a href={`/${organizationId}/profile`}>名前を変更する</a>
+			<a on:click={close} href={`/${organizationId}/profile`}>名前を変更する</a>
 		</li>
 		<li class="menu_item">
-			<a href={`/${organizationId}/invitation`}>招待URLを発行する</a>
+			<a on:click={close} href={`/${organizationId}/invitation`}>招待URLを発行する</a>
 		</li>
 	</ul>
 </nav>
