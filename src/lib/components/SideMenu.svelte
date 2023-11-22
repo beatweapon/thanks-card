@@ -9,6 +9,9 @@
 <nav class="side_menu" class:open={isOpen}>
 	<ul>
 		<li class="menu_item">
+			<a href={`/${organizationId}/myCards`}>自分のカードを見る</a>
+		</li>
+		<li class="menu_item">
 			<a href={`/${organizationId}/profile`}>名前を変更する</a>
 		</li>
 		<li class="menu_item">
