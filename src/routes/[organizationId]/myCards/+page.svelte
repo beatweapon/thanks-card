@@ -144,13 +144,3 @@
 	on:addCardDeletingSlot={(e) => addCardDeletingSlot(e.detail)}
 	on:removeCardDeletingSlot={(e) => removeCardDeletingSlot(e.detail)}
 />
-
-<style>
-	.center {
-		margin: 0 1rem;
-		height: calc(100dvh - 2rem);
-		display: grid;
-		justify-content: center;
-		align-items: center;
-	}
-</style>
