@@ -25,6 +25,9 @@
 			<a on:click={close} href={`/${organizationId}/profile`}>名前を変更する</a>
 		</li>
 		<li class="menu_item">
+			<a on:click={close} href={`/${organizationId}/notification`}>通知設定</a>
+		</li>
+		<li class="menu_item">
 			<a on:click={close} href={`/${organizationId}/invitation`}>招待URLを発行する</a>
 		</li>
 	</ul>

@@ -2,6 +2,7 @@
 	import { registerMember } from 'src/lib/stores/organization';
 	import { registerUser } from 'src/lib/stores/user';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	export let data;
 
 	let processing = false;
@@ -16,7 +17,7 @@
 			registerUser(data.currentUser.uid, $page.params.organizationId),
 		]);
 
-		location.reload();
+		goto(`/${$page.params.organizationId}/notification`);
 	};
 
 	$: disabled = !name || processing;
