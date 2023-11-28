@@ -24,5 +24,9 @@ export const fetchOrganizationMemberStats = async (organizationId, uid) => {
 export const updateOrganizationMemberStats = async (organizationId, uid, data) => {
 	const db = getFirestore();
 	const docRef = db.doc(`organizations/${organizationId}/membersStats/${uid}`);
-	return await docRef.update(data);
+
+	return await docRef.update(data).catch(async (e) => {
+		await docRef.set({});
+		await docRef.update(data);
+	});
 };
