@@ -25,13 +25,13 @@ export const POST = async ({ request, params }) => {
 	);
 
 	const updateStatsFrom = updateOrganizationMemberStats(organizationId, from, {
-		sent: FieldValue.increment(1),
-		lastSendedAt: Timestamp.fromDate(new Date()),
+		sentMessage: FieldValue.increment(1),
+		lastSentMessageAt: Timestamp.fromDate(new Date()),
 	});
 
 	const updateStatsTo = updateOrganizationMemberStats(organizationId, to, {
-		received: FieldValue.increment(1),
-		lastReceivedAt: Timestamp.fromDate(new Date()),
+		receivedMessage: FieldValue.increment(1),
+		lastReceivedMessageAt: Timestamp.fromDate(new Date()),
 	});
 
 	await Promise.all([sendNotification, updateStatsFrom, updateStatsTo]);

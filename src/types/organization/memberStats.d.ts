@@ -1,10 +1,11 @@
 export interface Stats {
-	sent: number;
-	received: number;
-	delete: number;
-	reaction: number;
-	lastSendedAt: Date;
-	lastReceivedAt: Date;
+	sentMessage: number;
+	receivedMessage: number;
+	deleteMessage: number;
+	sentReaction: number;
+	receivedReaction: number;
+	lastSentMessageAt: Date;
+	lastReceivedMessageAt: Date;
 }
 
 export interface UpdateData {
