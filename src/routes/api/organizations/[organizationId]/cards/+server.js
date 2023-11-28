@@ -1,6 +1,7 @@
 import admin from 'firebase-admin';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { sendNotificationToUser } from '$lib/server/notification';
+import { updateOrganizationMemberStats } from '$lib/server/organizationMemberStats';
 
 export const POST = async ({ request, params }) => {
 	const db = getFirestore();
@@ -14,10 +15,27 @@ export const POST = async ({ request, params }) => {
 		to,
 		designId,
 		message,
-		createdAt: admin.firestore.Timestamp.fromDate(new Date()),
+		createdAt: Timestamp.fromDate(new Date()),
 	});
 
-	await sendNotificationToUser(to, `${senderName}からカードが届きました`, message, senderIcon);
+	const sendNotification = sendNotificationToUser(
+		to,
+		`${senderName}からカードが届きました`,
+		message,
+		senderIcon
+	);
+
+	const updateStatsFrom = updateOrganizationMemberStats(organizationId, from, {
+		sent: FieldValue.increment(1),
+		lastSendedAt: Timestamp.fromDate(new Date()),
+	});
+
+	const updateStatsTo = updateOrganizationMemberStats(organizationId, to, {
+		received: FieldValue.increment(1),
+		lastReceivedAt: Timestamp.fromDate(new Date()),
+	});
+
+	await Promise.all([sendNotification, updateStatsFrom, updateStatsTo]);
 
 	return new Response();
 };
