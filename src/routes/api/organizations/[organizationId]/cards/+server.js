@@ -1,4 +1,3 @@
-import admin from 'firebase-admin';
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { sendNotificationToUser } from '$lib/server/notification';
 import { updateOrganizationMemberStats } from '$lib/server/organizationMemberStats';
