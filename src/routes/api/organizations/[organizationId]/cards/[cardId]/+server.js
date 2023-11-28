@@ -1,12 +1,26 @@
-import { getFirestore } from 'firebase-admin/firestore';
+import { auth } from '$lib/server/firebase_server';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { updateOrganizationMemberStats } from '$lib/server/organizationMemberStats';
 
-export const DELETE = async ({ params }) => {
-	const db = getFirestore();
+export const DELETE = async ({ params, cookies }) => {
+	const session = cookies.get('__session') || '';
+	if (session) {
+		const decodedClaims = await auth.verifySessionCookie(session);
+		const { uid } = decodedClaims;
 
-	const { organizationId, cardId } = params;
+		if (uid) {
+			const db = getFirestore();
 
-	const docRef = db.doc(`organizations/${organizationId}/cards/${cardId}`);
-	docRef.delete();
+			const { organizationId, cardId } = params;
+
+			const docRef = db.doc(`organizations/${organizationId}/cards/${cardId}`);
+			await docRef.delete();
+
+			await updateOrganizationMemberStats(organizationId, uid, {
+				deletedMessage: FieldValue.increment(1),
+			});
+		}
+	}
 
 	return new Response();
 };

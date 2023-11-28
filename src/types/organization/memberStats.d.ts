@@ -1,7 +1,7 @@
 export interface Stats {
 	sentMessage: number;
 	receivedMessage: number;
-	deleteMessage: number;
+	deletedMessage: number;
 	sentReaction: number;
 	receivedReaction: number;
 	lastSentMessageAt: Date;

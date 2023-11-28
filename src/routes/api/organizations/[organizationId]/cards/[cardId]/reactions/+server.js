@@ -1,5 +1,6 @@
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { sendNotificationToUser } from '$lib/server/notification';
+import { updateOrganizationMemberStats } from '$lib/server/organizationMemberStats';
 
 export const PUT = async ({ request, params }) => {
 	const db = getFirestore();
@@ -11,12 +12,22 @@ export const PUT = async ({ request, params }) => {
 	const docRef = db.doc(`organizations/${organizationId}/cards/${cardId}`);
 	docRef.update({ reactions });
 
-	await sendNotificationToUser(
+	const sendNotification = sendNotificationToUser(
 		cardSenderId,
 		`${senderName}がリアクションしました`,
 		emoji,
 		senderIcon
 	);
+
+	const updateStatsFrom = updateOrganizationMemberStats(organizationId, uid, {
+		sentReaction: FieldValue.increment(1),
+	});
+
+	const updateStatsTo = updateOrganizationMemberStats(organizationId, cardSenderId, {
+		receivedReaction: FieldValue.increment(1),
+	});
+
+	await Promise.all([sendNotification, updateStatsFrom, updateStatsTo]);
 
 	return new Response();
 };
