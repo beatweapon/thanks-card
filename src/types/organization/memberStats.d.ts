@@ -4,8 +4,8 @@ export interface Stats {
 	deletedMessage: number;
 	sentReaction: number;
 	receivedReaction: number;
-	lastSentMessageAt: Date;
-	lastReceivedMessageAt: Date;
+	lastSentMessageAt: import('firebase/firestore').Timestamp;
+	lastReceivedMessageAt: import('firebase/firestore').Timestamp;
 }
 
 export interface UpdateData {

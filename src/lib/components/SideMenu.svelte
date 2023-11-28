@@ -30,6 +30,9 @@
 		<li class="menu_item">
 			<a on:click={close} href={`/${organizationId}/invitation`}>招待URLを発行する</a>
 		</li>
+		<li class="menu_item">
+			<a on:click={close} href={`/${organizationId}/stats`}>統計</a>
+		</li>
 	</ul>
 </nav>
 
