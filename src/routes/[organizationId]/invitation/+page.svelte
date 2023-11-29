@@ -1,7 +1,7 @@
 <script>
 	import Qr from '$lib/components/Qr.svelte';
-	import { base } from '$app/paths';
 	import { page } from '$app/stores';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 
 	/** @type {import('./$types').ActionData} */
 	export let form;
@@ -26,7 +26,7 @@
 		</label>
 
 		<div>
-			<button>発行</button>
+			<FloatButton>発行</FloatButton>
 		</div>
 	</form>
 {:else}
@@ -35,7 +35,7 @@
 	</div>
 	<Qr url={`${organizationPage}?token=${form.token}`} />
 	<div>
-		<button on:click={copy}>コピー</button>
+		<FloatButton on:click={copy}>コピー</FloatButton>
 	</div>
 {/if}
 

@@ -8,6 +8,7 @@
 	import { registerDeviceToken } from '$lib/stores/user';
 	import Loading from 'src/lib/components/Loading.svelte';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 
 	export let data;
 
@@ -69,14 +70,14 @@
 			<p>
 				あなたにカードが届いたときや、あなたが贈ったカードにリアクションがついたときに通知を受け取ることができます。
 			</p>
-			<button on:click={requestNotificationPermission}>通知を許可する</button>
+			<FloatButton on:click={requestNotificationPermission}>通知を許可する</FloatButton>
 
 			<PlainButton on:click={() => goto(`/${$page.params.organizationId}`)}>スキップ</PlainButton>
 		</div>
 	{:else if permissionStatus === 'granted'}
-		<p>通知が許可されました！</p>
+		<p>通知が許可されています。通知が来ない場合はOSの通知設定をご確認ください。</p>
 	{:else if permissionStatus === 'denied'}
-		<p>通知が拒否されました。通知を有効にするにはブラウザの設定を変更してください。</p>
+		<p>通知が拒否されています。通知を有効にするにはブラウザの設定を変更してください。</p>
 	{/if}
 </div>
 

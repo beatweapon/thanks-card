@@ -6,6 +6,8 @@
 	import Qr from '$lib/components/Qr.svelte';
 	import In7DaysCards from 'src/lib/components/views/[organizationId]/In7DaysCards.svelte';
 	import AllCards from 'src/lib/components/views/[organizationId]/AllCards.svelte';
+	import FloatActionButton from 'src/lib/components/design/FloatActionButton.svelte';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 
 	export let data;
 
@@ -80,15 +82,17 @@
 </script>
 
 <h2>Welcome to TopPage</h2>
-<button on:click={() => goto(`${$page.url}/thanksCardEditor`)}>カードを送る</button>
+<div class="fab">
+	<FloatActionButton on:click={() => goto(`${$page.url}/thanksCardEditor`)}>❤</FloatActionButton>
+</div>
 
-<button on:click={toggleShowCardList}>
+<FloatButton on:click={toggleShowCardList}>
 	{#if isShowAllCardList}
 		直近7日
 	{:else}
 		全て
 	{/if}
-</button>
+</FloatButton>
 
 {#if isShowAllCardList}
 	<AllCards
@@ -118,3 +122,12 @@
 
 <h2>この画面のQRコード</h2>
 <Qr url={$page.url.href} />
+
+<style>
+	.fab {
+		position: fixed;
+		bottom: 2rem;
+		right: 2rem;
+		z-index: 5;
+	}
+</style>

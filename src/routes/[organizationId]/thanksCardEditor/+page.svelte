@@ -7,6 +7,7 @@
 	import User from '$lib/components/User.svelte';
 	import CardDesignSelector from '$lib/components/CardDesignSelector.svelte';
 	import Card from '$lib/components/Card.svelte';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 	export let data;
 
 	watchMemberCollection($page.params.organizationId);
@@ -88,7 +89,7 @@
 <pre>
   {JSON.stringify(data, null, 2)}
 </pre> -->
-<button on:click={() => goToOrganizationPage()}>戻る</button>
+<FloatButton on:click={() => goToOrganizationPage()}>戻る</FloatButton>
 
 <h3>誰に送る？</h3>
 <div class="members">
@@ -121,7 +122,9 @@
 	<Card {card} members={$members} />
 </div>
 
-<button class="send_button" on:click={sendMessage} {disabled}>カードを贈る</button>
+<span class="send_button">
+	<FloatButton on:click={sendMessage} {disabled}>カードを贈る</FloatButton>
+</span>
 
 <style>
 	.members {

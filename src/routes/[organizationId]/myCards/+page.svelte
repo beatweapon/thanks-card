@@ -4,6 +4,7 @@
 	import { members, watchMemberCollection } from '$lib/stores/members.js';
 	import { cards, watchCardCollection } from '$lib/stores/cardOwn.js';
 	import CardList from 'src/lib/components/views/[organizationId]/CardList.svelte';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 
 	export let data;
 
@@ -123,13 +124,13 @@
 
 <h2>Welcome to TopPage</h2>
 
-<button on:click={toggleShowCardList}>
+<FloatButton on:click={toggleShowCardList}>
 	{#if isShowSendCardList}
 		受け取ったカード
 	{:else}
 		贈ったカード
 	{/if}
-</button>
+</FloatButton>
 
 <CardList
 	currentUser={data.currentUser}

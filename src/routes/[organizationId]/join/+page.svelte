@@ -3,6 +3,7 @@
 	import { registerUser } from 'src/lib/stores/user';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 	export let data;
 
 	let processing = false;
@@ -30,7 +31,7 @@
 		<label>
 			あなたの名前: <input bind:value={name} />
 		</label>
-		<button on:click={join} {disabled}>参加する</button>
+		<FloatButton on:click={join} {disabled}>参加する</FloatButton>
 	</div>
 </div>
 

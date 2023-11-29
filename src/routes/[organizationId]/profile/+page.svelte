@@ -2,6 +2,8 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	export let data;
 
 	/** @type {boolean} */
@@ -101,9 +103,9 @@
 		<label>
 			あなたの名前: <input bind:value={name} />
 		</label>
-		<button on:click={changeName} {disabled}>変更する</button>
+		<FloatButton on:click={changeName} {disabled}>変更する</FloatButton>
 	</div>
-	<button on:click={goToOrganizationPage}>戻る</button>
+	<PlainButton on:click={goToOrganizationPage}>戻る</PlainButton>
 </div>
 
 <style>
