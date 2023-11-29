@@ -5,6 +5,9 @@
 	/** @type {string} */
 	export let organizationName;
 
+	/** @type {string} */
+	export let organizationId;
+
 	let isOpenSideMenu = false;
 
 	const toggleSideMenu = () => {
@@ -18,7 +21,7 @@
 
 <header class="header">
 	<h1 class="organization_name">
-		{organizationName}
+		<a href={`/${organizationId}`}>{organizationName}</a>
 	</h1>
 	<div class="menu">
 		<PlainButton on:click={toggleSideMenu}>メニュー</PlainButton>

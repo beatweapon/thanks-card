@@ -20,7 +20,7 @@
 	});
 </script>
 
-<Header organizationName={data.organization?.name} />
+<Header organizationName={data.organization?.name} organizationId={$page.params.organizationId} />
 
 <main class="main">
 	<slot />
