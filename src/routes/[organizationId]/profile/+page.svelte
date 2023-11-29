@@ -7,7 +7,43 @@
 	/** @type {boolean} */
 	let processing = false;
 
-	let name = '';
+	/** @type {File} */
+	let iconImageFile;
+
+	const me = data.organization.members.find((m) => m.id === data.currentUser.uid);
+
+	let src = me?.picture || data.currentUser.picture;
+
+	/**
+	 * ドロップエリアでのファイル選択を処理する関数
+	 * @param {DragEvent} event - ドラッグイベント
+	 */
+	function handleDrop(event) {
+		event.preventDefault();
+		const dt = event.dataTransfer;
+
+		if (!dt) return;
+
+		const droppedFiles = dt.files;
+
+		if (droppedFiles[0].type.startsWith('image/')) {
+			iconImageFile = droppedFiles[0];
+
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				src = /** @type{string} */ (e?.target?.result); // 画像のソースをセット
+			};
+			reader.readAsDataURL(iconImageFile); // ファイルを読み込んで画像ソースに変換
+		}
+	}
+
+	/**
+	 * ドラッグオーバーイベントを処理する関数
+	 * @param {DragEvent} event - ドラッグイベント
+	 */
+	const handleDragOver = (event) => event.preventDefault();
+
+	let name = data.organization.members.find((m) => m.id === data.currentUser.uid)?.name;
 
 	/** @type {boolean} */
 	$: disabled = !name || processing;
@@ -19,12 +55,18 @@
 
 		const memberId = data.currentUser.uid;
 
+		const formData = new FormData();
+		if (iconImageFile) {
+			formData.append('iconImageFile', iconImageFile);
+		}
+
+		if (name) {
+			formData.append('name', name);
+		}
+
 		await fetch(`${base}/api/organizations/${$page.params.organizationId}/members/${memberId}`, {
 			method: 'PUT',
-			body: JSON.stringify({
-				name,
-			}),
-			headers: { 'content-type': 'application/json' },
+			body: formData,
 		}).finally(() => {
 			processing = false;
 		});
@@ -47,6 +89,15 @@
 
 <div class="center">
 	<div>
+		<div
+			on:drop={handleDrop}
+			on:dragover={handleDragOver}
+			role="region"
+			aria-label="file drop area"
+			class="file_drop_area"
+		>
+			<img {src} alt="userIcon" />
+		</div>
 		<label>
 			あなたの名前: <input bind:value={name} />
 		</label>
@@ -63,5 +114,14 @@
 		flex-direction: column;
 		justify-content: space-around;
 		align-items: center;
+	}
+
+	.file_drop_area {
+		width: 20rem;
+		height: 20rem;
+	}
+
+	img {
+		width: 100%;
 	}
 </style>
