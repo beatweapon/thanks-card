@@ -22,7 +22,7 @@
 			<a on:click={close} href={`/${organizationId}/myCards`}>自分のカードを見る</a>
 		</li>
 		<li class="menu_item">
-			<a on:click={close} href={`/${organizationId}/profile`}>名前を変更する</a>
+			<a on:click={close} href={`/${organizationId}/profile`}>プロフィール</a>
 		</li>
 		<li class="menu_item">
 			<a on:click={close} href={`/${organizationId}/notification`}>通知設定</a>
