@@ -41,6 +41,7 @@ export const watchMemberCollection = (organizationId) => {
 						);
 
 					arr[index].name = newMember.name;
+					arr[index].picture = newMember.picture;
 					return arr;
 				});
 			}

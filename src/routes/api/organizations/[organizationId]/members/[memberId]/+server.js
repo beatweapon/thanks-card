@@ -26,6 +26,7 @@ export const PUT = async ({ request, params }) => {
 		});
 
 		picture = await getDownloadURL(file);
+		picture += `?timestamp=${Date.now()}`;
 	}
 
 	const param = {
