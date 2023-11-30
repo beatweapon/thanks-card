@@ -31,11 +31,7 @@
 		if (droppedFiles[0].type.startsWith('image/')) {
 			iconImageFile = droppedFiles[0];
 
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				src = /** @type{string} */ (e?.target?.result); // 画像のソースをセット
-			};
-			reader.readAsDataURL(iconImageFile); // ファイルを読み込んで画像ソースに変換
+			iconPreview();
 		}
 	}
 
@@ -44,6 +40,28 @@
 	 * @param {DragEvent} event - ドラッグイベント
 	 */
 	const handleDragOver = (event) => event.preventDefault();
+
+	/**
+	 * @param {Event} event
+	 */
+	const handleFileInput = (event) => {
+		const target = /** @type {HTMLInputElement} */ (event.target);
+		const files = target.files;
+
+		if (files) {
+			iconImageFile = files[0];
+
+			iconPreview();
+		}
+	};
+
+	const iconPreview = () => {
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			src = /** @type {string} */ (e?.target?.result); // 画像のソースをセット
+		};
+		reader.readAsDataURL(iconImageFile); // ファイルを読み込んで画像ソースに変換
+	};
 
 	let name = data.organization.members.find((m) => m.id === data.currentUser.uid)?.name;
 
@@ -91,7 +109,7 @@
 
 <div class="center">
 	<div>
-		<div
+		<label
 			on:drop={handleDrop}
 			on:dragover={handleDragOver}
 			role="region"
@@ -99,7 +117,8 @@
 			class="file_drop_area"
 		>
 			<img {src} alt="userIcon" />
-		</div>
+			<input class="file_input" type="file" accept="image/*" on:change={handleFileInput} />
+		</label>
 		<label>
 			あなたの名前: <input bind:value={name} />
 		</label>
@@ -119,8 +138,13 @@
 	}
 
 	.file_drop_area {
+		display: block;
 		width: 20rem;
 		height: 20rem;
+	}
+
+	.file_input {
+		display: none;
 	}
 
 	img {
