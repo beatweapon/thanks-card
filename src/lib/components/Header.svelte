@@ -1,4 +1,5 @@
 <script>
+	import { onMount } from 'svelte';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	import SideMenu from './SideMenu.svelte';
 
@@ -7,6 +8,12 @@
 
 	/** @type {string} */
 	export let organizationId;
+
+	/** @type {HTMLElement} */
+	let menuButtonRef;
+
+	/** @type {HTMLElement} */
+	let sideMenuRef;
 
 	let isOpenSideMenu = false;
 
@@ -17,20 +24,46 @@
 	const closeMenu = () => {
 		isOpenSideMenu = false;
 	};
+
+	onMount(() => {
+		/**
+		 *
+		 * @param {MouseEvent} event
+		 */
+		const handleOutsideClick = (event) => {
+			if (!event.target) return;
+
+			const target = /** @type {Node} */ (event.target);
+
+			if (menuButtonRef.contains(target)) return;
+			if (sideMenuRef.contains(target)) return;
+
+			closeMenu();
+		};
+
+		window.addEventListener('click', handleOutsideClick);
+
+		return () => {
+			window.removeEventListener('click', handleOutsideClick);
+		};
+	});
 </script>
 
 <header class="header">
 	<h1 class="organization_name">
 		<a href={`/${organizationId}`}>{organizationName}</a>
 	</h1>
-	<div class="menu">
+
+	<div bind:this={menuButtonRef} class="menu">
 		<PlainButton on:click={toggleSideMenu}>メニュー</PlainButton>
 	</div>
 </header>
 
 <div class="header_space" />
 
-<SideMenu isOpen={isOpenSideMenu} on:close={closeMenu} />
+<div bind:this={sideMenuRef}>
+	<SideMenu isOpen={isOpenSideMenu} on:close={closeMenu} />
+</div>
 
 <style>
 	.header {

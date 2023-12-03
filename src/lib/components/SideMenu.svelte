@@ -39,6 +39,7 @@
 <style>
 	.side_menu {
 		position: fixed;
+		top: 2rem;
 		right: -18rem;
 		z-index: +100;
 		height: calc(100dvh - 2rem);
