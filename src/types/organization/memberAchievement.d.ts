@@ -1,7 +1,7 @@
-import { ahiecementsMaster } from '$lib/data/achievements';
+import { achiecementsMaster } from '$lib/data/achievements';
 
-export type AhiecementsKeys = keyof typeof ahiecementsMaster;
+export type AchiecementsKeys = keyof typeof achiecementsMaster;
 
 export type Achievements = {
-	[K in AhiecementsKeys]?: any;
+	[K in AchiecementsKeys]?: any;
 };

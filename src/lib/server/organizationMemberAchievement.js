@@ -1,4 +1,15 @@
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+
+/**
+ * サンクスカード送信の実績を獲得する
+ * @param {string} organizationId
+ * @param {string} uid
+ */
+export const achieveSendThanks = (organizationId, uid) => {
+	updateOrganizationMemberAchivement(organizationId, uid, {
+		sendThanks: Timestamp.fromDate(new Date()),
+	});
+};
 
 /**
  * 組織メンバーの実績を更新する

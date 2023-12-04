@@ -1,4 +1,4 @@
-export const ahiecementsMaster = {
+export const achiecementsMaster = {
 	sendThanks: {
 		no: 1,
 		title: '感謝の気持ち',
