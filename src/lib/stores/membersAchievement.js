@@ -4,7 +4,7 @@ import { db } from 'src/lib/firebase_client';
 
 /**
  * 実績
- * @type {import('svelte/store').Writable<import('src/types/organization/memberAchievement').Ahiecements>}
+ * @type {import('svelte/store').Writable<import('src/types/organization/memberAchievement').Ahievements>}
  */
 export const achievement = writable({});
 
@@ -25,7 +25,7 @@ export const watchMemberAchievementCollection = (organizationId, uid) => {
 
 	unsubscribe = onSnapshot(docRef, (doc) => {
 		achievement.set(
-			/** @type {import('src/types/organization/memberAchievement').Ahiecements} */ (doc.data())
+			/** @type {import('src/types/organization/memberAchievement').Ahievements} */ (doc.data())
 		);
 	});
 };

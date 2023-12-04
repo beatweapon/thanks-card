@@ -1,7 +1,7 @@
-import { ahiecements } from '$lib/data/achievements';
+import { ahiecementsMaster } from '$lib/data/achievements';
 
-type AhiecementsKeys = keyof typeof ahiecements;
+export type AhiecementsKeys = keyof typeof ahiecementsMaster;
 
-export interface Ahiecements {
-	[x: AhiecementsKeys]: import('firebase/firestore').Timestamp;
+export interface Ahievements {
+	[x: string]: import('firebase/firestore').Timestamp;
 }

@@ -33,6 +33,9 @@
 		<li class="menu_item">
 			<a on:click={close} href={`/${organizationId}/stats`}>統計</a>
 		</li>
+		<li class="menu_item">
+			<a on:click={close} href={`/${organizationId}/achievements`}>実績</a>
+		</li>
 	</ul>
 </nav>
 
