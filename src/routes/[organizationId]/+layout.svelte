@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import Header from 'src/lib/components/Header.svelte';
 	import { fetchStats } from '$lib/stores/memberStats';
+	import { watchMemberAchievementCollection } from '$lib/stores/membersAchievement.js';
 
 	export let data;
 
@@ -14,6 +15,8 @@
 			});
 		}
 	}
+
+	watchMemberAchievementCollection($page.params.organizationId, data.currentUser.uid);
 
 	onMount(async () => {
 		await fetchStats($page.params.organizationId, data.currentUser.uid);
