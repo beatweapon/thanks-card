@@ -1,6 +1,7 @@
 import { auth } from '$lib/server/firebase_server';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { updateOrganizationMemberStats } from '$lib/server/organizationMemberStats';
+import { achieve } from '$lib/server/organizationMemberAchievement';
 
 export const DELETE = async ({ params, cookies }) => {
 	const session = cookies.get('__session') || '';
@@ -16,9 +17,12 @@ export const DELETE = async ({ params, cookies }) => {
 			const docRef = db.doc(`organizations/${organizationId}/cards/${cardId}`);
 			await docRef.delete();
 
-			await updateOrganizationMemberStats(organizationId, uid, {
-				deletedMessage: FieldValue.increment(1),
-			});
+			await Promise.all([
+				achieve(organizationId, uid, 'deleteThanks'),
+				updateOrganizationMemberStats(organizationId, uid, {
+					deletedMessage: FieldValue.increment(1),
+				}),
+			]);
 		}
 	}
 
