@@ -4,10 +4,11 @@ import { getFirestore, Timestamp } from 'firebase-admin/firestore';
  * サンクスカード送信の実績を獲得する
  * @param {string} organizationId
  * @param {string} uid
+ * @param {import('src/types/organization/memberAchievement').AchiecementsKeys} key
  */
-export const achieveSendThanks = (organizationId, uid) => {
-	updateOrganizationMemberAchivement(organizationId, uid, {
-		sendThanks: Timestamp.fromDate(new Date()),
+export const achieve = async (organizationId, uid, key) => {
+	await updateOrganizationMemberAchivement(organizationId, uid, {
+		[key]: Timestamp.fromDate(new Date()),
 	});
 };
 
