@@ -5,6 +5,7 @@
 	import Header from 'src/lib/components/Header.svelte';
 	import { fetchStats } from '$lib/stores/memberStats';
 	import { watchMemberAchievementCollection } from '$lib/stores/membersAchievement.js';
+	import AchievementToast from '$lib/components/views/[organizationId]/AchievementToast.svelte';
 
 	export let data;
 
@@ -24,6 +25,8 @@
 </script>
 
 <Header organizationName={data.organization?.name} organizationId={$page.params.organizationId} />
+
+<AchievementToast />
 
 <main class="main">
 	<slot />
