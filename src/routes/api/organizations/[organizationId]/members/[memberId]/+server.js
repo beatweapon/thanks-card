@@ -1,6 +1,7 @@
 import { PRIVATE_STORAGE_BUCKET } from '$env/static/private';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage, getDownloadURL } from 'firebase-admin/storage';
+import { achieve } from '$lib/server/organizationMemberAchievement';
 
 export const PUT = async ({ request, params }) => {
 	const db = getFirestore();
@@ -35,7 +36,9 @@ export const PUT = async ({ request, params }) => {
 	};
 
 	const docRef = db.doc(`organizations/${organizationId}/members/${memberId}`);
-	docRef.update(param);
+	await docRef.update(param);
+
+	await achieve(organizationId, memberId, 'updateProfile');
 
 	return new Response();
 };
