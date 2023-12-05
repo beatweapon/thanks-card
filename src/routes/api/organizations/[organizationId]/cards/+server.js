@@ -1,7 +1,7 @@
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { sendNotificationToUser } from '$lib/server/notification';
 import { updateOrganizationMemberStats } from '$lib/server/organizationMemberStats';
-import { updateOrganizationMemberAchivement } from '$lib/server/organizationMemberAchievement';
+import { achieve } from '$lib/server/organizationMemberAchievement';
 
 export const POST = async ({ request, params }) => {
 	const db = getFirestore();
@@ -18,28 +18,32 @@ export const POST = async ({ request, params }) => {
 		createdAt: Timestamp.fromDate(new Date()),
 	});
 
-	const updateAchivement = updateOrganizationMemberAchivement(organizationId, from, {
-		sendThanks: Timestamp.fromDate(new Date()),
-	});
+	const promises = [];
+	promises.push(achieve(organizationId, from, 'sendThanks'));
 
-	const sendNotification = sendNotificationToUser(
-		to,
-		`${senderName}からカードが届きました`,
-		message,
-		senderIcon
+	if (from === to) {
+		promises.push(achieve(organizationId, from, 'sendThanksToMe'));
+	}
+
+	promises.push(
+		sendNotificationToUser(to, `${senderName}からカードが届きました`, message, senderIcon)
 	);
 
-	const updateStatsFrom = updateOrganizationMemberStats(organizationId, from, {
-		sentMessage: FieldValue.increment(1),
-		lastSentMessageAt: Timestamp.fromDate(new Date()),
-	});
+	promises.push(
+		updateOrganizationMemberStats(organizationId, from, {
+			sentMessage: FieldValue.increment(1),
+			lastSentMessageAt: Timestamp.fromDate(new Date()),
+		})
+	);
 
-	const updateStatsTo = updateOrganizationMemberStats(organizationId, to, {
-		receivedMessage: FieldValue.increment(1),
-		lastReceivedMessageAt: Timestamp.fromDate(new Date()),
-	});
+	promises.push(
+		updateOrganizationMemberStats(organizationId, to, {
+			receivedMessage: FieldValue.increment(1),
+			lastReceivedMessageAt: Timestamp.fromDate(new Date()),
+		})
+	);
 
-	await Promise.all([sendNotification, updateAchivement, updateStatsFrom, updateStatsTo]);
+	await Promise.all(promises);
 
 	return new Response();
 };
