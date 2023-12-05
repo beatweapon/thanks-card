@@ -24,7 +24,9 @@ export const watchCardCollection = async (organizationId, uid) => {
 	const docRef = doc(db, `organizations/${organizationId}/membersStats/${uid}`);
 
 	unsubscribe = onSnapshot(docRef, (doc) => {
-		stats.set(/** @type {import('src/types/organization/memberStats').Stats} */ (doc.data()));
+		if (doc.exists()) {
+			stats.set(/** @type {import('src/types/organization/memberStats').Stats} */ (doc.data()));
+		}
 	});
 };
 

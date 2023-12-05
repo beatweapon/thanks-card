@@ -24,8 +24,10 @@ export const watchMemberAchievementCollection = (organizationId, uid) => {
 	const docRef = doc(db, `organizations/${organizationId}/membersAchievement/${uid}`);
 
 	unsubscribe = onSnapshot(docRef, (doc) => {
-		achievement.set(
-			/** @type {import('src/types/organization/memberAchievement').Achievements} */ (doc.data())
-		);
+		if (doc.exists()) {
+			achievement.set(
+				/** @type {import('src/types/organization/memberAchievement').Achievements} */ (doc.data())
+			);
+		}
 	});
 };
