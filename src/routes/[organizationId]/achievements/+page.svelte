@@ -1,8 +1,8 @@
 <script>
-	import { achiecementsMaster } from '$lib/data/achievements';
+	import { achievementsMaster } from '$lib/data/achievements';
 	import { achievement } from '$lib/stores/membersAchievement';
 
-	$: achievements = Object.entries(achiecementsMaster).map(([key, value]) => {
+	$: achievements = Object.entries(achievementsMaster).map(([key, value]) => {
 		const akey =
 			/** @type {import('src/types/organization/memberAchievement').AchiecementsKeys} */ (key);
 		if ($achievement[akey]) {
