@@ -9,8 +9,9 @@ export const auth = app.auth();
  * @param {string} title
  * @param {string} body
  * @param {string} icon
+ * @param {string} path
  */
-export const sendMessageToDevice = (registrationToken, title, body, icon) => {
+export const sendMessageToDevice = (registrationToken, title, body, icon, path) => {
 	admin
 		.messaging()
 		.send({
@@ -19,6 +20,7 @@ export const sendMessageToDevice = (registrationToken, title, body, icon) => {
 				title,
 				body,
 				icon,
+				path,
 			},
 		})
 		.then((response) => {

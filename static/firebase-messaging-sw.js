@@ -50,7 +50,17 @@ messaging.onBackgroundMessage((payload) => {
 	const notificationOptions = {
 		body: payload.data.body,
 		icon: payload.data.icon || '/favicon.png',
+		data: { path: payload.data.path || '/' },
 	};
 
 	self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+self.addEventListener('notificationclick', (event) => {
+	event.notification.close();
+
+	const clickedNotification = event.notification;
+	const notificationData = clickedNotification.data;
+
+	event.waitUntil(clients.openWindow(notificationData.path));
 });

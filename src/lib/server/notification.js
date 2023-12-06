@@ -7,13 +7,14 @@ import { fetchUser } from '$lib/server/user';
  * @param {string} title
  * @param {string} message
  * @param {string} icon
+ * @param {string} path
  */
-export const sendNotificationToUser = async (to, title, message, icon) => {
+export const sendNotificationToUser = async (to, title, message, icon, path) => {
 	const user = await fetchUser(to);
 
 	if (user?.deviceTokens) {
 		user.deviceTokens.forEach(async (token) => {
-			await sendMessageToDevice(token, title, message, icon);
+			await sendMessageToDevice(token, title, message, icon, path);
 		});
 	}
 };

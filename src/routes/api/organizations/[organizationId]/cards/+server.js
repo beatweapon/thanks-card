@@ -26,7 +26,13 @@ export const POST = async ({ request, params }) => {
 	}
 
 	promises.push(
-		sendNotificationToUser(to, `${senderName}からカードが届きました`, message, senderIcon)
+		sendNotificationToUser(
+			to,
+			`${senderName}からカードが届きました`,
+			message,
+			senderIcon,
+			`/${organizationId}`
+		)
 	);
 
 	promises.push(

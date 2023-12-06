@@ -17,7 +17,8 @@ export const PUT = async ({ request, params }) => {
 		cardSenderId,
 		`${senderName}がリアクションしました`,
 		emoji,
-		senderIcon
+		senderIcon,
+		`/${organizationId}`
 	);
 
 	const updateStatsFrom = updateOrganizationMemberStats(organizationId, uid, {
