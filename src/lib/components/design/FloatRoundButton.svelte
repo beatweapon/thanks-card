@@ -7,7 +7,7 @@
 		margin: 0;
 		padding: 0;
 		border: none;
-		border-radius: 50%;
+		border-radius: 1rem;
 		background: none;
 		font: inherit;
 		cursor: pointer;
