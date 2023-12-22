@@ -114,9 +114,20 @@
 			on:dragover={handleDragOver}
 			role="region"
 			aria-label="file drop area"
-			class="file_drop_area"
+			class="file_drop_area icon_container"
 		>
 			<img {src} alt="userIcon" />
+			<div class="overlay" />
+			<span class="edit_icon">
+				<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+					<path
+						fill="#ffffff"
+						fill-rule="evenodd"
+						d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm14 .069a1 1 0 01-1 1h-2.931V14a1 1 0 11-2 0v-2.931H6a1 1 0 110-2h3.069V6a1 1 0 112 0v3.069H14a1 1 0 011 1z"
+					/>
+				</svg>
+			</span>
+
 			<input class="file_input" type="file" accept="image/*" on:change={handleFileInput} />
 		</label>
 		<label>
@@ -149,5 +160,39 @@
 
 	img {
 		width: 100%;
+	}
+
+	.icon_container {
+		position: relative;
+		cursor: pointer;
+		border: 0.3rem dashed #aaa;
+	}
+
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.icon_container:hover .overlay,
+	.icon_container:hover .edit_icon {
+		opacity: 1;
+	}
+
+	.edit_icon {
+		width: 4rem;
+		height: 4rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		fill: white;
+		opacity: 0;
+		transition: opacity 0.3s ease;
 	}
 </style>
