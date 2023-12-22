@@ -34,7 +34,6 @@
 		 * @param {any} e - beforeinstallprompt イベントオブジェクト
 		 */
 		window.addEventListener('beforeinstallprompt', (e) => {
-			console.log('beforeinstallprompt');
 			// インストールのポップアップを保持
 			deferredPrompt = e;
 
