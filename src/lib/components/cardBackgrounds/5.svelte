@@ -37,18 +37,35 @@
 		grid-template-rows: 1fr 1fr 1fr;
 	}
 
+	@property --rotate {
+		syntax: '<angle>';
+		initial-value: 45deg;
+		inherits: false;
+	}
+
 	.border_box:nth-child(3) {
 		border-top: solid 0.2rem green;
 		border-right: solid 0.2rem green;
 		border-image-slice: 1;
-		border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+		border-image-source: linear-gradient(var(--rotate), #743ad5, #fff, #d53a9d);
+		animation: animateGradient 5s infinite linear;
 	}
 
 	.border_box:nth-child(7) {
 		border-bottom: solid 0.2rem green;
 		border-left: solid 0.2rem green;
 		border-image-slice: 1;
-		border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+		border-image-source: linear-gradient(var(--rotate), #743ad5, #fff, #d53a9d);
+		animation: animateGradient 5s infinite linear;
+	}
+
+	@keyframes animateGradient {
+		0% {
+			--rotate: 0deg;
+		}
+		100% {
+			--rotate: 360deg;
+		}
 	}
 
 	.card_contents {
