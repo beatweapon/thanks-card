@@ -3,4 +3,9 @@ export interface OrganizationMember {
 	name: string;
 	picture: string;
 	createdAt: Date;
+	permission: {
+		admin: boolean;
+		read: boolean;
+		write: boolean;
+	};
 }
