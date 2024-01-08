@@ -6,7 +6,7 @@
 	/** @type {import('./$types').ActionData} */
 	export let form;
 
-	const organizationPage = `${$page.url.host}/${$page.params.organizationId}/join`;
+	const organizationPage = `${$page.url.origin}/${$page.params.organizationId}/join`;
 
 	const copy = async () => {
 		if (form) {
