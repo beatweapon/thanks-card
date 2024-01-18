@@ -22,6 +22,7 @@ export const PUT = async ({ request, params }) => {
 	);
 
 	const updateStatsFrom = updateOrganizationMemberStats(organizationId, uid, {
+		point: FieldValue.increment(5),
 		sentReaction: FieldValue.increment(1),
 	});
 

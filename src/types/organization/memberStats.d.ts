@@ -1,4 +1,5 @@
 export interface Stats {
+	point: number;
 	sentMessage: number;
 	receivedMessage: number;
 	deletedMessage: number;

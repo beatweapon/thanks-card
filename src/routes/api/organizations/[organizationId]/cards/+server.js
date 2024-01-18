@@ -37,6 +37,7 @@ export const POST = async ({ request, params }) => {
 
 	promises.push(
 		updateOrganizationMemberStats(organizationId, from, {
+			point: FieldValue.increment(10),
 			sentMessage: FieldValue.increment(1),
 			lastSentMessageAt: Timestamp.fromDate(new Date()),
 		})

@@ -20,6 +20,7 @@ export const DELETE = async ({ params, cookies }) => {
 			await Promise.all([
 				achieve(organizationId, uid, 'deleteThanks'),
 				updateOrganizationMemberStats(organizationId, uid, {
+					point: FieldValue.increment(-10),
 					deletedMessage: FieldValue.increment(1),
 				}),
 			]);
