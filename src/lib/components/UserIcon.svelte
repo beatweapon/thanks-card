@@ -1,13 +1,42 @@
 <script>
 	/** @type {string | undefined} */
 	export let src;
+
+	/** @type {string | undefined} */
+	export let frameSrc = '';
 </script>
 
-<img src={src || '/images/default.jpg'} alt="user-icon" class="user-icon" />
+<div class="user_icon_area">
+	<img src={src || '/images/default.jpg'} alt="user-icon" class="user_icon" />
+	{#if frameSrc}
+		<img src={`/images/userIconFrame/${frameSrc}`} alt="user-icon-frame" class="user_icon_frame" />
+	{/if}
+</div>
 
 <style>
-	.user-icon {
+	.user_icon_area {
 		width: 2rem;
+		height: 2rem;
+		position: relative;
+	}
+
+	.user_icon {
+		width: 2rem;
+		height: 2rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
+		border-radius: 50%;
+	}
+
+	.user_icon_frame {
+		width: 2.5rem;
+		height: 2.5rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
 		border-radius: 50%;
 	}
 </style>

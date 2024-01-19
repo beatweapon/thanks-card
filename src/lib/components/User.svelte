@@ -1,13 +1,13 @@
 <script>
 	import UserIcon from '$lib/components/UserIcon.svelte';
 
-	/** @type {{name: string; picture?: string}} */
+	/** @type {{name: string; picture?: string; frame?: string}} */
 	export let user;
 </script>
 
 <span class="user">
 	<span class="icon">
-		<UserIcon src={user.picture} />
+		<UserIcon src={user.picture} frameSrc={user.frame} />
 	</span>
 	{user.name}
 </span>
