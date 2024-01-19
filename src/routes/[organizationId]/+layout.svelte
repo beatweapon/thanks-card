@@ -5,6 +5,7 @@
 	import Header from 'src/lib/components/Header.svelte';
 	import { fetchStats } from '$lib/stores/memberStats';
 	import { watchMemberAchievementCollection } from '$lib/stores/membersAchievement.js';
+	import { watchStatsCollection } from '$lib/stores/memberStats.js';
 	import AchievementToast from '$lib/components/views/[organizationId]/AchievementToast.svelte';
 
 	export let data;
@@ -18,6 +19,7 @@
 	}
 
 	watchMemberAchievementCollection($page.params.organizationId, data.currentUser.uid);
+	watchStatsCollection($page.params.organizationId, data.currentUser.uid);
 
 	onMount(async () => {
 		await fetchStats($page.params.organizationId, data.currentUser.uid);
