@@ -1,5 +1,9 @@
 export interface Stats {
 	point: number;
+	item: {
+		frames: string[];
+		cards: number[];
+	};
 	sentMessage: number;
 	receivedMessage: number;
 	deletedMessage: number;
