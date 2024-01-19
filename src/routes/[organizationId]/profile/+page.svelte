@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { stats } from '$lib/stores/memberStats';
 	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
 	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
 	export let data;
@@ -63,10 +64,21 @@
 		reader.readAsDataURL(iconImageFile); // ファイルを読み込んで画像ソースに変換
 	};
 
-	let name = data.organization.members.find((m) => m.id === data.currentUser.uid)?.name;
+	let name = me?.name;
+
+	let frame = me?.frame;
 
 	/** @type {boolean} */
 	$: disabled = !name || processing;
+
+	/**
+	 *
+	 * @param {string} src
+	 */
+	const selectFrame = (src) => {
+		console.log('hoeg');
+		frame = src;
+	};
 
 	const changeName = async () => {
 		if (disabled) return;
@@ -82,6 +94,10 @@
 
 		if (name) {
 			formData.append('name', name);
+		}
+
+		if (frame) {
+			formData.append('frame', frame);
 		}
 
 		await fetch(`${base}/api/organizations/${$page.params.organizationId}/members/${memberId}`, {
@@ -116,7 +132,16 @@
 			aria-label="file drop area"
 			class="file_drop_area icon_container"
 		>
-			<img {src} alt="userIcon" />
+			<div class="user_icon_area">
+				<img {src} alt="userIcon" class="user_icon" />
+				{#if frame}
+					<img
+						src={`/images/userIconFrame/${frame}`}
+						alt="user-icon-frame"
+						class="user_icon_frame"
+					/>
+				{/if}
+			</div>
 			<div class="overlay" />
 			<span class="edit_icon">
 				<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -130,6 +155,17 @@
 
 			<input class="file_input" type="file" accept="image/*" on:change={handleFileInput} />
 		</label>
+
+		{#if $stats?.item?.frames}
+			<div>
+				{#each $stats.item.frames as src}
+					<button on:click={() => selectFrame(src)}>
+						<img src={`/images/userIconFrame/${src}`} alt="frame" />
+					</button>
+				{/each}
+			</div>
+		{/if}
+
 		<label>
 			あなたの名前: <input bind:value={name} />
 		</label>
@@ -158,8 +194,24 @@
 		display: none;
 	}
 
-	img {
+	.user_icon_area {
+		position: relative;
+	}
+
+	.user_icon {
 		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	.user_icon_frame {
+		width: 125%;
+		height: 125%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
+		border-radius: 50%;
 	}
 
 	.icon_container {

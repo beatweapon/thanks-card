@@ -10,6 +10,7 @@ export const PUT = async ({ request, params }) => {
 	const formData = await request.formData();
 
 	const name = formData.get('name');
+	const frame = formData.get('frame');
 	const iconImageFile = /** @type {File} */ (formData.get('iconImageFile'));
 
 	let picture = '';
@@ -32,6 +33,7 @@ export const PUT = async ({ request, params }) => {
 
 	const param = {
 		...(name && { name }),
+		...(frame && { frame }),
 		...(picture && { picture }),
 	};
 
