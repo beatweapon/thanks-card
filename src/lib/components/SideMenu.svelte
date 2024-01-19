@@ -37,6 +37,9 @@
 			<a on:click={close} href={`/${organizationId}/achievements`}>実績</a>
 		</li>
 		<li class="menu_item">
+			<a on:click={close} href={`/${organizationId}/shop`}>ショップ</a>
+		</li>
+		<li class="menu_item">
 			<a on:click={close} href={`/${organizationId}/admin`}>管理</a>
 		</li>
 	</ul>
