@@ -12,11 +12,11 @@ export const stats = writable();
 let unsubscribe;
 
 /**
- * 組織メンバーの統計を一覧を監視、更新する
+ * 組織メンバーの統計を監視、更新する
  * @param {string} organizationId
  * @param {string} uid
  */
-export const watchCardCollection = async (organizationId, uid) => {
+export const watchStatsCollection = async (organizationId, uid) => {
 	if (unsubscribe) {
 		return;
 	}
