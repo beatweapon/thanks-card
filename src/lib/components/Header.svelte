@@ -9,6 +9,9 @@
 	/** @type {string} */
 	export let organizationId;
 
+	/** @type {number} */
+	export let thanksPoint = 0;
+
 	/** @type {HTMLElement} */
 	let menuButtonRef;
 
@@ -55,6 +58,7 @@
 	</h1>
 
 	<div bind:this={menuButtonRef} class="menu">
+		<a on:click={closeMenu} href={`/${organizationId}/shop`}>{thanksPoint} Point</a>
 		<PlainButton on:click={toggleSideMenu}>メニュー</PlainButton>
 	</div>
 </header>
@@ -81,12 +85,14 @@
 		margin-left: 0.5rem;
 		font-size: 1rem;
 		color: white;
+		text-shadow: 1px 1px 1px #555, 1px 1px 1px #fff;
 	}
 
 	.menu {
 		margin-right: 0.5rem;
 		font-weight: bold;
 		color: white;
+		text-shadow: 1px 1px 1px #555, 1px 1px 1px #fff;
 	}
 
 	.header_space {
