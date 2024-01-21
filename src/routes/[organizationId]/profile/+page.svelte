@@ -196,11 +196,18 @@
 
 	.user_icon_area {
 		position: relative;
+		width: 20rem;
+		height: 20rem;
 	}
 
 	.user_icon {
 		width: 100%;
 		height: 100%;
+		object-fit: cover;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
 		border-radius: 50%;
 	}
 

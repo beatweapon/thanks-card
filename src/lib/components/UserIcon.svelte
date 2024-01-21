@@ -21,8 +21,9 @@
 	}
 
 	.user_icon {
-		width: 2rem;
-		height: 2rem;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -31,8 +32,8 @@
 	}
 
 	.user_icon_frame {
-		width: 2.5rem;
-		height: 2.5rem;
+		width: 125%;
+		height: 125%;
 		position: absolute;
 		top: 50%;
 		left: 50%;
