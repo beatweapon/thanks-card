@@ -50,6 +50,8 @@
 					<span>{item.price} point</span>
 					{#if $stats.item?.frames?.find((src) => src === item.src)}
 						<span>購入済み</span>
+					{:else if item.price > $stats.point}
+						<span>ポイント不足</span>
 					{:else}
 						<FloatButton disabled={item.price > $stats.point} on:click={() => buy(item)}
 							>購入する</FloatButton
