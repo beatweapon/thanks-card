@@ -43,14 +43,14 @@
         on:clickTo={() => dispatch('clickTo', card.to)}
       >
         <div class="reaction_area">
-          {#if card.to === currentUser.uid}
+          {#if card.reactions}
+            <span class="reaction">{card.reactions[0].emoji}</span>
+          {:else if card.to === currentUser.uid}
             <ReactionEditor
               {card}
               on:clickEmoji={(e) =>
                 dispatch('addReaction', { card: e.detail.card, emoji: e.detail.emoji })}
             />
-          {:else if card.reactions}
-            <span class="reaction">{card.reactions[0].emoji}</span>
           {/if}
         </div>
       </Card>
