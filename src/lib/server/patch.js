@@ -5,6 +5,7 @@ const db = getFirestore();
  * ポイントを送信数に合わせてアップデートするデータパッチ処理
  */
 export const patchPoint = async () => {
+	console.log('pathc');
 	const orgSnapShot = await getOrganizations();
 
 	orgSnapShot.forEach(async (orgDoc) => {
@@ -14,8 +15,11 @@ export const patchPoint = async () => {
 		const memberStatsSnapshot = await collectionRef.get();
 		memberStatsSnapshot.forEach(async (doc) => {
 			const data = doc.data();
+			const p = data.sentMessage ? data.sentMessage * 10 : 0;
+			const m = data.deletedMessage ? data.deletedMessage * 10 : 0;
+			const point = p - m;
 			await doc.ref.update({
-				point: data.sentMessage ? data.sentMessage * 10 - data.deletedMessage * 10 : 0,
+				point: point,
 			});
 		});
 	});
