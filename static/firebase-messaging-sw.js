@@ -44,23 +44,23 @@ const messaging = firebase.messaging();
 // For more info see:
 // https://firebase.google.com/docs/cloud-messaging/concept-options
 messaging.onBackgroundMessage((payload) => {
-	console.log('[firebase-messaging-sw.js] Received background message ', payload);
-	// Customize notification here
-	const notificationTitle = payload.data.title;
-	const notificationOptions = {
-		body: payload.data.body,
-		icon: payload.data.icon || '/favicon.png',
-		data: { path: payload.data.path || '/' },
-	};
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  const notificationTitle = payload.data.title;
+  const notificationOptions = {
+    body: payload.data.body,
+    icon: payload.data.icon || '/favicon.png',
+    data: { path: payload.data.path || '/' },
+  };
 
-	self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 self.addEventListener('notificationclick', (event) => {
-	event.notification.close();
+  event.notification.close();
 
-	const clickedNotification = event.notification;
-	const notificationData = clickedNotification.data;
+  const clickedNotification = event.notification;
+  const notificationData = clickedNotification.data;
 
-	event.waitUntil(clients.openWindow(notificationData.path));
+  event.waitUntil(clients.openWindow(notificationData.path));
 });

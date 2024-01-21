@@ -7,9 +7,9 @@ import { getFirestore, Timestamp } from 'firebase-admin/firestore';
  * @param {import('src/types/organization/memberAchievement').AchiecementsKeys} key
  */
 export const achieve = async (organizationId, uid, key) => {
-	await updateOrganizationMemberAchivement(organizationId, uid, {
-		[key]: Timestamp.fromDate(new Date()),
-	});
+  await updateOrganizationMemberAchivement(organizationId, uid, {
+    [key]: Timestamp.fromDate(new Date()),
+  });
 };
 
 /**
@@ -19,11 +19,11 @@ export const achieve = async (organizationId, uid, key) => {
  * @param {import('src/types/organization/memberAchievement').Achievements} data
  */
 export const updateOrganizationMemberAchivement = async (organizationId, uid, data) => {
-	const db = getFirestore();
-	const docRef = db.doc(`organizations/${organizationId}/membersAchievement/${uid}`);
+  const db = getFirestore();
+  const docRef = db.doc(`organizations/${organizationId}/membersAchievement/${uid}`);
 
-	return await docRef.set(data, { merge: true }).catch(async (e) => {
-		await docRef.set({});
-		await docRef.update(data);
-	});
+  return await docRef.set(data, { merge: true }).catch(async (e) => {
+    await docRef.set({});
+    await docRef.update(data);
+  });
 };

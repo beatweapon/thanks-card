@@ -9,12 +9,12 @@ import { getFirestore } from 'firebase-admin/firestore';
  * @property  {string[]} deviceTokens
  */
 export const fetchUser = async (uid) => {
-	const db = getFirestore();
+  const db = getFirestore();
 
-	const docRef = db.doc(`users/${uid}`);
-	const docSnap = await docRef.get();
+  const docRef = db.doc(`users/${uid}`);
+  const docSnap = await docRef.get();
 
-	if (docSnap.exists) {
-		return /** @type {User} */ (docSnap.data());
-	}
+  if (docSnap.exists) {
+    return /** @type {User} */ (docSnap.data());
+  }
 };

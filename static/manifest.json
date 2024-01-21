@@ -1,20 +1,20 @@
 {
-	"name": "ThanksCard",
-	"short_name": "ThanksCard",
-	"start_url": "/",
-	"display": "standalone",
-	"background_color": "#ffffff",
-	"theme_color": "#000000",
-	"icons": [
-		{
-			"src": "./favicon.png",
-			"sizes": "128x128",
-			"type": "image/png"
-		},
-		{
-			"src": "./favicon_144px.png",
-			"sizes": "144x144",
-			"type": "image/png"
-		}
-	]
+  "name": "ThanksCard",
+  "short_name": "ThanksCard",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "./favicon.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "./favicon_144px.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ]
 }

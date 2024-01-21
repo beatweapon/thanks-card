@@ -14,15 +14,15 @@ import { onAuthStateChanged } from 'firebase/auth';
 export const user = writable();
 
 onAuthStateChanged(auth, (u) => {
-	if (u) {
-		console.log('if', u);
-		// User is signed in, see docs for a list of available properties
-		// https://firebase.google.com/docs/reference/js/auth.user
-		user.set({ uid: u.uid });
-	} else {
-		console.log('else', u);
-		user.set(null);
-	}
+  if (u) {
+    console.log('if', u);
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    user.set({ uid: u.uid });
+  } else {
+    console.log('else', u);
+    user.set(null);
+  }
 });
 
 /**
@@ -35,12 +35,12 @@ export const organizations = writable([]);
  * @param {string} uid
  */
 export const fetchOrganizations = async (uid) => {
-	const docRef = doc(db, 'users', uid);
-	const docSnap = await getDoc(docRef);
+  const docRef = doc(db, 'users', uid);
+  const docSnap = await getDoc(docRef);
 
-	if (docSnap.exists()) {
-		organizations.set(/** @type {string[]} */ (docSnap.data()));
-	}
+  if (docSnap.exists()) {
+    organizations.set(/** @type {string[]} */ (docSnap.data()));
+  }
 };
 
 /**
@@ -49,11 +49,11 @@ export const fetchOrganizations = async (uid) => {
  * @param {string} organization
  */
 export const registerUser = async (uid, organization) => {
-	const docRef = await setDoc(
-		doc(db, 'users', uid),
-		{ organizations: arrayUnion(organization) },
-		{ merge: true }
-	).catch((e) => console.error(e));
+  const docRef = await setDoc(
+    doc(db, 'users', uid),
+    { organizations: arrayUnion(organization) },
+    { merge: true }
+  ).catch((e) => console.error(e));
 };
 
 /**
@@ -62,9 +62,9 @@ export const registerUser = async (uid, organization) => {
  * @param {string} token
  */
 export const registerDeviceToken = async (uid, token) => {
-	const docRef = await setDoc(
-		doc(db, 'users', uid),
-		{ deviceTokens: arrayUnion(token) },
-		{ merge: true }
-	).catch((e) => console.error(e));
+  const docRef = await setDoc(
+    doc(db, 'users', uid),
+    { deviceTokens: arrayUnion(token) },
+    { merge: true }
+  ).catch((e) => console.error(e));
 };

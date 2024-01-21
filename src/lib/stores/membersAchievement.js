@@ -17,17 +17,17 @@ let unsubscribe;
  * @param {string} uid
  */
 export const watchMemberAchievementCollection = (organizationId, uid) => {
-	if (unsubscribe) {
-		return;
-	}
+  if (unsubscribe) {
+    return;
+  }
 
-	const docRef = doc(db, `organizations/${organizationId}/membersAchievement/${uid}`);
+  const docRef = doc(db, `organizations/${organizationId}/membersAchievement/${uid}`);
 
-	unsubscribe = onSnapshot(docRef, (doc) => {
-		if (doc.exists()) {
-			achievement.set(
-				/** @type {import('src/types/organization/memberAchievement').Achievements} */ (doc.data())
-			);
-		}
-	});
+  unsubscribe = onSnapshot(docRef, (doc) => {
+    if (doc.exists()) {
+      achievement.set(
+        /** @type {import('src/types/organization/memberAchievement').Achievements} */ (doc.data())
+      );
+    }
+  });
 };

@@ -2,24 +2,24 @@ import { error } from '@sveltejs/kit';
 import { getFirestore } from 'firebase-admin/firestore';
 
 export const load = async ({ locals, params, url }) => {
-	const currentUser = /** @type  {import('src/routes/+page.server.js').CurrentUser} */ (
-		locals.currentUser
-	);
+  const currentUser = /** @type  {import('src/routes/+page.server.js').CurrentUser} */ (
+    locals.currentUser
+  );
 
-	const organization = await fetchOrganization(params.organizationId);
+  const organization = await fetchOrganization(params.organizationId);
 
-	if (!organization) {
-		throw error(404, {
-			message: 'Not found',
-		});
-	}
+  if (!organization) {
+    throw error(404, {
+      message: 'Not found',
+    });
+  }
 
-	const members = await fetchOrganizationMembers(params.organizationId);
+  const members = await fetchOrganizationMembers(params.organizationId);
 
-	return {
-		currentUser,
-		organization: { ...organization, members },
-	};
+  return {
+    currentUser,
+    organization: { ...organization, members },
+  };
 };
 
 /**
@@ -30,14 +30,14 @@ export const load = async ({ locals, params, url }) => {
  * @property {string} name 名前
  */
 const fetchOrganization = async (organizationId) => {
-	const db = getFirestore();
+  const db = getFirestore();
 
-	const docRef = db.doc(`organizations/${organizationId}`);
-	const docSnap = await docRef.get();
+  const docRef = db.doc(`organizations/${organizationId}`);
+  const docSnap = await docRef.get();
 
-	if (docSnap.exists) {
-		return /** @type {Organization} */ (docSnap.data());
-	}
+  if (docSnap.exists) {
+    return /** @type {Organization} */ (docSnap.data());
+  }
 };
 
 /**
@@ -45,18 +45,18 @@ const fetchOrganization = async (organizationId) => {
  * @param {string} organizationId
  */
 const fetchOrganizationMembers = async (organizationId) => {
-	const db = getFirestore();
-	const collectionRef = db.collection(`organizations/${organizationId}/members/`);
-	const query = collectionRef.orderBy('createdAt', 'desc');
-	const snapshot = await query.get();
-	return /** @type {import('src/types/organization/member').OrganizationMember[]} */ (
-		snapshot.docs.map((s) => {
-			const data = s.data();
+  const db = getFirestore();
+  const collectionRef = db.collection(`organizations/${organizationId}/members/`);
+  const query = collectionRef.orderBy('createdAt', 'desc');
+  const snapshot = await query.get();
+  return /** @type {import('src/types/organization/member').OrganizationMember[]} */ (
+    snapshot.docs.map((s) => {
+      const data = s.data();
 
-			return {
-				...data,
-				createdAt: data.createdAt.toDate(),
-			};
-		})
-	);
+      return {
+        ...data,
+        createdAt: data.createdAt.toDate(),
+      };
+    })
+  );
 };

@@ -17,17 +17,17 @@ let unsubscribe;
  * @param {string} uid
  */
 export const watchStatsCollection = async (organizationId, uid) => {
-	if (unsubscribe) {
-		return;
-	}
+  if (unsubscribe) {
+    return;
+  }
 
-	const docRef = doc(db, `organizations/${organizationId}/membersStats/${uid}`);
+  const docRef = doc(db, `organizations/${organizationId}/membersStats/${uid}`);
 
-	unsubscribe = onSnapshot(docRef, (doc) => {
-		if (doc.exists()) {
-			stats.set(/** @type {import('src/types/organization/memberStats').Stats} */ (doc.data()));
-		}
-	});
+  unsubscribe = onSnapshot(docRef, (doc) => {
+    if (doc.exists()) {
+      stats.set(/** @type {import('src/types/organization/memberStats').Stats} */ (doc.data()));
+    }
+  });
 };
 
 /**
@@ -36,10 +36,10 @@ export const watchStatsCollection = async (organizationId, uid) => {
  * @param {string} uid
  */
 export const fetchStats = async (organizationId, uid) => {
-	const docRef = doc(db, `organizations/${organizationId}/membersStats/${uid}`);
-	const docSnap = await getDoc(docRef);
+  const docRef = doc(db, `organizations/${organizationId}/membersStats/${uid}`);
+  const docSnap = await getDoc(docRef);
 
-	if (docSnap.exists()) {
-		stats.set(/** @type {import('src/types/organization/memberStats').Stats} */ (docSnap.data()));
-	}
+  if (docSnap.exists()) {
+    stats.set(/** @type {import('src/types/organization/memberStats').Stats} */ (docSnap.data()));
+  }
 };

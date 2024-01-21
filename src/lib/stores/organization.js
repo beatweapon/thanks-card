@@ -18,12 +18,12 @@ export const organization = writable();
  * @param {string} organizationId
  */
 export const fetchOrganization = async (organizationId) => {
-	const docRef = doc(db, `organizations`, organizationId);
-	const docSnap = await getDoc(docRef);
+  const docRef = doc(db, `organizations`, organizationId);
+  const docSnap = await getDoc(docRef);
 
-	if (docSnap.exists()) {
-		organization.set(/** @type {Organization} */ (docSnap.data()));
-	}
+  if (docSnap.exists()) {
+    organization.set(/** @type {Organization} */ (docSnap.data()));
+  }
 };
 
 /**
@@ -44,12 +44,12 @@ export const organizationUser = writable();
  * @param {string} uid
  */
 export const fetchOrganizationUser = async (organization, uid) => {
-	const docRef = doc(db, `organizations/${organization}/members`, uid);
-	const docSnap = await getDoc(docRef);
+  const docRef = doc(db, `organizations/${organization}/members`, uid);
+  const docSnap = await getDoc(docRef);
 
-	if (docSnap.exists()) {
-		organizationUser.set(/** @type {OrganizationUser} */ (docSnap.data()));
-	}
+  if (docSnap.exists()) {
+    organizationUser.set(/** @type {OrganizationUser} */ (docSnap.data()));
+  }
 };
 
 /**
@@ -58,10 +58,10 @@ export const fetchOrganizationUser = async (organization, uid) => {
  * @param {OrganizationUser} user
  */
 export const registerMember = async (organization, user) => {
-	await setDoc(doc(db, `organizations/${organization}/members`, user.id), {
-		...user,
-		createdAt: Timestamp.now(),
-	});
+  await setDoc(doc(db, `organizations/${organization}/members`, user.id), {
+    ...user,
+    createdAt: Timestamp.now(),
+  });
 
-	organizationUser.set(/** @type {OrganizationUser} */ (user));
+  organizationUser.set(/** @type {OrganizationUser} */ (user));
 };

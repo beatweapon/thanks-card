@@ -1,257 +1,257 @@
 <script>
-	import { base } from '$app/paths';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import { stats } from '$lib/stores/memberStats';
-	import FloatButton from 'src/lib/components/design/FloatButton.svelte';
-	import PlainButton from 'src/lib/components/design/PlainButton.svelte';
-	export let data;
+  import { base } from '$app/paths';
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import { stats } from '$lib/stores/memberStats';
+  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  export let data;
 
-	/** @type {boolean} */
-	let processing = false;
+  /** @type {boolean} */
+  let processing = false;
 
-	/** @type {File} */
-	let iconImageFile;
+  /** @type {File} */
+  let iconImageFile;
 
-	const me = data.organization.members.find((m) => m.id === data.currentUser.uid);
+  const me = data.organization.members.find((m) => m.id === data.currentUser.uid);
 
-	let src = me?.picture || data.currentUser.picture;
+  let src = me?.picture || data.currentUser.picture;
 
-	/**
-	 * ドロップエリアでのファイル選択を処理する関数
-	 * @param {DragEvent} event - ドラッグイベント
-	 */
-	function handleDrop(event) {
-		event.preventDefault();
-		const dt = event.dataTransfer;
+  /**
+   * ドロップエリアでのファイル選択を処理する関数
+   * @param {DragEvent} event - ドラッグイベント
+   */
+  function handleDrop(event) {
+    event.preventDefault();
+    const dt = event.dataTransfer;
 
-		if (!dt) return;
+    if (!dt) return;
 
-		const droppedFiles = dt.files;
+    const droppedFiles = dt.files;
 
-		if (droppedFiles[0].type.startsWith('image/')) {
-			iconImageFile = droppedFiles[0];
+    if (droppedFiles[0].type.startsWith('image/')) {
+      iconImageFile = droppedFiles[0];
 
-			iconPreview();
-		}
-	}
+      iconPreview();
+    }
+  }
 
-	/**
-	 * ドラッグオーバーイベントを処理する関数
-	 * @param {DragEvent} event - ドラッグイベント
-	 */
-	const handleDragOver = (event) => event.preventDefault();
+  /**
+   * ドラッグオーバーイベントを処理する関数
+   * @param {DragEvent} event - ドラッグイベント
+   */
+  const handleDragOver = (event) => event.preventDefault();
 
-	/**
-	 * @param {Event} event
-	 */
-	const handleFileInput = (event) => {
-		const target = /** @type {HTMLInputElement} */ (event.target);
-		const files = target.files;
+  /**
+   * @param {Event} event
+   */
+  const handleFileInput = (event) => {
+    const target = /** @type {HTMLInputElement} */ (event.target);
+    const files = target.files;
 
-		if (files) {
-			iconImageFile = files[0];
+    if (files) {
+      iconImageFile = files[0];
 
-			iconPreview();
-		}
-	};
+      iconPreview();
+    }
+  };
 
-	const iconPreview = () => {
-		const reader = new FileReader();
-		reader.onload = (e) => {
-			src = /** @type {string} */ (e?.target?.result); // 画像のソースをセット
-		};
-		reader.readAsDataURL(iconImageFile); // ファイルを読み込んで画像ソースに変換
-	};
+  const iconPreview = () => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      src = /** @type {string} */ (e?.target?.result); // 画像のソースをセット
+    };
+    reader.readAsDataURL(iconImageFile); // ファイルを読み込んで画像ソースに変換
+  };
 
-	let name = me?.name;
+  let name = me?.name;
 
-	let frame = me?.frame;
+  let frame = me?.frame;
 
-	/** @type {boolean} */
-	$: disabled = !name || processing;
+  /** @type {boolean} */
+  $: disabled = !name || processing;
 
-	/**
-	 *
-	 * @param {string} src
-	 */
-	const selectFrame = (src) => {
-		console.log('hoeg');
-		frame = src;
-	};
+  /**
+   *
+   * @param {string} src
+   */
+  const selectFrame = (src) => {
+    console.log('hoeg');
+    frame = src;
+  };
 
-	const changeName = async () => {
-		if (disabled) return;
+  const changeName = async () => {
+    if (disabled) return;
 
-		processing = true;
+    processing = true;
 
-		const memberId = data.currentUser.uid;
+    const memberId = data.currentUser.uid;
 
-		const formData = new FormData();
-		if (iconImageFile) {
-			formData.append('iconImageFile', iconImageFile);
-		}
+    const formData = new FormData();
+    if (iconImageFile) {
+      formData.append('iconImageFile', iconImageFile);
+    }
 
-		if (name) {
-			formData.append('name', name);
-		}
+    if (name) {
+      formData.append('name', name);
+    }
 
-		if (frame) {
-			formData.append('frame', frame);
-		}
+    if (frame) {
+      formData.append('frame', frame);
+    }
 
-		await fetch(`${base}/api/organizations/${$page.params.organizationId}/members/${memberId}`, {
-			method: 'PUT',
-			body: formData,
-		}).finally(() => {
-			processing = false;
-		});
+    await fetch(`${base}/api/organizations/${$page.params.organizationId}/members/${memberId}`, {
+      method: 'PUT',
+      body: formData,
+    }).finally(() => {
+      processing = false;
+    });
 
-		goToOrganizationPage();
-	};
+    goToOrganizationPage();
+  };
 
-	const goToOrganizationPage = () => {
-		goto(removeLastPathFromURL($page.url.toString()));
-	};
+  const goToOrganizationPage = () => {
+    goto(removeLastPathFromURL($page.url.toString()));
+  };
 
-	/**
-	 * @param {string} url
-	 */
-	const removeLastPathFromURL = (url) => {
-		// 正規表現でURLから最後のスラッシュとその後の文字列を削除
-		return url.replace(/\/[^/]+$/, '');
-	};
+  /**
+   * @param {string} url
+   */
+  const removeLastPathFromURL = (url) => {
+    // 正規表現でURLから最後のスラッシュとその後の文字列を削除
+    return url.replace(/\/[^/]+$/, '');
+  };
 </script>
 
 <div class="center">
-	<div>
-		<label
-			on:drop={handleDrop}
-			on:dragover={handleDragOver}
-			role="region"
-			aria-label="file drop area"
-			class="file_drop_area icon_container"
-		>
-			<div class="user_icon_area">
-				<img {src} alt="userIcon" class="user_icon" />
-				{#if frame}
-					<img
-						src={`/images/userIconFrame/${frame}`}
-						alt="user-icon-frame"
-						class="user_icon_frame"
-					/>
-				{/if}
-			</div>
-			<div class="overlay" />
-			<span class="edit_icon">
-				<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
-					<path
-						fill="#ffffff"
-						fill-rule="evenodd"
-						d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm14 .069a1 1 0 01-1 1h-2.931V14a1 1 0 11-2 0v-2.931H6a1 1 0 110-2h3.069V6a1 1 0 112 0v3.069H14a1 1 0 011 1z"
-					/>
-				</svg>
-			</span>
+  <div>
+    <label
+      on:drop={handleDrop}
+      on:dragover={handleDragOver}
+      role="region"
+      aria-label="file drop area"
+      class="file_drop_area icon_container"
+    >
+      <div class="user_icon_area">
+        <img {src} alt="userIcon" class="user_icon" />
+        {#if frame}
+          <img
+            src={`/images/userIconFrame/${frame}`}
+            alt="user-icon-frame"
+            class="user_icon_frame"
+          />
+        {/if}
+      </div>
+      <div class="overlay" />
+      <span class="edit_icon">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path
+            fill="#ffffff"
+            fill-rule="evenodd"
+            d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm14 .069a1 1 0 01-1 1h-2.931V14a1 1 0 11-2 0v-2.931H6a1 1 0 110-2h3.069V6a1 1 0 112 0v3.069H14a1 1 0 011 1z"
+          />
+        </svg>
+      </span>
 
-			<input class="file_input" type="file" accept="image/*" on:change={handleFileInput} />
-		</label>
+      <input class="file_input" type="file" accept="image/*" on:change={handleFileInput} />
+    </label>
 
-		{#if $stats?.item?.frames}
-			<div>
-				{#each $stats.item.frames as src}
-					<button on:click={() => selectFrame(src)}>
-						<img src={`/images/userIconFrame/${src}`} alt="frame" />
-					</button>
-				{/each}
-			</div>
-		{/if}
+    {#if $stats?.item?.frames}
+      <div>
+        {#each $stats.item.frames as src}
+          <button on:click={() => selectFrame(src)}>
+            <img src={`/images/userIconFrame/${src}`} alt="frame" />
+          </button>
+        {/each}
+      </div>
+    {/if}
 
-		<label>
-			あなたの名前: <input bind:value={name} />
-		</label>
-		<FloatButton on:click={changeName} {disabled}>変更する</FloatButton>
-	</div>
-	<PlainButton on:click={goToOrganizationPage}>戻る</PlainButton>
+    <label>
+      あなたの名前: <input bind:value={name} />
+    </label>
+    <FloatButton on:click={changeName} {disabled}>変更する</FloatButton>
+  </div>
+  <PlainButton on:click={goToOrganizationPage}>戻る</PlainButton>
 </div>
 
 <style>
-	.center {
-		height: calc(100dvh - 40px);
-		margin: 0 1rem;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-	}
+  .center {
+    height: calc(100dvh - 40px);
+    margin: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
 
-	.file_drop_area {
-		display: block;
-		width: 20rem;
-		height: 20rem;
-	}
+  .file_drop_area {
+    display: block;
+    width: 20rem;
+    height: 20rem;
+  }
 
-	.file_input {
-		display: none;
-	}
+  .file_input {
+    display: none;
+  }
 
-	.user_icon_area {
-		position: relative;
-		width: 20rem;
-		height: 20rem;
-	}
+  .user_icon_area {
+    position: relative;
+    width: 20rem;
+    height: 20rem;
+  }
 
-	.user_icon {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		translate: -50% -50%;
-		border-radius: 50%;
-	}
+  .user_icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+  }
 
-	.user_icon_frame {
-		width: 125%;
-		height: 125%;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		translate: -50% -50%;
-		border-radius: 50%;
-	}
+  .user_icon_frame {
+    width: 125%;
+    height: 125%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+  }
 
-	.icon_container {
-		position: relative;
-		cursor: pointer;
-		border: 0.3rem dashed #aaa;
-	}
+  .icon_container {
+    position: relative;
+    cursor: pointer;
+    border: 0.3rem dashed #aaa;
+  }
 
-	.overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.5);
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-	.icon_container:hover .overlay,
-	.icon_container:hover .edit_icon {
-		opacity: 1;
-	}
+  .icon_container:hover .overlay,
+  .icon_container:hover .edit_icon {
+    opacity: 1;
+  }
 
-	.edit_icon {
-		width: 4rem;
-		height: 4rem;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		fill: white;
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
+  .edit_icon {
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 </style>

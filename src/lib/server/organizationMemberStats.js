@@ -6,13 +6,13 @@ import { getFirestore } from 'firebase-admin/firestore';
  * @param {string} uid
  */
 export const fetchOrganizationMemberStats = async (organizationId, uid) => {
-	const db = getFirestore();
-	const docRef = db.doc(`organizations/${organizationId}/membersStats/${uid}`);
-	const docSnap = await docRef.get();
+  const db = getFirestore();
+  const docRef = db.doc(`organizations/${organizationId}/membersStats/${uid}`);
+  const docSnap = await docRef.get();
 
-	if (docSnap.exists) {
-		return /** @type {import('src/types/organization/memberStats').Stats} */ (docSnap.data());
-	}
+  if (docSnap.exists) {
+    return /** @type {import('src/types/organization/memberStats').Stats} */ (docSnap.data());
+  }
 };
 
 /**
@@ -22,11 +22,11 @@ export const fetchOrganizationMemberStats = async (organizationId, uid) => {
  * @param {import('src/types/organization/memberStats').UpdateData} data
  */
 export const updateOrganizationMemberStats = async (organizationId, uid, data) => {
-	const db = getFirestore();
-	const docRef = db.doc(`organizations/${organizationId}/membersStats/${uid}`);
+  const db = getFirestore();
+  const docRef = db.doc(`organizations/${organizationId}/membersStats/${uid}`);
 
-	return await docRef.update(data).catch(async (e) => {
-		await docRef.set({});
-		await docRef.update(data);
-	});
+  return await docRef.update(data).catch(async (e) => {
+    await docRef.set({});
+    await docRef.update(data);
+  });
 };

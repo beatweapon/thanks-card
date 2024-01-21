@@ -1,3 +1,3 @@
 <div class="card_back">
-	<slot />
+  <slot />
 </div>
