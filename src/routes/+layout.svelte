@@ -70,7 +70,7 @@
 {:else if data.currentUser}
   <slot />
   <!-- <button on:click={signOut}> Logout </button> -->
-  <button on:click={install}> インストール </button>
+  <!-- <button on:click={install}> インストール </button> -->
 {:else}
   <div class="center">
     <h1>Thanks Card</h1>
