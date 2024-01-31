@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { members, watchMemberCollection } from '$lib/stores/members.js';
+  import { memberGroups, watchMemberGroupCollection } from '$lib/stores/memberGroup.js';
   import Qr from '$lib/components/Qr.svelte';
   import In7DaysCards from 'src/lib/components/views/[organizationId]/In7DaysCards.svelte';
   import AllCards from 'src/lib/components/views/[organizationId]/AllCards.svelte';
@@ -18,8 +19,9 @@
   };
 
   watchMemberCollection($page.params.organizationId);
+  watchMemberGroupCollection($page.params.organizationId);
 
-  const filterOption = { from: '', to: '' };
+  const filterOption = { from: '', to: '', memberGroupId: '' };
 
   /**
    * カスタムイベントを処理する関数
@@ -30,8 +32,6 @@
   const setFilterOptionFrom = (uid) => {
     filterOption.to = '';
     filterOption.from = filterOption.from !== uid ? uid : '';
-
-    cardFilter = (card) => !filterOption.from || card.from === filterOption.from;
   };
 
   /**
@@ -43,15 +43,42 @@
   const setFilterOptionTo = (uid) => {
     filterOption.from = '';
     filterOption.to = filterOption.to !== uid ? uid : '';
-
-    cardFilter = (card) => !filterOption.to || card.to === filterOption.to;
   };
 
   /**
-   *
-   * @param {import('src/types/organization/card').ThanksCard} card
+   * フィルター条件にグループを設定する
+   * @param {string} gid
    */
-  let cardFilter = (card) => true;
+  const setFilterMemberGroupe = (gid) => {
+    filterOption.memberGroupId = filterOption.memberGroupId !== gid ? gid : '';
+  };
+
+  /**
+   * @type {(status: import('src/types/organization/card').ThanksCard) => boolean}
+   */
+  $: cardFilter = (card) => {
+    if (filterOption.memberGroupId) {
+      const memberIds = $memberGroups.find((m) => m.id === filterOption.memberGroupId)?.memberIds;
+
+      if (!memberIds?.find((id) => id === card.to)) {
+        return false;
+      }
+    }
+
+    if (filterOption.to) {
+      if (filterOption.to !== card.to) {
+        return false;
+      }
+    }
+
+    if (filterOption.from) {
+      if (filterOption.from !== card.from) {
+        return false;
+      }
+    }
+
+    return true;
+  };
   /** @type {Object<string, NodeJS.Timeout>} */
   let cardDeletingSlot = {};
 
@@ -93,6 +120,10 @@
     全て
   {/if}
 </FloatButton>
+
+{#each $memberGroups as group}
+  <FloatButton on:click={() => setFilterMemberGroupe(group.id)}>{group.name}</FloatButton>
+{/each}
 
 {#if isShowAllCardList}
   <AllCards
