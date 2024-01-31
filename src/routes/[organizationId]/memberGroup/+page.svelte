@@ -25,6 +25,11 @@
 
 <button on:click={() => goToCreate()}>新規作成</button>
 
-{#each $memberGroups as group}
-  <button on:click={() => goToEdit(group.id)}>{group.name} ({group.memberIds.length}人)</button>
-{/each}
+<div>グループ一覧</div>
+<ul>
+  {#each $memberGroups as group}
+    <li>
+      <button on:click={() => goToEdit(group.id)}>{group.name} ({group.memberIds.length}人)</button>
+    </li>
+  {/each}
+</ul>
