@@ -6,7 +6,7 @@ export const POST = async ({ request, params }) => {
   const { organizationId } = params;
   const { name, memberIds } = await request.json();
 
-  const collectionRef = db.collection(`organizations/${organizationId}/memberGroupe`);
+  const collectionRef = db.collection(`organizations/${organizationId}/memberGroup`);
   const docRef = await collectionRef.add({
     name,
     memberIds,
