@@ -42,6 +42,9 @@
     <li class="menu_item">
       <a on:click={close} href={`/${organizationId}/admin`}>管理</a>
     </li>
+    <li class="menu_item">
+      <a on:click={close} href={`/${organizationId}/memberGroup`}>メンバーグループ</a>
+    </li>
   </ul>
 </nav>
 
