@@ -49,7 +49,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.data.title;
   const notificationOptions = {
     body: payload.data.body,
-    icon: payload.data.icon || '/favicon.png',
+    icon: payload.data.icon || '/favicon.svg',
     data: { path: payload.data.path || '/' },
   };
 
