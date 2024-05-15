@@ -1,7 +1,9 @@
 import admin from 'firebase-admin';
 
-const app = admin.initializeApp();
-export const auth = app.auth();
+if (!admin.apps.length) {
+  admin.initializeApp();
+}
+export const auth = admin.auth();
 
 /**
  * Push通知送信処理
