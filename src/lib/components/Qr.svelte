@@ -10,6 +10,6 @@
 </script>
 
 <img
-  src={`https://chart.apis.google.com/chart?cht=qr&chs=${width}x${height}&chl=${url}`}
+  src={`https://api.qrserver.com/v1/create-qr-code/?size=${width}x${height}&data=${url}`}
   alt="qr"
 />
