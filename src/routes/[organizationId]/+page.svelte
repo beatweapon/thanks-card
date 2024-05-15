@@ -9,6 +9,8 @@
   import AllCards from 'src/lib/components/views/[organizationId]/AllCards.svelte';
   import FloatActionButton from 'src/lib/components/design/FloatActionButton.svelte';
   import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import User from '$lib/components/User.svelte';
 
   export let data;
 
@@ -46,11 +48,12 @@
   };
 
   /**
-   * フィルター条件にグループを設定する
-   * @param {string} gid
+   *
+   * @param {string} uid
    */
-  const setFilterMemberGroupe = (gid) => {
-    filterOption.memberGroupId = filterOption.memberGroupId !== gid ? gid : '';
+  const setFilterOptionFromAndTo = (uid) => {
+    filterOption.from = '';
+    filterOption.to = uid;
   };
 
   /**
@@ -65,19 +68,24 @@
       }
     }
 
+    // フィルター設定がないならtrueを返す
+    if (!filterOption.to && !filterOption.from) {
+      return true;
+    }
+
     if (filterOption.to) {
-      if (filterOption.to !== card.to) {
-        return false;
+      if (filterOption.to === card.to) {
+        return true;
       }
     }
 
     if (filterOption.from) {
-      if (filterOption.from !== card.from) {
-        return false;
+      if (filterOption.from === card.from) {
+        return true;
       }
     }
 
-    return true;
+    return false;
   };
   /** @type {Object<string, NodeJS.Timeout>} */
   let cardDeletingSlot = {};
@@ -121,9 +129,15 @@
   {/if}
 </FloatButton>
 
-{#each $memberGroups as group}
-  <FloatButton on:click={() => setFilterMemberGroupe(group.id)}>{group.name}</FloatButton>
-{/each}
+<div class="members">
+  {#each $members as member}
+    <PlainButton on:click={() => setFilterOptionFromAndTo(member.id)}>
+      <div class="member" class:selected={filterOption.to === member.id}>
+        <User user={member} />
+      </div>
+    </PlainButton>
+  {/each}
+</div>
 
 {#if isShowAllCardList}
   <AllCards
@@ -160,5 +174,21 @@
     bottom: 2rem;
     right: 2rem;
     z-index: 5;
+  }
+
+  .members {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .member {
+    border: 1px solid #ddd;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+  }
+
+  .member.selected {
+    border: 1px solid #f00;
   }
 </style>
