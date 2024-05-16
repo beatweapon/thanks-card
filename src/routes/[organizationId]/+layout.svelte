@@ -3,7 +3,7 @@
   import { error } from '@sveltejs/kit';
   import { page } from '$app/stores';
   import { stats } from '$lib/stores/memberStats';
-  import Header from 'src/lib/components/Header.svelte';
+  import Header from '$lib/components/Header.svelte';
   import { fetchStats } from '$lib/stores/memberStats';
   import { watchMemberAchievementCollection } from '$lib/stores/membersAchievement.js';
   import { watchStatsCollection } from '$lib/stores/memberStats.js';

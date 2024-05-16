@@ -6,9 +6,9 @@
   import { getMessaging, getToken } from 'firebase/messaging';
   import { app } from '$lib/firebase_client';
   import { registerDeviceToken } from '$lib/stores/user';
-  import Loading from 'src/lib/components/Loading.svelte';
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import Loading from '$lib/components/Loading.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
 
   export let data;
 

@@ -3,8 +3,8 @@
   import { page } from '$app/stores';
   import { members, watchMemberCollection } from '$lib/stores/members.js';
   import { cards, watchCardCollection } from '$lib/stores/cardOwn.js';
-  import CardList from 'src/lib/components/views/[organizationId]/CardList.svelte';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import CardList from '$lib/components/views/[organizationId]/CardList.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
 
   export let data;
 

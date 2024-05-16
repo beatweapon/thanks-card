@@ -3,7 +3,7 @@
   import { send, receive } from '$lib/animations/transition.js';
   import { flip } from 'svelte/animate';
   import Card from '$lib/components/Card.svelte';
-  import ReactionEditor from 'src/lib/components/views/[organizationId]/ReactionEditor.svelte';
+  import ReactionEditor from '$lib/components/views/[organizationId]/ReactionEditor.svelte';
 
   /** @type {import('src/types/user').User} */
   export let currentUser;

@@ -5,11 +5,11 @@
   import { members, watchMemberCollection } from '$lib/stores/members.js';
   import { memberGroups, watchMemberGroupCollection } from '$lib/stores/memberGroup.js';
   import Qr from '$lib/components/Qr.svelte';
-  import In7DaysCards from 'src/lib/components/views/[organizationId]/In7DaysCards.svelte';
-  import AllCards from 'src/lib/components/views/[organizationId]/AllCards.svelte';
-  import FloatActionButton from 'src/lib/components/design/FloatActionButton.svelte';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import In7DaysCards from '$lib/components/views/[organizationId]/In7DaysCards.svelte';
+  import AllCards from '$lib/components/views/[organizationId]/AllCards.svelte';
+  import FloatActionButton from '$lib/components/design/FloatActionButton.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
   import User from '$lib/components/User.svelte';
 
   export let data;

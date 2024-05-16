@@ -1,5 +1,5 @@
 <script>
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
   import User from '$lib/components/User.svelte';
   import { createEventDispatcher } from 'svelte';
   import * as designs from '$lib/components/cardBackgrounds';

@@ -2,8 +2,8 @@
   import { onMount } from 'svelte';
   import './global.css';
   import auth from '$lib/auth';
-  import Loading from 'src/lib/components/Loading.svelte';
-  import FloatRoundButton from 'src/lib/components/design/FloatRoundButton.svelte';
+  import Loading from '$lib/components/Loading.svelte';
+  import FloatRoundButton from '$lib/components/design/FloatRoundButton.svelte';
   export let data;
 
   let isProcessing = false;

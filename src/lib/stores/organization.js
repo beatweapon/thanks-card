@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
-import { db } from 'src/lib/firebase_client';
+import { db } from '$lib/firebase_client';
 
 /**
  * @typedef Organization

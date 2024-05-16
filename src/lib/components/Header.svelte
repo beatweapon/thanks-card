@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
   import SideMenu from './SideMenu.svelte';
 
   /** @type {string} */

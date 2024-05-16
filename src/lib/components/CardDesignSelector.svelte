@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
   import * as backgrounds from '$lib/components/cardBackgrounds';
 
   /** @type {string} */

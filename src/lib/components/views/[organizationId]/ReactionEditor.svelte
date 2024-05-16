@@ -1,6 +1,6 @@
 <script>
-  import FloatRoundButton from 'src/lib/components/design/FloatRoundButton.svelte';
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import FloatRoundButton from '$lib/components/design/FloatRoundButton.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
   import { createEventDispatcher } from 'svelte';
 
   /** @type {import('src/types/organization/card').ThanksCard} */

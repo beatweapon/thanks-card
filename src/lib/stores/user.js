@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
-import { auth, db } from 'src/lib/firebase_client';
+import { auth, db } from '$lib/firebase_client';
 import { onAuthStateChanged } from 'firebase/auth';
 
 /**

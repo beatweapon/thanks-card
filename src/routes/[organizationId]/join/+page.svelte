@@ -1,9 +1,9 @@
 <script>
-  import { registerMember } from 'src/lib/stores/organization';
-  import { registerUser } from 'src/lib/stores/user';
+  import { registerMember } from '$lib/stores/organization';
+  import { registerUser } from '$lib/stores/user';
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
   export let data;
 
   let processing = false;

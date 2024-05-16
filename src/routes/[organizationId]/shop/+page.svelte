@@ -3,8 +3,8 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { stats } from '$lib/stores/memberStats';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
-  import PlainButton from 'src/lib/components/design/PlainButton.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
+  import PlainButton from '$lib/components/design/PlainButton.svelte';
 
   let items = [{ src: '1.svg', price: 300 }];
 

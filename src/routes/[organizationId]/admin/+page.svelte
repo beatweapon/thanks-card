@@ -1,7 +1,7 @@
 <script>
   import { members, watchMemberCollection } from '$lib/stores/members.js';
   import { page } from '$app/stores';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
   watchMemberCollection($page.params.organizationId);
 
   $: $members.forEach((m) => {

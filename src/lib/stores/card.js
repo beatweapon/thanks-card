@@ -8,7 +8,7 @@ import {
   orderBy,
   onSnapshot,
 } from 'firebase/firestore';
-import { db } from 'src/lib/firebase_client';
+import { db } from '$lib/firebase_client';
 
 /**
  * カード一覧

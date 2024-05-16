@@ -1,7 +1,7 @@
 <script>
   import { cards, watchCardCollection } from '$lib/stores/card.js';
-  import SendRangking from 'src/lib/components/views/[organizationId]/SendRangking.svelte';
-  import CardList from 'src/lib/components/views/[organizationId]/CardList.svelte';
+  import SendRangking from '$lib/components/views/[organizationId]/SendRangking.svelte';
+  import CardList from '$lib/components/views/[organizationId]/CardList.svelte';
 
   /** @type {string} */
   export let organizationId;

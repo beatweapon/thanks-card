@@ -1,7 +1,7 @@
 <script>
   import Qr from '$lib/components/Qr.svelte';
   import { page } from '$app/stores';
-  import FloatButton from 'src/lib/components/design/FloatButton.svelte';
+  import FloatButton from '$lib/components/design/FloatButton.svelte';
 
   /** @type {import('./$types').ActionData} */
   export let form;
