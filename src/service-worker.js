@@ -38,6 +38,11 @@ self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
     const cache = await caches.open(CACHE);
 
+    // Chrome extension URL schemes are not cacheable
+    if (url.protocol === 'chrome-extension:') {
+      return fetch(event.request);
+    }
+
     // `build`/`files` can always be served from the cache
     if (ASSETS.includes(url.pathname)) {
       return cache.match(url.pathname);
