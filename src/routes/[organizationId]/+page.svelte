@@ -52,8 +52,8 @@
    * @param {string} uid
    */
   const setFilterOptionFromAndTo = (uid) => {
-    filterOption.from = '';
-    filterOption.to = uid;
+    filterOption.from = uid;
+    filterOption.to = '';
   };
 
   /**
