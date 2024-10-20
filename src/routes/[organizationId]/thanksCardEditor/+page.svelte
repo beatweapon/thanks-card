@@ -93,7 +93,7 @@
 
 <h3>誰に送る？</h3>
 <div class="members">
-  {#each $members as member}
+  {#each data.organization.members as member}
     <PlainButton on:click={() => (to = member.id)}>
       <div class="member" class:selected={to === member.id}>
         <User user={member} />

@@ -130,7 +130,7 @@
 </FloatButton>
 
 <div class="members">
-  {#each $members as member}
+  {#each data.organization.members as member}
     <PlainButton on:click={() => setFilterOptionFromAndTo(member.id)}>
       <div class="member" class:selected={filterOption.to === member.id}>
         <User user={member} />
