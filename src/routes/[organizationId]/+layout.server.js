@@ -21,7 +21,7 @@ export const load = async ({ locals, params, url }) => {
   const members = allMembers.filter((m) => m.permission.read);
 
   // 読み込み権限がないからと言って自身をメンバーから除外するとエラーになるため自身は含める
-  if (!members.findIndex((m) => m !== currentUser.uid)) {
+  if (!members.some((m) => m.id === currentUser.uid)) {
     members.push(me);
   }
 
