@@ -76,7 +76,6 @@
    * @param {string} src
    */
   const selectFrame = (src) => {
-    console.log('hoeg');
     frame = src;
   };
 

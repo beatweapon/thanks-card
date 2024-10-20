@@ -18,7 +18,7 @@ export const load = async ({ locals, params, url }) => {
 
   return {
     currentUser,
-    organization: { ...organization, members },
+    organization: { ...organization, members: members.filter((m) => m.permission.read) },
   };
 };
 
