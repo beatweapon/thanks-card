@@ -12,7 +12,12 @@
   const join = async () => {
     processing = true;
 
-    const user = { id: data.currentUser.uid, name, picture: data.currentUser.picture };
+    const user = {
+      id: data.currentUser.uid,
+      name,
+      picture: data.currentUser.picture,
+      permission: { admin: false, write: true, read: true },
+    };
     await Promise.all([
       registerMember($page.params.organizationId, user),
       registerUser(data.currentUser.uid, $page.params.organizationId),

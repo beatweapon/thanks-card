@@ -16,13 +16,16 @@ export const load = async ({ locals, params, url }) => {
 
   const allMembers = await fetchOrganizationMembers(params.organizationId);
   const me = allMembers.find((m) => m.id === currentUser.uid);
-  const permission = me?.permission;
-
   const members = allMembers.filter((m) => m.permission.read);
 
-  // 読み込み権限がないからと言って自身をメンバーから除外するとエラーになるため自身は含める
-  if (!members.some((m) => m.id === currentUser.uid)) {
-    members.push(me);
+  // 招待を受けたばかりの人は権限情報を持っていないため仮の権限をつける
+  const permission = me?.permission || { write: true, read: true };
+
+  if (me) {
+    // 読み込み権限がないからと言って自身をメンバーから除外するとエラーになるため自身は含める
+    if (!members.some((m) => m.id === currentUser.uid)) {
+      members.push(me);
+    }
   }
 
   return {
