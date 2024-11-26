@@ -6,7 +6,13 @@
   import FloatButton from '$lib/components/design/FloatButton.svelte';
   import PlainButton from '$lib/components/design/PlainButton.svelte';
 
-  let items = [{ src: '1.svg', price: 300 }];
+  let items = [
+    { src: '1.svg', price: 300 },
+    { src: '2.svg', price: 300 },
+    { src: '3.svg', price: 300 },
+    { src: '4.svg', price: 500 },
+    { src: '5.svg', price: 1000 },
+  ];
 
   /** @type {boolean} */
   let processing = false;
