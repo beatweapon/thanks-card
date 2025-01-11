@@ -6,5 +6,6 @@ import card_4 from './4.svelte';
 import card_5 from './5.svelte';
 import card_6 from './6.svelte';
 import card_7 from './7.svelte';
+import card_8 from './8.svelte';
 
-export { card_0, card_1, card_2, card_3, card_4, card_5, card_6, card_7 };
+export { card_0, card_1, card_2, card_3, card_4, card_5, card_6, card_7, card_8 };
