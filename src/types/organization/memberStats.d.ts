@@ -2,7 +2,7 @@ export interface Stats {
   point: number;
   item: {
     frames: string[];
-    cards: number[];
+    cards: string[];
   };
   sentMessage: number;
   receivedMessage: number;

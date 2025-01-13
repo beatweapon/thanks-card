@@ -2,11 +2,16 @@
   import { createEventDispatcher } from 'svelte';
   import PlainButton from '$lib/components/design/PlainButton.svelte';
   import * as backgrounds from '$lib/components/cardBackgrounds';
+  import { stats } from '$lib/stores/memberStats';
 
   /** @type {string} */
   export let selectedDesignId = '0';
 
   const designIds = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
+
+  if ($stats.item.cards) {
+    designIds.push(...$stats.item.cards);
+  }
 
   /**
    * @type {Array<{
