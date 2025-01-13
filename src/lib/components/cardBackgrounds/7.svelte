@@ -8,9 +8,9 @@
   .card_back {
     color: black;
     font-weight: bold;
-    background-image: url('/images/card/japanese_cats.jpg');
+    background-image: url('/images/card/7/cat.webp');
     background-size: cover;
-    background-position: center -20px;
+    background-position: center -10px;
   }
 
   .card_back_cover {
