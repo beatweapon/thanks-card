@@ -8,12 +8,19 @@ export const PUT = async ({ request, params, cookies }) => {
     const decodedClaims = await auth.verifySessionCookie(session);
     const { uid } = decodedClaims;
     const { organizationId } = params;
-    const { frame, price } = await request.json();
+    const { frame, card, price } = await request.json();
 
-    await updateOrganizationMemberStats(organizationId, uid, {
-      point: FieldValue.increment(-price),
-      'item.frames': FieldValue.arrayUnion(frame),
-    });
+    /** @type {{point: FieldValue, 'item.frames'?: FieldValue, 'item.cards'?: FieldValue}} */
+    const update = { point: FieldValue.increment(-price) };
+    if (frame) {
+      update['item.frames'] = FieldValue.arrayUnion(frame);
+    }
+
+    if (card) {
+      update['item.cards'] = FieldValue.arrayUnion(card);
+    }
+
+    await updateOrganizationMemberStats(organizationId, uid, update);
   }
 
   return new Response();
