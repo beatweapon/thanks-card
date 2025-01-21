@@ -7,16 +7,15 @@
     font-family: 'Sacramento', sans-serif;
     background-color: #010a01;
     color: #fff;
-    /* animation: pulsate 1.5s infinite alternate; */
     text-shadow:
       0 0 7px #fff,
-      0 0 10px #fff,
-      0 0 21px #fff,
+      0 0 21px #bc13fe,
       0 0 42px #bc13fe,
-      0 0 82px #bc13fe,
-      0 0 92px #bc13fe,
-      0 0 102px #bc13fe,
-      0 0 151px #bc13fe;
+      0 0 82px #bc13fe;
+  }
+
+  .card_back:hover {
+    animation: pulsate 1.5s infinite alternate;
   }
 
   @keyframes pulsate {
