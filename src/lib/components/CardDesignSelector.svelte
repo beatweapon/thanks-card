@@ -9,7 +9,7 @@
 
   const designIds = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
 
-  if ($stats.item?.cards) {
+  if ($stats?.item?.cards) {
     designIds.push(...$stats.item.cards);
   }
 
