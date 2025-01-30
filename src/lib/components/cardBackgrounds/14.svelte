@@ -8,9 +8,9 @@
   .card_back {
     color: black;
     font-weight: bold;
-    background-image: url('/images/card/7/cat.webp');
+    background-image: url('/images/card/9/gorilla.webp');
     background-size: cover;
-    background-position: center -10px;
+    background-position: center;
   }
 
   .card_back_cover {
