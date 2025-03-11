@@ -8,7 +8,7 @@
   .card_back {
     color: black;
     font-weight: bold;
-    background-image: url('/images/card/9/gorilla.webp');
+    background-image: url('/images/card/14/gorilla.webp');
     background-size: cover;
     background-position: center;
   }

@@ -6,15 +6,15 @@
 
 <style>
   .card_back {
-    color: #772057;
+    color: #0a3069;
     font-weight: bold;
-    background: #ffeff7 right 0% no-repeat url('/images/card/8/flower_series_rose.svg');
+    background: #ddf4ff right 0% no-repeat url('/images/card/11/flower_series_nemophila.svg');
     background-size: 20%;
     transform: rotate(180deg);
   }
 
   .card_back_cover {
-    background: right 0% no-repeat url('/images/card/8/flower_series_rose.svg');
+    background: right 0% no-repeat url('/images/card/11/flower_series_nemophila.svg');
     background-size: 20%;
     transform: rotate(180deg);
   }
