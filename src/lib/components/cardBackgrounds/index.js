@@ -14,6 +14,9 @@ import card_12 from './12.svelte';
 import card_13 from './13.svelte';
 import card_14 from './14.svelte';
 import card_shop_1 from './shop_1.svelte';
+import card_shop_2 from './shop_2.svelte';
+import card_shop_3 from './shop_3.svelte';
+import card_shop_4 from './shop_4.svelte';
 
 export {
   card_0,
@@ -32,4 +35,7 @@ export {
   card_13,
   card_14,
   card_shop_1,
+  card_shop_2,
+  card_shop_3,
+  card_shop_4,
 };

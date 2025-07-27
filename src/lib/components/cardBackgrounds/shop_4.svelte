@@ -1,0 +1,20 @@
+<div class="card_back">
+  <span class="character">
+    <slot />
+  </span>
+</div>
+
+<style>
+  .card_back {
+    font-family: 'Sacramento', sans-serif;
+    background-color: #010a01;
+  }
+
+  .character {
+    color: #fff;
+    text-shadow:
+      0 0 10px #f7ff14,
+      0 0 20px #f7ff14,
+      0 0 40px #f7ff14;
+  }
+</style>
