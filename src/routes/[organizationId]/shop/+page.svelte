@@ -15,7 +15,12 @@
     { frame: '5.svg', price: 1000 },
   ];
 
-  let cardItems = [{ designId: 'shop_1', price: 1000 }];
+  let cardItems = [
+    { designId: 'shop_1', price: 1000 },
+    { designId: 'shop_2', price: 1000 },
+    { designId: 'shop_3', price: 1000 },
+    { designId: 'shop_4', price: 1000 },
+  ];
 
   /**
    * @type {Array<{
