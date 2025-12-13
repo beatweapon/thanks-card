@@ -1,8 +1,28 @@
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { auth } from '$lib/server/firebase_server';
 
-export const GET = async ({ request, params }) => {
+export const GET = async ({ request, params, cookies }) => {
   const db = getFirestore();
   const { organizationId } = params;
+
+  // session cookie チェック（admin 権限の確認）
+  const session = cookies.get('__session') || '';
+  if (!session) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
+  let decodedClaims;
+  try {
+    decodedClaims = await auth.verifySessionCookie(session);
+  } catch (e) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
+  const uid = decodedClaims.uid;
+  const memberDoc = await db.collection(`organizations/${organizationId}/members`).doc(uid).get();
+  if (!memberDoc.exists || !memberDoc.data()?.permission?.admin) {
+    return new Response('Forbidden', { status: 403 });
+  }
 
   // year パラメータを取得
   const url = new URL(request.url);

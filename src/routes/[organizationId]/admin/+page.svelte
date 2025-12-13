@@ -17,6 +17,11 @@
   /** @type {boolean} */
   let exporting = false;
 
+  /** @type {boolean} */
+  let isAdmin = false;
+
+  $: isAdmin = $members.some((m) => m.id === data.currentUser.uid && m.permission?.admin === true);
+
   $: $members.forEach((m) => {
     if (!m.permission) {
       m.permission = {
@@ -90,20 +95,22 @@
   };
 </script>
 
-<div class="export-section">
-  <h2>カード情報をエクスポート</h2>
-  <div class="export-controls">
-    <select id="export-year" bind:value={exportYear} disabled={exporting}>
-      {#each Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => 2024 + i) as year}
-        <option value={year}>{year}</option>
-      {/each}
-    </select>
-    <label for="export-year">年</label>
-    <FloatButton on:click={handleExport} disabled={exporting}>
-      {exporting ? 'エクスポート中...' : 'エクスポート'}
-    </FloatButton>
+{#if isAdmin}
+  <div class="export-section">
+    <h2>カード情報をエクスポート</h2>
+    <div class="export-controls">
+      <select id="export-year" bind:value={exportYear} disabled={exporting}>
+        {#each Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => 2024 + i) as year}
+          <option value={year}>{year}</option>
+        {/each}
+      </select>
+      <label for="export-year">年</label>
+      <FloatButton on:click={handleExport} disabled={exporting}>
+        {exporting ? 'エクスポート中...' : 'エクスポート'}
+      </FloatButton>
+    </div>
   </div>
-</div>
+{/if}
 
 <div class="members">
   {#each $members as member}
