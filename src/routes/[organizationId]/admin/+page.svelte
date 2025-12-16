@@ -167,7 +167,12 @@
   <div class="export-section">
     <h2>カード情報をエクスポート</h2>
     <div class="export-controls">
-      <select id="export-year" bind:value={exportYear} on:change={handleYearChange} disabled={exporting || checkingStatus}>
+      <select
+        id="export-year"
+        bind:value={exportYear}
+        on:change={handleYearChange}
+        disabled={exporting || checkingStatus}
+      >
         {#each Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => 2024 + i) as year}
           <option value={year}>{year}</option>
         {/each}
