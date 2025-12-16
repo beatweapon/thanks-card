@@ -29,7 +29,10 @@
   let checkingStatus = false;
 
   /** @type {boolean} */
-  let exporting = false;
+  let aggregating = false;
+
+  /** @type {boolean} */
+  let downloading = false;
 
   /** @type {boolean} */
   let isAdmin = false;
@@ -84,8 +87,8 @@
   };
 
   const handleAggregate = async () => {
-    if (exporting) return;
-    exporting = true;
+    if (aggregating) return;
+    aggregating = true;
 
     try {
       await aggregateExport($page.params.organizationId, exportYear, base);
@@ -95,13 +98,13 @@
       console.error('Aggregate error:', error);
       alert('集計に失敗しました');
     } finally {
-      exporting = false;
+      aggregating = false;
     }
   };
 
   const handleDownload = async () => {
-    if (exporting || !fileExists) return;
-    exporting = true;
+    if (downloading || !fileExists) return;
+    downloading = true;
 
     try {
       const result = await getExportSignedUrl($page.params.organizationId, exportYear, base);
@@ -115,7 +118,7 @@
       console.error('Download error:', error);
       alert('ダウンロードに失敗しました');
     } finally {
-      exporting = false;
+      downloading = false;
     }
   };
 
@@ -140,18 +143,18 @@
         id="export-year"
         bind:value={exportYear}
         on:change={handleYearChange}
-        disabled={exporting || checkingStatus}
+        disabled={aggregating || checkingStatus}
       >
         {#each Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => 2024 + i) as year}
           <option value={year}>{year}</option>
         {/each}
       </select>
       <label for="export-year">年</label>
-      <FloatButton on:click={handleAggregate} disabled={exporting}>
-        {exporting ? '集計中...' : '集計'}
+      <FloatButton on:click={handleAggregate} disabled={aggregating}>
+        {aggregating ? '集計中...' : '集計'}
       </FloatButton>
-      <FloatButton on:click={handleDownload} disabled={exporting || !fileExists}>
-        {exporting ? 'ダウンロード中...' : fileExists ? 'ダウンロード' : 'ファイルなし'}
+      <FloatButton on:click={handleDownload} disabled={downloading || !fileExists}>
+        {downloading ? 'ダウンロード中...' : fileExists ? 'ダウンロード' : 'ファイルなし'}
       </FloatButton>
     </div>
   </div>
