@@ -1,39 +1,8 @@
 import { PRIVATE_STORAGE_BUCKET } from '$env/static/private';
-import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
-import { auth } from '$lib/server/firebase_server';
 
-export const GET = async ({ params, cookies, request }) => {
-  const db = getFirestore();
+export const GET = async ({ params, request }) => {
   const { organizationId } = params;
-
-  // session cookie チェック（admin 権限の確認）
-  const session = cookies.get('__session') || '';
-  if (!session) {
-    return new Response(JSON.stringify({ error: 'Forbidden' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  let decodedClaims;
-  try {
-    decodedClaims = await auth.verifySessionCookie(session);
-  } catch (e) {
-    return new Response(JSON.stringify({ error: 'Forbidden' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  const uid = decodedClaims.uid;
-  const memberDoc = await db.collection(`organizations/${organizationId}/members`).doc(uid).get();
-  if (!memberDoc.exists || !memberDoc.data()?.permission?.admin) {
-    return new Response(JSON.stringify({ error: 'Forbidden' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
 
   // year パラメータを取得
   const url = new URL(request.url);
