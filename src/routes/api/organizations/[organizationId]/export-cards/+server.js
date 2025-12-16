@@ -1,27 +1,38 @@
+import { PRIVATE_STORAGE_BUCKET } from '$env/static/private';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 import { auth } from '$lib/server/firebase_server';
 
-export const GET = async ({ request, params, cookies }) => {
+export const POST = async ({ request, params, cookies }) => {
   const db = getFirestore();
   const { organizationId } = params;
 
   // session cookie チェック（admin 権限の確認）
   const session = cookies.get('__session') || '';
   if (!session) {
-    return new Response('Forbidden', { status: 403 });
+    return new Response(JSON.stringify({ error: 'Forbidden' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   let decodedClaims;
   try {
     decodedClaims = await auth.verifySessionCookie(session);
   } catch (e) {
-    return new Response('Forbidden', { status: 403 });
+    return new Response(JSON.stringify({ error: 'Forbidden' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   const uid = decodedClaims.uid;
   const memberDoc = await db.collection(`organizations/${organizationId}/members`).doc(uid).get();
   if (!memberDoc.exists || !memberDoc.data()?.permission?.admin) {
-    return new Response('Forbidden', { status: 403 });
+    return new Response(JSON.stringify({ error: 'Forbidden' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // year パラメータを取得
@@ -30,7 +41,10 @@ export const GET = async ({ request, params, cookies }) => {
 
   // バリデーション
   if (isNaN(year) || year < 2024) {
-    return new Response('Invalid year parameter', { status: 400 });
+    return new Response(JSON.stringify({ error: 'Invalid year parameter' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
@@ -95,16 +109,35 @@ export const GET = async ({ request, params, cookies }) => {
 
     const tsvContent = rows.join('\n');
 
-    return new Response(tsvContent, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/tab-separated-values; charset=utf-8',
-        'Content-Disposition': `attachment; filename="thanks-cards-${organizationId}-${year}.tsv"`,
+    // Cloud Storage に保存
+    const storage = getStorage();
+    const bucket = storage.bucket(PRIVATE_STORAGE_BUCKET);
+    const filePath = `organizations/${organizationId}/exports/${year}.tsv`;
+    const file = bucket.file(filePath);
+
+    await file.save(tsvContent, {
+      metadata: {
+        contentType: 'text/tab-separated-values; charset=utf-8',
       },
+    });
+
+    // 署名付き URL を生成（有効期限: 1時間）
+    const [signedUrl] = await file.getSignedUrl({
+      version: 'v4',
+      action: 'read',
+      expires: Date.now() + 60 * 60 * 1000, // 1時間
+    });
+
+    return new Response(JSON.stringify({ signedUrl }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.error('Export error:', error);
-    return new Response('Export failed', { status: 500 });
+    return new Response(JSON.stringify({ error: 'Export failed' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
 

@@ -4,6 +4,8 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import FloatButton from '$lib/components/design/FloatButton.svelte';
+  import { onMount } from 'svelte';
+
   watchMemberCollection($page.params.organizationId);
 
   export let data;
@@ -13,6 +15,12 @@
 
   /** @type {number} */
   let exportYear = new Date().getFullYear();
+
+  /** @type {boolean} */
+  let fileExists = false;
+
+  /** @type {boolean} */
+  let checkingStatus = false;
 
   /** @type {boolean} */
   let exporting = false;
@@ -32,6 +40,38 @@
     }
   });
 
+  onMount(() => {
+    checkFileStatus();
+  });
+
+  const checkFileStatus = async () => {
+    checkingStatus = true;
+    try {
+      const response = await fetch(
+        `${base}/api/organizations/${$page.params.organizationId}/export-status?year=${exportYear}`,
+        {
+          method: 'GET',
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        fileExists = result.exists;
+      } else {
+        fileExists = false;
+      }
+    } catch (error) {
+      console.error('Status check error:', error);
+      fileExists = false;
+    } finally {
+      checkingStatus = false;
+    }
+  };
+
+  const handleYearChange = () => {
+    checkFileStatus();
+  };
+
   const update = async () => {
     processing = true;
 
@@ -48,7 +88,7 @@
     goToOrganizationPage();
   };
 
-  const handleExport = async () => {
+  const handleAggregate = async () => {
     if (exporting) return;
     exporting = true;
 
@@ -56,27 +96,55 @@
       const response = await fetch(
         `${base}/api/organizations/${$page.params.organizationId}/export-cards?year=${exportYear}`,
         {
+          method: 'POST',
+        }
+      );
+
+      if (!response.ok) {
+        alert('集計に失敗しました');
+        return;
+      }
+
+      // 集計成功
+      fileExists = true;
+      alert('集計が完了しました');
+    } catch (error) {
+      console.error('Aggregate error:', error);
+      alert('集計に失敗しました');
+    } finally {
+      exporting = false;
+    }
+  };
+
+  const handleDownload = async () => {
+    if (exporting || !fileExists) return;
+    exporting = true;
+
+    try {
+      const response = await fetch(
+        `${base}/api/organizations/${$page.params.organizationId}/export-get-signed-url?year=${exportYear}`,
+        {
           method: 'GET',
         }
       );
 
       if (!response.ok) {
-        alert('エクスポートに失敗しました');
+        alert('ダウンロードURLの取得に失敗しました');
         return;
       }
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `thanks-cards-${$page.params.organizationId}-${exportYear}.tsv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const result = await response.json();
+      if (result.signedUrl) {
+        const link = document.createElement('a');
+        link.href = result.signedUrl;
+        link.download = `thanks-cards-${$page.params.organizationId}-${exportYear}.tsv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     } catch (error) {
-      console.error('Export error:', error);
-      alert('エクスポートに失敗しました');
+      console.error('Download error:', error);
+      alert('ダウンロードに失敗しました');
     } finally {
       exporting = false;
     }
@@ -99,14 +167,17 @@
   <div class="export-section">
     <h2>カード情報をエクスポート</h2>
     <div class="export-controls">
-      <select id="export-year" bind:value={exportYear} disabled={exporting}>
+      <select id="export-year" bind:value={exportYear} on:change={handleYearChange} disabled={exporting || checkingStatus}>
         {#each Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => 2024 + i) as year}
           <option value={year}>{year}</option>
         {/each}
       </select>
       <label for="export-year">年</label>
-      <FloatButton on:click={handleExport} disabled={exporting}>
-        {exporting ? 'エクスポート中...' : 'エクスポート'}
+      <FloatButton on:click={handleAggregate} disabled={exporting}>
+        {exporting ? '集計中...' : '集計'}
+      </FloatButton>
+      <FloatButton on:click={handleDownload} disabled={exporting || !fileExists}>
+        {exporting ? 'ダウンロード中...' : fileExists ? 'ダウンロード' : 'ファイルなし'}
       </FloatButton>
     </div>
   </div>
