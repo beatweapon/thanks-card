@@ -4,6 +4,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import FloatButton from '$lib/components/design/FloatButton.svelte';
+  import { checkExportStatus, aggregateExport, getExportSignedUrl, downloadFile } from '$lib/api/exports.js';
   import { onMount } from 'svelte';
 
   watchMemberCollection($page.params.organizationId);
@@ -47,19 +48,8 @@
   const checkFileStatus = async () => {
     checkingStatus = true;
     try {
-      const response = await fetch(
-        `${base}/api/organizations/${$page.params.organizationId}/export-status?year=${exportYear}`,
-        {
-          method: 'GET',
-        }
-      );
-
-      if (response.ok) {
-        const result = await response.json();
-        fileExists = result.exists;
-      } else {
-        fileExists = false;
-      }
+      const result = await checkExportStatus($page.params.organizationId, exportYear, base);
+      fileExists = result.exists;
     } catch (error) {
       console.error('Status check error:', error);
       fileExists = false;
@@ -93,19 +83,7 @@
     exporting = true;
 
     try {
-      const response = await fetch(
-        `${base}/api/organizations/${$page.params.organizationId}/export-cards?year=${exportYear}`,
-        {
-          method: 'POST',
-        }
-      );
-
-      if (!response.ok) {
-        alert('集計に失敗しました');
-        return;
-      }
-
-      // 集計成功
+      await aggregateExport($page.params.organizationId, exportYear, base);
       fileExists = true;
       alert('集計が完了しました');
     } catch (error) {
@@ -121,26 +99,12 @@
     exporting = true;
 
     try {
-      const response = await fetch(
-        `${base}/api/organizations/${$page.params.organizationId}/export-get-signed-url?year=${exportYear}`,
-        {
-          method: 'GET',
-        }
-      );
-
-      if (!response.ok) {
-        alert('ダウンロードURLの取得に失敗しました');
-        return;
-      }
-
-      const result = await response.json();
+      const result = await getExportSignedUrl($page.params.organizationId, exportYear, base);
       if (result.signedUrl) {
-        const link = document.createElement('a');
-        link.href = result.signedUrl;
-        link.download = `thanks-cards-${$page.params.organizationId}-${exportYear}.tsv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        downloadFile(
+          result.signedUrl,
+          `thanks-cards-${$page.params.organizationId}-${exportYear}.tsv`
+        );
       }
     } catch (error) {
       console.error('Download error:', error);
