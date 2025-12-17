@@ -15,5 +15,13 @@ export const handle = async ({ event, resolve }) => {
     event.locals.currentUser = undefined;
   }
 
-  return resolve(event);
+  try {
+    return await resolve(event);
+  } catch (e) {
+    // If route not found, return a normal 404 response instead of bubbling an error.
+    if (e && e.status === 404) {
+      return new Response('Not Found', { status: 404 });
+    }
+    throw e;
+  }
 };

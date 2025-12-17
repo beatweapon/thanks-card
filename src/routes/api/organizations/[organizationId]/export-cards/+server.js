@@ -80,6 +80,7 @@ export const POST = async ({ request, params, cookies }) => {
       'designId',
       'reactionsCount',
       'reactions',
+      'emoji_ranking',
     ];
     const rows = [headers.join('\t')];
 
@@ -90,6 +91,19 @@ export const POST = async ({ request, params, cookies }) => {
       const reactions = Array.isArray(card.reactions) ? card.reactions : [];
       const reactionsCount = reactions.length;
       const reactionsJson = escapeTabNewline(JSON.stringify(reactions));
+
+      // emoji_ranking: 集計済みの emoji -> count マップを生成
+      const emojiCounts = {};
+      reactions.forEach((r) => {
+        try {
+          const emoji = r?.emoji || r?.emojiText || '';
+          if (!emoji) return;
+          emojiCounts[emoji] = (emojiCounts[emoji] || 0) + 1;
+        } catch (e) {
+          // ignore
+        }
+      });
+      const emojiRankingJson = escapeTabNewline(JSON.stringify(emojiCounts));
 
       const row = [
         doc.id,
@@ -102,6 +116,7 @@ export const POST = async ({ request, params, cookies }) => {
         card.designId || '',
         String(reactionsCount),
         reactionsJson,
+        emojiRankingJson,
       ];
 
       rows.push(row.join('\t'));
