@@ -105,7 +105,11 @@
       <p>
         {#if summary.mostReceivedFrom}
           {#if findMember(undefined, summary.mostReceivedFrom.name)}
-            <img src={findMember(undefined, summary.mostReceivedFrom.name).picture} alt={findMember(undefined, summary.mostReceivedFrom.name).name} class="avatar" />
+            <img
+              src={findMember(undefined, summary.mostReceivedFrom.name).picture}
+              alt={findMember(undefined, summary.mostReceivedFrom.name).name}
+              class="avatar"
+            />
           {/if}
           {summary.mostReceivedFrom.name} ({summary.mostReceivedFrom.count})
         {:else}
@@ -117,7 +121,11 @@
       <p>
         {#if summary.mostSentTo}
           {#if findMember(undefined, summary.mostSentTo.name)}
-            <img src={findMember(undefined, summary.mostSentTo.name).picture} alt={findMember(undefined, summary.mostSentTo.name).name} class="avatar" />
+            <img
+              src={findMember(undefined, summary.mostSentTo.name).picture}
+              alt={findMember(undefined, summary.mostSentTo.name).name}
+              class="avatar"
+            />
           {/if}
           {summary.mostSentTo.name} ({summary.mostSentTo.count})
         {:else}
@@ -146,16 +154,23 @@
       {:else}
         <p>なし</p>
       {/if}
-      {:else if step === 6}
+    {:else if step === 6}
       <h2>送った最長メッセージ</h2>
       {#if summary.sentLongest}
         <section>
-          <p><strong>日付:</strong> {new Date(summary.sentLongest.createdAt).toLocaleDateString('ja-JP')}</p>
+          <p>
+            <strong>日付:</strong>
+            {new Date(summary.sentLongest.createdAt).toLocaleDateString('ja-JP')}
+          </p>
           <p><strong>送信者:</strong> あなた</p>
           <p>
             <strong>宛先:</strong>
             {#if findMember(summary.sentLongest.to, summary.sentLongest.toName)}
-              <img src={findMember(summary.sentLongest.to, summary.sentLongest.toName).picture} alt={findMember(summary.sentLongest.to, summary.sentLongest.toName).name} class="avatar" />
+              <img
+                src={findMember(summary.sentLongest.to, summary.sentLongest.toName).picture}
+                alt={findMember(summary.sentLongest.to, summary.sentLongest.toName).name}
+                class="avatar"
+              />
             {/if}
             {summary.sentLongest.toName}
           </p>
@@ -163,7 +178,10 @@
           <p><strong>メッセージ:</strong></p>
           <pre>{summary.sentLongest.message}</pre>
           <p>
-            <strong>リアクション:</strong> {#if summary.sentLongest.reactions.length}{emojisOf(summary.sentLongest)}{:else}なし{/if}
+            <strong>リアクション:</strong>
+            {#if summary.sentLongest.reactions.length}{emojisOf(
+                summary.sentLongest
+              )}{:else}なし{/if}
           </p>
         </section>
       {:else}
@@ -173,12 +191,19 @@
       <h2>送った最短メッセージ</h2>
       {#if summary.sentShortest}
         <section>
-          <p><strong>日付:</strong> {new Date(summary.sentShortest.createdAt).toLocaleDateString('ja-JP')}</p>
+          <p>
+            <strong>日付:</strong>
+            {new Date(summary.sentShortest.createdAt).toLocaleDateString('ja-JP')}
+          </p>
           <p><strong>送信者:</strong> あなた</p>
           <p>
             <strong>宛先:</strong>
             {#if findMember(summary.sentShortest.to, summary.sentShortest.toName)}
-              <img src={findMember(summary.sentShortest.to, summary.sentShortest.toName).picture} alt={findMember(summary.sentShortest.to, summary.sentShortest.toName).name} class="avatar" />
+              <img
+                src={findMember(summary.sentShortest.to, summary.sentShortest.toName).picture}
+                alt={findMember(summary.sentShortest.to, summary.sentShortest.toName).name}
+                class="avatar"
+              />
             {/if}
             {summary.sentShortest.toName}
           </p>
@@ -186,7 +211,10 @@
           <p><strong>メッセージ:</strong></p>
           <pre>{summary.sentShortest.message}</pre>
           <p>
-            <strong>リアクション:</strong> {#if summary.sentShortest.reactions.length}{emojisOf(summary.sentShortest)}{:else}なし{/if}
+            <strong>リアクション:</strong>
+            {#if summary.sentShortest.reactions.length}{emojisOf(
+                summary.sentShortest
+              )}{:else}なし{/if}
           </p>
         </section>
       {:else}
@@ -196,11 +224,20 @@
       <h2>貰った最長メッセージ</h2>
       {#if summary.receivedLongest}
         <section>
-          <p><strong>日付:</strong> {new Date(summary.receivedLongest.createdAt).toLocaleDateString('ja-JP')}</p>
+          <p>
+            <strong>日付:</strong>
+            {new Date(summary.receivedLongest.createdAt).toLocaleDateString('ja-JP')}
+          </p>
           <p>
             <strong>送信者:</strong>
             {#if findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)}
-              <img src={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName).picture} alt={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName).name} class="avatar" />
+              <img
+                src={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)
+                  .picture}
+                alt={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)
+                  .name}
+                class="avatar"
+              />
             {/if}
             {summary.receivedLongest.fromName}
           </p>
@@ -209,7 +246,10 @@
           <p><strong>メッセージ:</strong></p>
           <pre>{summary.receivedLongest.message}</pre>
           <p>
-            <strong>リアクション:</strong> {#if summary.receivedLongest.reactions.length}{emojisOf(summary.receivedLongest)}{:else}なし{/if}
+            <strong>リアクション:</strong>
+            {#if summary.receivedLongest.reactions.length}{emojisOf(
+                summary.receivedLongest
+              )}{:else}なし{/if}
           </p>
         </section>
       {:else}
@@ -219,11 +259,20 @@
       <h2>貰った最短メッセージ</h2>
       {#if summary.receivedShortest}
         <section>
-          <p><strong>日付:</strong> {new Date(summary.receivedShortest.createdAt).toLocaleDateString('ja-JP')}</p>
+          <p>
+            <strong>日付:</strong>
+            {new Date(summary.receivedShortest.createdAt).toLocaleDateString('ja-JP')}
+          </p>
           <p>
             <strong>送信者:</strong>
             {#if findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)}
-              <img src={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName).picture} alt={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName).name} class="avatar" />
+              <img
+                src={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)
+                  .picture}
+                alt={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)
+                  .name}
+                class="avatar"
+              />
             {/if}
             {summary.receivedShortest.fromName}
           </p>
@@ -232,7 +281,10 @@
           <p><strong>メッセージ:</strong></p>
           <pre>{summary.receivedShortest.message}</pre>
           <p>
-            <strong>リアクション:</strong> {#if summary.receivedShortest.reactions.length}{emojisOf(summary.receivedShortest)}{:else}なし{/if}
+            <strong>リアクション:</strong>
+            {#if summary.receivedShortest.reactions.length}{emojisOf(
+                summary.receivedShortest
+              )}{:else}なし{/if}
           </p>
         </section>
       {:else}
