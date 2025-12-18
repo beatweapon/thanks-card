@@ -2,12 +2,18 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { members, watchMemberCollection } from '$lib/stores/members.js';
+  import User from '$lib/components/User.svelte';
+  import Introduction from 'src/lib/components/views/[organizationId]/yearSummary/Introduction.svelte';
+  import TotalCardCount from 'src/lib/components/views/[organizationId]/yearSummary/TotalCardCount.svelte';
+  import MemberCardRanking from 'src/lib/components/views/[organizationId]/yearSummary/MemberCardRanking.svelte';
+  import EmojiRanking from 'src/lib/components/views/[organizationId]/yearSummary/EmojiRanking.svelte';
 
   export let data;
   const summary = data.summary;
 
   let step = 0;
   const steps = [
+    '表紙',
     '受け取った枚数',
     '送った枚数',
     '最もカードを貰った相手',
@@ -74,8 +80,6 @@
     }
   }
 
-  // removed showAll() — 'すべて表示' button was removed
-
   /** @param {any} o */
   function emojisOf(o) {
     if (!o || !o.reactions) return '';
@@ -91,70 +95,30 @@
 </script>
 
 <div class="year-summary">
-  <h1>{year} 年のサマリ</h1>
-
   <div class="card">
     {#if step === 0}
-      <h2>受け取った枚数</h2>
-      <p>{summary.totalReceived || 0} 枚</p>
+      <Introduction {year} />
     {:else if step === 1}
-      <h2>送った枚数</h2>
-      <p>{summary.totalSent || 0} 枚</p>
+      <TotalCardCount title="受け取った枚数" count={summary.totalReceived || 0} />
     {:else if step === 2}
-      <h2>最もカードを貰った相手</h2>
-      <p>
-        {#if summary.mostReceivedFrom}
-          {#if findMember(undefined, summary.mostReceivedFrom.name)}
-            <img
-              src={findMember(undefined, summary.mostReceivedFrom.name).picture}
-              alt={findMember(undefined, summary.mostReceivedFrom.name).name}
-              class="avatar"
-            />
-          {/if}
-          {summary.mostReceivedFrom.name} ({summary.mostReceivedFrom.count})
-        {:else}
-          なし
-        {/if}
-      </p>
+      <TotalCardCount title="送った枚数" count={summary.totalSent || 0} />
     {:else if step === 3}
-      <h2>最もカードを送った相手</h2>
-      <p>
-        {#if summary.mostSentTo}
-          {#if findMember(undefined, summary.mostSentTo.name)}
-            <img
-              src={findMember(undefined, summary.mostSentTo.name).picture}
-              alt={findMember(undefined, summary.mostSentTo.name).name}
-              class="avatar"
-            />
-          {/if}
-          {summary.mostSentTo.name} ({summary.mostSentTo.count})
-        {:else}
-          なし
-        {/if}
-      </p>
+      <MemberCardRanking
+        title="最もカードを貰ったメンバーランキング"
+        members={$members}
+        data={[summary.mostReceivedFrom]}
+      />
     {:else if step === 4}
-      <h2>送った絵文字ランキング (上位3)</h2>
-      {#if summary.topSentEmojis && summary.topSentEmojis.length}
-        <ol>
-          {#each summary.topSentEmojis as e}
-            <li>{e.emoji} — {e.count}</li>
-          {/each}
-        </ol>
-      {:else}
-        <p>なし</p>
-      {/if}
+      <MemberCardRanking
+        title="最もカードを送ったメンバーランキング"
+        members={$members}
+        data={[summary.mostSentTo]}
+      />
     {:else if step === 5}
-      <h2>貰った絵文字ランキング (上位3)</h2>
-      {#if summary.topReceivedEmojis && summary.topReceivedEmojis.length}
-        <ol>
-          {#each summary.topReceivedEmojis as e}
-            <li>{e.emoji} — {e.count}</li>
-          {/each}
-        </ol>
-      {:else}
-        <p>なし</p>
-      {/if}
+      <EmojiRanking title="送った絵文字ランキング" emojis={summary.topSentEmojis} />
     {:else if step === 6}
+      <EmojiRanking title="貰った絵文字ランキング" emojis={summary.topReceivedEmojis} />
+    {:else if step === 7}
       <h2>送った最長メッセージ</h2>
       {#if summary.sentLongest}
         <section>
@@ -166,13 +130,8 @@
           <p>
             <strong>宛先:</strong>
             {#if findMember(summary.sentLongest.to, summary.sentLongest.toName)}
-              <img
-                src={findMember(summary.sentLongest.to, summary.sentLongest.toName).picture}
-                alt={findMember(summary.sentLongest.to, summary.sentLongest.toName).name}
-                class="avatar"
-              />
+              <User user={findMember(summary.sentLongest.to, summary.sentLongest.toName)} />
             {/if}
-            {summary.sentLongest.toName}
           </p>
           <p><strong>文字数:</strong> {summary.sentLongest.length} 文字</p>
           <p><strong>メッセージ:</strong></p>
@@ -187,7 +146,7 @@
       {:else}
         <p>メッセージがありません</p>
       {/if}
-    {:else if step === 7}
+    {:else if step === 8}
       <h2>送った最短メッセージ</h2>
       {#if summary.sentShortest}
         <section>
@@ -199,13 +158,8 @@
           <p>
             <strong>宛先:</strong>
             {#if findMember(summary.sentShortest.to, summary.sentShortest.toName)}
-              <img
-                src={findMember(summary.sentShortest.to, summary.sentShortest.toName).picture}
-                alt={findMember(summary.sentShortest.to, summary.sentShortest.toName).name}
-                class="avatar"
-              />
+              <User user={findMember(summary.sentShortest.to, summary.sentShortest.toName)} />
             {/if}
-            {summary.sentShortest.toName}
           </p>
           <p><strong>文字数:</strong> {summary.sentShortest.length} 文字</p>
           <p><strong>メッセージ:</strong></p>
@@ -220,7 +174,7 @@
       {:else}
         <p>メッセージがありません</p>
       {/if}
-    {:else if step === 8}
+    {:else if step === 9}
       <h2>貰った最長メッセージ</h2>
       {#if summary.receivedLongest}
         <section>
@@ -231,15 +185,10 @@
           <p>
             <strong>送信者:</strong>
             {#if findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)}
-              <img
-                src={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)
-                  .picture}
-                alt={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)
-                  .name}
-                class="avatar"
+              <User
+                user={findMember(summary.receivedLongest.from, summary.receivedLongest.fromName)}
               />
             {/if}
-            {summary.receivedLongest.fromName}
           </p>
           <p><strong>宛先:</strong> あなた</p>
           <p><strong>文字数:</strong> {summary.receivedLongest.length} 文字</p>
@@ -255,7 +204,7 @@
       {:else}
         <p>メッセージがありません</p>
       {/if}
-    {:else if step === 9}
+    {:else if step === 10}
       <h2>貰った最短メッセージ</h2>
       {#if summary.receivedShortest}
         <section>
@@ -266,15 +215,10 @@
           <p>
             <strong>送信者:</strong>
             {#if findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)}
-              <img
-                src={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)
-                  .picture}
-                alt={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)
-                  .name}
-                class="avatar"
+              <User
+                user={findMember(summary.receivedShortest.from, summary.receivedShortest.fromName)}
               />
             {/if}
-            {summary.receivedShortest.fromName}
           </p>
           <p><strong>宛先:</strong> あなた</p>
           <p><strong>文字数:</strong> {summary.receivedShortest.length} 文字</p>
@@ -285,12 +229,13 @@
             {#if summary.receivedShortest.reactions.length}{emojisOf(
                 summary.receivedShortest
               )}{:else}なし{/if}
+            {summary.receivedShortest.fromName}
           </p>
         </section>
       {:else}
         <p>メッセージがありません</p>
       {/if}
-    {:else if step === 10}
+    {:else if step === 11}
       <h2>全表示</h2>
       <pre>{JSON.stringify(summary, null, 2)}</pre>
     {/if}
@@ -306,6 +251,7 @@
 <style>
   .year-summary {
     padding: 1rem;
+    text-align: center;
   }
   .card {
     border: 1px solid #ddd;
